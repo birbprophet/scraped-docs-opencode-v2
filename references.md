@@ -1,11 +1,10 @@
----
-title: References
-description: Add local directories and Git repositories as project references.
----
+# References
 
-References give OpenCode access to directories outside the current project. Use them to make documentation, shared libraries, examples, or another repository available while you work.
+References give OpenCode named access to directories outside the current
+project. Use them for documentation, shared libraries, examples, or source from
+another repository.
 
-References are configured by alias in `opencode.json` or `opencode.jsonc`.
+Configure references by alias in `opencode.json` or `opencode.jsonc`:
 
 ```jsonc title="opencode.jsonc"
 {
@@ -13,145 +12,154 @@ References are configured by alias in `opencode.json` or `opencode.jsonc`.
   "references": {
     "docs": {
       "path": "../product-docs",
-      "description": "Use for product behavior and documentation conventions",
+      "description": "Use for product behavior and terminology",
     },
-    "sdk": {
-      "repository": "anomalyco/opencode-sdk-js",
+    "effect": {
+      "repository": "Effect-TS/effect",
       "branch": "main",
-      "description": "Use for JavaScript SDK implementation details",
+      "description": "Use for Effect implementation details",
     },
   },
 }
 ```
-
----
 
 ## Local directories
 
-Use `path` to reference a local directory.
+Use `path` for a local directory:
 
-```jsonc title="opencode.jsonc"
+```jsonc
 {
   "references": {
-    "docs": {
-      "path": "../docs",
+    "design-system": {
+      "path": "../design-system",
+      "description": "Use when working with components or design tokens",
     },
   },
 }
 ```
 
-Paths can be:
+Relative paths resolve from the directory containing the config file that
+defines them. Absolute paths and home-relative paths such as `~/docs` are also
+supported.
 
-- Relative to the config file that defines the reference
-- Absolute, such as `/home/user/docs`
-- Relative to your home directory, such as `~/docs`
+The string shorthand is useful when no other fields are needed:
 
-You can also use a string shorthand:
-
-```jsonc title="opencode.jsonc"
+```jsonc
 {
   "references": {
     "docs": "../docs",
+    "shared": "~/work/shared",
   },
 }
 ```
 
----
+<Callout type="note">
+  A shorthand string is treated as a local path only when it starts with `.`, `/`, or `~`. Use `./docs`, not `docs`; a
+  bare `docs` value is interpreted as a Git repository.
+</Callout>
 
 ## Git repositories
 
-Use `repository` to reference a Git repository. OpenCode materializes the repository in its local repository cache and makes the checked-out source available as a reference directory.
+Use `repository` for a remote Git repository. GitHub `owner/repo` shorthand,
+Git URLs, host/path forms, and SCP-style remotes are supported.
 
-```jsonc title="opencode.jsonc"
+```jsonc
 {
   "references": {
     "effect": {
       "repository": "Effect-TS/effect",
       "branch": "main",
     },
-  },
-}
-```
-
-`repository` accepts Git URLs, host/path references, and GitHub `owner/repo` shorthand. The optional `branch` field selects a branch or ref. Without `branch`, OpenCode uses the repository's default branch.
-
-You can use string shorthand when you do not need a branch, description, or other options:
-
-```jsonc title="opencode.jsonc"
-{
-  "references": {
-    "effect": "Effect-TS/effect",
-  },
-}
-```
-
-:::note
-Git references are refreshed asynchronously. A newly configured repository may take a moment to finish cloning or updating.
-:::
-
----
-
-## Describe usage
-
-Add `description` to explain when an agent should use a reference.
-
-```jsonc title="opencode.jsonc"
-{
-  "references": {
-    "design-system": {
-      "path": "../design-system",
-      "description": "Use when implementing UI components or design tokens",
+    "internal-sdk": {
+      "repository": "git@gitlab.example.com:platform/sdk.git",
+      "branch": "release/v2",
     },
   },
 }
 ```
 
-OpenCode includes references with descriptions in agent context. Descriptions should be short and specific enough to distinguish references with similar content. References without descriptions remain available through autocomplete and direct use, but are not advertised to agents.
+Without `branch`, OpenCode checks out and refreshes the remote's default
+branch. Branch names may contain letters, numbers, `/`, `_`, `.`, and `-`, but
+cannot start with `-` or contain `..`. Local `file:` repositories are not
+supported.
 
----
+Git references also support shorthand:
 
-## Hide autocomplete entries
+```jsonc
+{
+  "references": {
+    "effect": "Effect-TS/effect",
+    "sdk": "gitlab.com/platform/sdk",
+  },
+}
+```
 
-Set `hidden` to `true` to omit a reference from `@` autocomplete in the TUI.
+### Cloning and storage
 
-```jsonc title="opencode.jsonc"
+OpenCode normalizes a remote and stores one checkout under its global data
+directory at `opencode/repos/<host>/<repository-path>`. On a typical Linux
+installation, for example, `Effect-TS/effect` is stored at:
+
+```text
+~/.local/share/opencode/repos/github.com/Effect-TS/effect
+```
+
+Missing repositories are cloned. Existing checkouts are fetched and reset to
+the requested branch, or to the remote default branch when `branch` is omitted.
+Materialization runs asynchronously when references load or reload, so a new
+reference can appear before its checkout is ready. Clone and refresh failures
+are logged and do not stop other references from loading.
+
+<Callout type="warning">
+  The cache has one checkout per normalized remote, not one per branch. Do not configure the same repository at multiple
+  branches; only one branch can be exposed. Avoid editing cached checkouts because a refresh resets them.
+</Callout>
+
+## Description and visibility
+
+`description` tells agents when a reference is relevant. References with a
+description are included in agent instructions with their alias and resolved
+path. References without one remain available to clients but are not advertised
+automatically.
+
+Set `hidden` to `true` to remove a reference from interactive client selectors:
+
+```jsonc
 {
   "references": {
     "internal": {
       "path": "../internal",
-      "description": "Use for internal implementation details",
+      "description": "Use for internal service behavior",
       "hidden": true,
     },
   },
 }
 ```
 
-`hidden` only affects autocomplete. A hidden reference with a description remains included in agent context.
-
----
+`hidden` controls only interactive visibility. It does not remove the
+reference from the reference API or agent instructions when a description is
+present.
 
 ## Use references
 
-Configured references appear in TUI `@` autocomplete. Type `@alias` to attach the reference root, or `@alias/` to search for files inside it.
+Clients can attach a reference by its root alias. The attachment provides a
+non-recursive listing of the root's immediate files and directories. Ask the
+agent to inspect a particular path when more detail is needed.
 
-```text
-Compare this implementation with @sdk/src/client.ts
-```
+References do not grant extra tool permissions. Access outside the active
+Location remains subject to the agent's normal tool rules and the
+`external_directory` permission. Editing a reference additionally requires the
+applicable edit permission.
 
-Agents also receive the resolved paths and descriptions of configured references that have descriptions in their system context, so they can inspect a reference when it is relevant without you attaching it manually.
+## Fields
 
-OpenCode automatically allows reference directories through its external-directory permission boundary. Normal tool permissions still apply; for example, an agent that cannot edit files does not gain edit access because a directory is configured as a reference.
+| Field         | Local    | Git      | Description                                   |
+| ------------- | -------- | -------- | --------------------------------------------- |
+| `path`        | Required | No       | Local directory path                          |
+| `repository`  | No       | Required | Remote Git repository                         |
+| `branch`      | No       | Optional | Branch to fetch and check out                 |
+| `description` | Optional | Optional | Guidance describing when agents should use it |
+| `hidden`      | Optional | Optional | Hide it from interactive client selectors     |
 
----
-
-## Configure fields
-
-| Field         | Local | Git | Description                                      |
-| ------------- | ----- | --- | ------------------------------------------------ |
-| `path`        | Yes   | No  | Local reference directory                        |
-| `repository`  | No    | Yes | Git URL, host/path, or GitHub `owner/repo` value |
-| `branch`      | No    | Yes | Optional Git branch or ref                       |
-| `description` | Yes   | Yes | Guidance describing when to use the reference    |
-| `hidden`      | Yes   | Yes | Hide the reference from TUI `@` autocomplete     |
-
-Reference aliases cannot be empty or contain `/`, whitespace, backticks, or commas.
+An alias cannot be empty or contain `/`, `\`, whitespace, a backtick, or a
+comma.

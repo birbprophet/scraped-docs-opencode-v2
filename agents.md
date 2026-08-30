@@ -1,781 +1,267 @@
----
-title: Agents
-description: Configure and use specialized agents.
----
+# Agents
 
-Agents are specialized AI assistants that can be configured for specific tasks and workflows. They allow you to create focused tools with custom prompts, models, and tool access.
+Agents combine a system prompt, model preference, tool permissions, and display
+metadata into a reusable assistant profile. OpenCode includes agents for common
+workflows, and you can override them or add your own in configuration or
+Markdown files.
 
-:::tip
-Use the plan agent to analyze code and review suggestions without making any code changes.
-:::
+## Built-in agents
 
-You can switch between agents during a session or invoke them with the `@` mention.
+| Agent                   | Mode       | Purpose                                                                                                                                                    |
+| ----------------------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Build** (`build`)     | `primary`  | Default coding agent. Tools are allowed by default, sensitive environment-file reads ask for approval, and access outside the workspace asks for approval. |
+| **Plan** (`plan`)       | `primary`  | Planning agent. File edits are denied except for OpenCode plan files. Shell commands are not generally denied.                                             |
+| **General** (`general`) | `subagent` | General-purpose research and multi-step work. It has broad tool access but cannot launch more subagents.                                                   |
+| **Explore** (`explore`) | `subagent` | Read-only code and web exploration using `read`, `glob`, `grep`, `webfetch`, and `websearch`.                                                              |
 
----
+OpenCode also has hidden `compaction`, `title`, and `summary` system agents.
+They run internal maintenance tasks and are not available for direct use. There is no built-in
+`scout` agent in V2.
 
-## Types
+You can override a built-in agent with an entry of the same ID. Set
+`disabled: true` to remove one.
 
-There are two types of agents in OpenCode; primary agents and subagents.
+## Default agent
 
----
+Set the primary agent used when a session has not selected one:
 
-### Primary agents
-
-Primary agents are the main assistants you interact with directly. You can cycle through them using the **Tab** key, or your configured `switch_agent` keybind. These agents handle your main conversation. Tool access is configured via permissions — for example, Build has all tools enabled while Plan is restricted.
-
-:::tip
-You can use the **Tab** key to switch between primary agents during a session.
-:::
-
-OpenCode comes with two built-in primary agents, **Build** and **Plan**. We'll
-look at these below.
-
----
-
-### Subagents
-
-Subagents are specialized assistants that primary agents can invoke for specific tasks. You can also manually invoke them by **@ mentioning** them in your messages.
-
-OpenCode comes with three built-in subagents, **General**, **Explore**, and **Scout**. We'll look at this below.
-
----
-
-## Built-in
-
-OpenCode comes with two built-in primary agents and three built-in subagents.
-
----
-
-### Use build
-
-_Mode_: `primary`
-
-Build is the **default** primary agent with all tools enabled. This is the standard agent for development work where you need full access to file operations and system commands.
-
----
-
-### Use plan
-
-_Mode_: `primary`
-
-A restricted agent designed for planning and analysis. We use a permission system to give you more control and prevent unintended changes.
-By default, all of the following are set to `ask`:
-
-- `file edits`: All writes, patches, and edits
-- `bash`: All bash commands
-
-This agent is useful when you want the LLM to analyze code, suggest changes, or create plans without making any actual modifications to your codebase.
-
----
-
-### Use general
-
-_Mode_: `subagent`
-
-A general-purpose agent for researching complex questions and executing multi-step tasks. Has full tool access (except todo), so it can make file changes when needed. Use this to run multiple units of work in parallel.
-
----
-
-### Use explore
-
-_Mode_: `subagent`
-
-A fast, read-only agent for exploring codebases. Cannot modify files. Use this when you need to quickly find files by patterns, search code for keywords, or answer questions about the codebase.
-
----
-
-### Use scout
-
-_Mode_: `subagent`
-
-A read-only agent for external docs and dependency research. Use this when you need to clone a dependency repository into OpenCode's managed cache, inspect library source, or cross-reference local code against upstream implementations without modifying your workspace.
-
----
-
-### Use compaction
-
-_Mode_: `primary`
-
-Hidden system agent that compacts long context into a smaller summary. It runs automatically when needed and is not selectable in the UI.
-
----
-
-### Use title
-
-_Mode_: `primary`
-
-Hidden system agent that generates short session titles. It runs automatically and is not selectable in the UI.
-
----
-
-### Use summary
-
-_Mode_: `primary`
-
-Hidden system agent that creates session summaries. It runs automatically and is not selectable in the UI.
-
----
-
-## Usage
-
-1. For primary agents, use the **Tab** key to cycle through them during a session. You can also use your configured `switch_agent` keybind.
-
-2. Subagents can be invoked:
-   - **Automatically** by primary agents for specialized tasks based on their descriptions.
-   - Manually by **@ mentioning** a subagent in your message. For example.
-
-     ```txt frame="none"
-     @general help me search for this function
-     ```
-
-3. **Navigation between sessions**: When subagents create child sessions, use `session_child_first` (default: **\<Leader>+Down**) to enter the first child session from the parent.
-
-4. Once you are in a child session, use:
-   - `session_child_cycle` (default: **Right**) to cycle to the next child session
-   - `session_child_cycle_reverse` (default: **Left**) to cycle to the previous child session
-   - `session_parent` (default: **Up**) to return to the parent session
-
-   This lets you switch between the main conversation and specialized subagent work.
-
----
-
-## Configure
-
-You can customize the built-in agents or create your own through configuration. Agents can be configured in two ways:
-
----
-
-### JSON
-
-Configure agents in your `opencode.json` config file:
-
-```json title="opencode.json"
+```jsonc title="opencode.jsonc"
 {
   "$schema": "https://opencode.ai/config.json",
-  "agent": {
-    "build": {
-      "mode": "primary",
-      "model": "anthropic/claude-sonnet-4-20250514",
-      "prompt": "{file:./prompts/build.txt}",
-      "permission": {
-        "edit": "allow",
-        "bash": "allow"
-      }
-    },
-    "plan": {
-      "mode": "primary",
-      "model": "anthropic/claude-haiku-4-20250514",
-      "permission": {
-        "edit": "deny",
-        "bash": "deny"
-      }
-    },
-    "code-reviewer": {
-      "description": "Reviews code for best practices and potential issues",
-      "mode": "subagent",
-      "model": "anthropic/claude-sonnet-4-20250514",
-      "prompt": "You are a code reviewer. Focus on security, performance, and maintainability.",
-      "permission": {
-        "edit": "deny"
-      }
-    }
-  }
+  "default_agent": "reviewer",
 }
 ```
 
----
+The configured agent must exist, must not have `mode: "subagent"`, and must not
+be hidden. If it is unavailable, OpenCode falls back to `build`, then to the
+first visible agent that can run as a primary agent. This selection does not
+rewrite the agent already stored on an existing session.
 
-### Markdown
+## Modes
 
-You can also define agents using markdown files. Place them in:
+An agent's `mode` controls where it can run:
 
-- Global: `~/.config/opencode/agents/`
-- Per-project: `.opencode/agents/`
+| Mode       | Behavior                                                                                                                                             |
+| ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `primary`  | Can be selected as the main agent for a session. It cannot be launched as a subagent. This is the default for a custom agent when `mode` is omitted. |
+| `subagent` | Can run in a child session through the `subagent` tool, but cannot be selected as the main agent.                                                    |
+| `all`      | Can be used either way.                                                                                                                              |
 
-```markdown title="~/.config/opencode/agents/review.md"
----
-description: Reviews code for quality and best practices
-mode: subagent
-model: anthropic/claude-sonnet-4-20250514
-temperature: 0.1
-permission:
-  edit: deny
-  bash: deny
----
+Subagents run in child sessions with fresh context. A primary agent can invoke
+one with the `subagent` tool, either in the foreground or in the background.
 
-You are in code review mode. Focus on:
+The parent agent's `subagent` permission controls which agents it may launch.
+The child currently uses its own configured permissions, not a restricted copy
+of the parent's permissions.
 
-- Code quality and best practices
-- Potential bugs and edge cases
-- Performance implications
-- Security considerations
+## Configure agents
 
-Provide constructive feedback without making direct changes.
+### Markdown files
+
+The recommended file locations are:
+
+```text
+~/.config/opencode/agents/<name>.md
+.opencode/agents/<name>.md
 ```
 
-The markdown file name becomes the agent name. For example, `review.md` creates a `review` agent.
+OpenCode discovers project `.opencode` directories from the current directory
+up to the project root. The path below `agents/` becomes the agent ID, so
+`.opencode/agents/team/reviewer.md` defines `team/reviewer`.
 
+Frontmatter uses the same fields as an entry under `agents`. The Markdown body
+becomes `system`:
+
+```md title=".opencode/agents/reviewer.md"
 ---
+description: Reviews changes without modifying files
+mode: subagent
+model: anthropic/claude-sonnet-4-5#high
+color: "#ff6b6b"
+steps: 8
+permissions:
+  - action: edit
+    resource: "*"
+    effect: deny
+  - action: shell
+    resource: "*"
+    effect: deny
+---
+
+Review for correctness, security, regressions, and missing tests.
+List findings in severity order with file and line references.
+```
+
+### JSON or JSONC
+
+Use the `agents` field in any [OpenCode configuration file](/config):
+
+```jsonc title="opencode.jsonc"
+{
+  "$schema": "https://opencode.ai/config.json",
+  "default_agent": "reviewer",
+  "agents": {
+    "reviewer": {
+      "description": "Reviews changes for correctness, security, and missing tests",
+      "mode": "all",
+      "model": "anthropic/claude-sonnet-4-5#high",
+      "system": "Review the current changes. Report findings before any summary.",
+      "color": "#ff6b6b",
+      "steps": 8,
+      "permissions": [
+        { "action": "edit", "resource": "*", "effect": "deny" },
+        { "action": "shell", "resource": "*", "effect": "deny" },
+      ],
+    },
+    "build": {
+      "permissions": [{ "action": "shell", "resource": "git push *", "effect": "ask" }],
+    },
+  },
+}
+```
+
+Agent definitions merge in configuration order. Later scalar fields replace
+earlier values, request maps merge by key, and permission rules are appended.
+Global `permissions` are applied to every agent before its agent-specific rules,
+so a later agent rule can refine a global rule.
 
 ## Options
 
-Let's look at these configuration options in detail.
+### `description`
 
----
+Explains the agent's purpose. It is optional, but strongly recommended for
+subagents because OpenCode includes it in the subagent catalog shown to the
+model.
 
-### Description
+### `mode`
 
-Use the `description` option to provide a brief description of what the agent does and when to use it.
+Accepts `primary`, `subagent`, or `all`. The default is `all`.
 
-```json title="opencode.json"
+### `model`
+
+Selects a model using `provider/model` with an optional `#variant`:
+
+```jsonc
 {
-  "agent": {
-    "review": {
-      "description": "Reviews code for best practices and potential issues"
-    }
-  }
-}
-```
-
-This is a **required** config option.
-
----
-
-### Temperature
-
-Control the randomness and creativity of the LLM's responses with the `temperature` config.
-
-Lower values make responses more focused and deterministic, while higher values increase creativity and variability.
-
-```json title="opencode.json"
-{
-  "agent": {
-    "plan": {
-      "temperature": 0.1
+  "agents": {
+    "reviewer": {
+      "model": "anthropic/claude-sonnet-4-5#high",
     },
-    "creative": {
-      "temperature": 0.8
-    }
-  }
-}
-```
-
-Temperature values typically range from 0.0 to 1.0:
-
-- **0.0-0.2**: Very focused and deterministic responses, ideal for code analysis and planning
-- **0.3-0.5**: Balanced responses with some creativity, good for general development tasks
-- **0.6-1.0**: More creative and varied responses, useful for brainstorming and exploration
-
-```json title="opencode.json"
-{
-  "agent": {
-    "analyze": {
-      "temperature": 0.1,
-      "prompt": "{file:./prompts/analysis.txt}"
-    },
-    "build": {
-      "temperature": 0.3
-    },
-    "brainstorm": {
-      "temperature": 0.7,
-      "prompt": "{file:./prompts/creative.txt}"
-    }
-  }
-}
-```
-
-If no temperature is specified, OpenCode uses model-specific defaults; typically 0 for most models, 0.55 for Qwen models.
-
----
-
-### Max steps
-
-Control the maximum number of agentic iterations an agent can perform before being forced to respond with text only. This allows users who wish to control costs to set a limit on agentic actions.
-
-If this is not set, the agent will continue to iterate until the model chooses to stop or the user interrupts the session.
-
-```json title="opencode.json"
-{
-  "agent": {
-    "quick-thinker": {
-      "description": "Fast reasoning with limited iterations",
-      "prompt": "You are a quick thinker. Solve problems with minimal steps.",
-      "steps": 5
-    }
-  }
-}
-```
-
-When the limit is reached, the agent receives a special system prompt instructing it to respond with a summarization of its work and recommended remaining tasks.
-
-:::caution
-The legacy `maxSteps` field is deprecated. Use `steps` instead.
-:::
-
----
-
-### Disable
-
-Set to `true` to disable the agent.
-
-```json title="opencode.json"
-{
-  "agent": {
-    "review": {
-      "disable": true
-    }
-  }
-}
-```
-
----
-
-### Prompt
-
-Specify a custom system prompt file for this agent with the `prompt` config. The prompt file should contain instructions specific to the agent's purpose.
-
-```json title="opencode.json"
-{
-  "agent": {
-    "review": {
-      "prompt": "{file:./prompts/code-review.txt}"
-    }
-  }
-}
-```
-
-This path is relative to where the config file is located. So this works for both the global OpenCode config and the project specific config.
-
----
-
-### Model
-
-Use the `model` config to override the model for this agent. Useful for using different models optimized for different tasks. For example, a faster model for planning, a more capable model for implementation.
-
-:::tip
-If you don’t specify a model, primary agents use the [model globally configured](/docs/config#models) while subagents will use the model of the primary agent that invoked the subagent.
-:::
-
-```json title="opencode.json"
-{
-  "agent": {
-    "plan": {
-      "model": "anthropic/claude-haiku-4-20250514"
-    }
-  }
-}
-```
-
-The model ID in your OpenCode config uses the format `provider/model-id`. For example, if you're using [OpenCode Zen](/docs/zen), you would use `opencode/gpt-5.1-codex` for GPT 5.1 Codex.
-
----
-
-### Tools (deprecated)
-
-`tools` is **deprecated**. Prefer the agent's [`permission`](#permissions) field for new configs, updates and more fine-grained control.
-
-Allows you to control which tools are available in this agent. You can enable or disable specific tools by setting them to `true` or `false`. In an agent's `tools` config, `true` is equivalent to `{"*": "allow"}` permission and `false` is equivalent to `{"*": "deny"}` permission.
-
-```json title="opencode.json" {3-6,9-12}
-{
-  "$schema": "https://opencode.ai/config.json",
-  "tools": {
-    "write": true,
-    "bash": true
   },
-  "agent": {
-    "plan": {
-      "tools": {
-        "write": false,
-        "bash": false
-      }
-    }
-  }
 }
 ```
 
-:::note
-The agent-specific config overrides the global config.
-:::
+The equivalent expanded form is:
 
-You can also use wildcards in legacy `tools` entries to control multiple tools at once. For example, to disable all tools from an MCP server:
-
-```json title="opencode.json"
+```jsonc
 {
-  "$schema": "https://opencode.ai/config.json",
-  "agent": {
-    "readonly": {
-      "tools": {
-        "mymcp_*": false,
-        "write": false,
-        "edit": false
-      }
-    }
-  }
-}
-```
-
-[Learn more about tools](/docs/tools).
-
----
-
-### Permissions
-
-You can configure permissions to manage what actions an agent can take. Each permission key can be set to:
-
-- `"ask"` — Prompt for approval before running the tool
-- `"allow"` — Allow all operations without approval
-- `"deny"` — Disable the tool
-
-The available permission keys are:
-
-| Key                  | Tools it gates                                                   |
-| -------------------- | ---------------------------------------------------------------- |
-| `read`               | `read`                                                           |
-| `edit`               | `write`, `edit`, `apply_patch`                                   |
-| `glob`               | `glob`                                                           |
-| `grep`               | `grep`                                                           |
-| `list`               | `list`                                                           |
-| `bash`               | `bash`                                                           |
-| `task`               | `task`                                                           |
-| `external_directory` | Any tool that reads or writes files outside the project worktree |
-| `todowrite`          | `todowrite`, `todoread`                                          |
-| `webfetch`           | `webfetch`                                                       |
-| `websearch`          | `websearch`                                                      |
-| `lsp`                | `lsp`                                                            |
-| `skill`              | `skill`                                                          |
-| `question`           | `question`                                                       |
-| `doom_loop`          | Recovery prompts when an agent appears stuck                     |
-
-`read`, `edit`, `glob`, `grep`, `list`, `bash`, `task`, `external_directory`, `lsp`, and `skill` accept either a shorthand action (`"allow" | "ask" | "deny"`) or an object of glob/pattern → action for fine-grained control. The remaining keys accept the shorthand action only.
-
-:::note
-Permission keys are matched as wildcard patterns against the underlying tool name, so the same syntax works for built-ins, custom tools, and MCP tools — for example `"mymcp_*": "deny"` denies every tool from an MCP server, and `"mymcp_search": "ask"` targets a single one.
-:::
-
-```json title="opencode.json"
-{
-  "$schema": "https://opencode.ai/config.json",
-  "permission": {
-    "edit": "deny"
-  }
-}
-```
-
-You can override these permissions per agent.
-
-```json title="opencode.json" {3-5,8-10}
-{
-  "$schema": "https://opencode.ai/config.json",
-  "permission": {
-    "edit": "deny"
+  "agents": {
+    "reviewer": {
+      "model": {
+        "providerID": "anthropic",
+        "model": "claude-sonnet-4-5",
+        "variant": "high",
+      },
+    },
   },
-  "agent": {
-    "build": {
-      "permission": {
-        "edit": "ask"
-      }
-    }
-  }
 }
 ```
 
-You can also set permissions in Markdown agents.
+This is the preferred model when the agent is activated. A child session uses
+its subagent's configured model, or inherits the parent session's model when
+none is configured. The session's selected model is stored separately;
+creating or switching a primary session with only an agent ID does not itself
+change that session model.
 
-```markdown title="~/.config/opencode/agents/review.md"
----
-description: Code review without edits
-mode: subagent
-permission:
-  edit: deny
-  bash:
-    "*": ask
-    "git diff": allow
-    "git log*": allow
-    "grep *": allow
-  webfetch: deny
----
+### `system`
 
-Only analyze code and suggest changes.
-```
+Sets the agent's system prompt. A non-empty value replaces OpenCode's
+provider-specific base prompt for that agent. Project instructions, skills,
+references, and other instruction sources are still added separately.
 
-You can set permissions for specific bash commands.
+For a Markdown agent, use the document body instead of a `system` frontmatter
+field.
 
-```json title="opencode.json" {7}
+### `permissions`
+
+Permissions are an ordered array of rules:
+
+```jsonc
 {
-  "$schema": "https://opencode.ai/config.json",
-  "agent": {
-    "build": {
-      "permission": {
-        "bash": {
-          "git push": "ask",
-          "grep *": "allow"
-        }
-      }
-    }
-  }
-}
-```
-
-This can take a glob pattern.
-
-```json title="opencode.json" {7}
-{
-  "$schema": "https://opencode.ai/config.json",
-  "agent": {
-    "build": {
-      "permission": {
-        "bash": {
-          "git *": "ask"
-        }
-      }
-    }
-  }
-}
-```
-
-And you can also use the `*` wildcard to manage permissions for all commands.
-Since the last matching rule takes precedence, put the `*` wildcard first and specific rules after.
-
-```json title="opencode.json" {8}
-{
-  "$schema": "https://opencode.ai/config.json",
-  "agent": {
-    "build": {
-      "permission": {
-        "bash": {
-          "*": "ask",
-          "git status *": "allow"
-        }
-      }
-    }
-  }
-}
-```
-
-[Learn more about permissions](/docs/permissions).
-
----
-
-### Mode
-
-Control the agent's mode with the `mode` config. The `mode` option is used to determine how the agent can be used.
-
-```json title="opencode.json"
-{
-  "agent": {
-    "review": {
-      "mode": "subagent"
-    }
-  }
-}
-```
-
-The `mode` option can be set to `primary`, `subagent`, or `all`. If no `mode` is specified, it defaults to `all`.
-
----
-
-### Hidden
-
-Hide a subagent from the `@` autocomplete menu with `hidden: true`. Useful for internal subagents that should only be invoked programmatically by other agents via the Task tool.
-
-```json title="opencode.json"
-{
-  "agent": {
-    "internal-helper": {
-      "mode": "subagent",
-      "hidden": true
-    }
-  }
-}
-```
-
-This only affects user visibility in the autocomplete menu. Hidden agents can still be invoked by the model via the Task tool if permissions allow.
-
-:::note
-Only applies to `mode: subagent` agents.
-:::
-
----
-
-### Task permissions
-
-Control which subagents an agent can invoke via the Task tool with `permission.task`. Uses glob patterns for flexible matching.
-
-```json title="opencode.json"
-{
-  "agent": {
+  "agents": {
     "orchestrator": {
-      "mode": "primary",
-      "permission": {
-        "task": {
-          "*": "deny",
-          "orchestrator-*": "allow",
-          "code-reviewer": "ask"
-        }
-      }
-    }
-  }
-}
-```
-
-When set to `deny`, the subagent is removed from the Task tool description entirely, so the model won't attempt to invoke it.
-
-:::tip
-Rules are evaluated in order, and the **last matching rule wins**. In the example above, `orchestrator-planner` matches both `*` (deny) and `orchestrator-*` (allow), but since `orchestrator-*` comes after `*`, the result is `allow`.
-:::
-
-:::tip
-Users can always invoke any subagent directly via the `@` autocomplete menu, even if the agent's task permissions would deny it.
-:::
-
----
-
-### Color
-
-Customize the agent's visual appearance in the UI with the `color` option. This affects how the agent appears in the interface.
-
-Use a valid hex color (e.g., `#FF5733`) or theme color: `primary`, `secondary`, `accent`, `success`, `warning`, `error`, `info`.
-
-```json title="opencode.json"
-{
-  "agent": {
-    "creative": {
-      "color": "#ff6b6b"
+      "permissions": [
+        { "action": "subagent", "resource": "*", "effect": "deny" },
+        { "action": "subagent", "resource": "explore", "effect": "allow" },
+        { "action": "shell", "resource": "git *", "effect": "ask" },
+      ],
     },
-    "code-reviewer": {
-      "color": "accent"
-    }
-  }
+  },
 }
 ```
 
----
+Each rule has:
 
-### Top P
+| Field      | Meaning                                                                                        |
+| ---------- | ---------------------------------------------------------------------------------------------- |
+| `action`   | Tool or permission action, with `*` wildcards supported.                                       |
+| `resource` | The path, command, agent ID, or other resource matched by the action. Wildcards are supported. |
+| `effect`   | `allow`, `ask`, or `deny`.                                                                     |
 
-Control response diversity with the `top_p` option. Alternative to temperature for controlling randomness.
+The last matching rule wins. Important V2 action names include `shell` for
+shell commands, `edit` for all edit/write/patch tools, and `subagent` for child
+agents. Other tools generally use their tool name, such as `read`, `glob`,
+`grep`, `webfetch`, `websearch`, and `skill`.
 
-```json title="opencode.json"
+<Callout type="tip">
+  Put broad wildcard rules first and exceptions afterward. For example, deny all subagents first, then allow `explore`.
+</Callout>
+
+`~` and `$HOME` are expanded in filesystem resources for `read`, `edit`, and
+`external_directory`. Shell resources are raw command text and are not
+expanded.
+
+### `steps`
+
+Sets a positive maximum number of model steps. On the final allowed step,
+OpenCode removes tools and asks the model to summarize its work in text. New
+user input resets the allowance.
+
+### `hidden`
+
+When `true`, removes the agent from normal agent listings, interactive
+discovery, and the subagent catalog advertised to models. It is a visibility
+setting, not a security boundary.
+
+### `color`
+
+Sets the agent's UI color. Use a six-digit hex color such as `#ff6b6b`.
+
+### `disabled`
+
+When `true`, removes the agent definition at that point in configuration
+loading. This works for built-in and custom agents.
+
+### `request`
+
+The V2 schema accepts per-agent request `headers` and JSON `body` overlays:
+
+```jsonc
 {
-  "agent": {
-    "brainstorm": {
-      "top_p": 0.9
-    }
-  }
+  "agents": {
+    "reviewer": {
+      "request": {
+        "headers": { "x-agent": "reviewer" },
+        "body": { "temperature": 0.1 },
+      },
+    },
+  },
 }
 ```
 
-Values range from 0.0 to 1.0. Lower values are more focused, higher values more diverse.
-
----
-
-### Additional
-
-Any other options you specify in your agent configuration will be **passed through directly** to the provider as model options. This allows you to use provider-specific features and parameters.
-
-For example, with OpenAI's reasoning models, you can control the reasoning effort:
-
-```json title="opencode.json" {6,7}
-{
-  "agent": {
-    "deep-thinker": {
-      "description": "Agent that uses high reasoning effort for complex problems",
-      "model": "openai/gpt-5",
-      "reasoningEffort": "high",
-      "textVerbosity": "low"
-    }
-  }
-}
-```
-
-These additional options are model and provider-specific. Check your provider's documentation for available parameters.
-
-:::tip
-Run `opencode models` to see a list of the available models.
-:::
-
----
-
-## Create agents
-
-You can create new agents using the following command:
-
-```bash
-opencode agent create
-```
-
-This interactive command will:
-
-1. Ask where to save the agent; global or project-specific.
-2. Description of what the agent should do.
-3. Generate an appropriate system prompt and identifier.
-4. Let you select which permissions the agent should be allowed (anything you don't select is denied).
-5. Finally, create a markdown file with the agent configuration.
-
----
-
-## Use cases
-
-Here are some common use cases for different agents.
-
-- **Build agent**: Full development work with all tools enabled
-- **Plan agent**: Analysis and planning without making changes
-- **Review agent**: Code review with read-only access plus documentation tools
-- **Debug agent**: Focused on investigation with bash and read tools enabled
-- **Docs agent**: Documentation writing with file operations but no system commands
-
----
-
-## Examples
-
-Here are some example agents you might find useful.
-
-:::tip
-Do you have an agent you'd like to share? [Submit a PR](https://github.com/anomalyco/opencode).
-:::
-
----
-
-### Documentation agent
-
-```markdown title="~/.config/opencode/agents/docs-writer.md"
----
-description: Writes and maintains project documentation
-mode: subagent
-permission:
-  bash: deny
----
-
-You are a technical writer. Create clear, comprehensive documentation.
-
-Focus on:
-
-- Clear explanations
-- Proper structure
-- Code examples
-- User-friendly language
-```
-
----
-
-### Security auditor
-
-```markdown title="~/.config/opencode/agents/security-auditor.md"
----
-description: Performs security audits and identifies vulnerabilities
-mode: subagent
-permission:
-  edit: deny
----
-
-You are a security expert. Focus on identifying potential security issues.
-
-Look for:
-
-- Input validation vulnerabilities
-- Authentication and authorization flaws
-- Data exposure risks
-- Dependency vulnerabilities
-- Configuration security issues
-```
+<Callout type="warning">
+  The current V2 session runner preserves these overlays on the agent definition but does not yet apply them to model
+  requests. Configure effective request settings on the provider, model, or model variant instead. Do not use legacy
+  top-level agent fields such as `temperature`, `top_p`, `prompt`, `permission`, `tools`, `disable`, or `maxSteps` in
+  new V2 configuration.
+</Callout>

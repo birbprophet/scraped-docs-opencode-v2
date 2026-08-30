@@ -1,512 +1,249 @@
----
-title: MCP servers
-description: Add local and remote MCP tools.
----
+# MCP servers
 
-You can add external tools to OpenCode using the _Model Context Protocol_, or MCP. OpenCode supports both local and remote servers.
+OpenCode can connect to [Model Context Protocol](https://modelcontextprotocol.io/) servers and make their tools, prompts, and instructions available to agents. MCP tools consume model context, so enable only the servers you need.
 
-Once added, MCP tools are automatically available to the LLM alongside built-in tools.
+## Configure servers
 
----
+Define each server by a unique name under `mcp.servers` in your [OpenCode configuration](/config). V2 does not place server names directly under `mcp`.
 
-#### Caveats
-
-When you use an MCP server, it adds to the context. This can quickly add up if you have a lot of tools. So we recommend being careful with which MCP servers you use.
-
-:::tip
-MCP servers add to your context, so you want to be careful with which ones you enable.
-:::
-
-Certain MCP servers, like the GitHub MCP server, tend to add a lot of tokens and can easily exceed the context limit.
-
----
-
-## Enable
-
-You can define MCP servers in your [OpenCode Config](https://opencode.ai/docs/config/) under `mcp`. Add each MCP with a unique name. You can refer to that MCP by name when prompting the LLM.
-
-```jsonc title="opencode.jsonc" {6}
+```jsonc title="opencode.jsonc"
 {
   "$schema": "https://opencode.ai/config.json",
   "mcp": {
-    "name-of-mcp-server": {
-      // ...
-      "enabled": true,
-    },
-    "name-of-other-mcp-server": {
-      // ...
-    },
-  },
-}
-```
-
-You can also disable a server by setting `enabled` to `false`. This is useful if you want to temporarily disable a server without removing it from your config.
-
----
-
-### Overriding remote defaults
-
-Organizations can provide default MCP servers via their `.well-known/opencode` endpoint. These servers may be disabled by default, allowing users to opt-in to the ones they need.
-
-To enable a specific server from your organization's remote config, add it to your local config with `enabled: true`:
-
-```json title="opencode.json"
-{
-  "$schema": "https://opencode.ai/config.json",
-  "mcp": {
-    "jira": {
-      "type": "remote",
-      "url": "https://jira.example.com/mcp",
-      "enabled": true
-    }
-  }
-}
-```
-
-Your local config values override the remote defaults. See [config precedence](/docs/config#precedence-order) for more details.
-
----
-
-## Local
-
-Add local MCP servers using `type` to `"local"` within the MCP object.
-
-```jsonc title="opencode.jsonc" {15}
-{
-  "$schema": "https://opencode.ai/config.json",
-  "mcp": {
-    "my-local-mcp-server": {
-      "type": "local",
-      // Or ["bun", "x", "my-mcp-command"]
-      "command": ["npx", "-y", "my-mcp-command"],
-      "enabled": true,
-      "environment": {
-        "MY_ENV_VAR": "my_env_var_value",
+    "servers": {
+      "my-server": {
+        "type": "local",
+        "command": ["npx", "-y", "example-mcp-server"],
       },
     },
   },
 }
 ```
 
-The command is how the local MCP server is started. You can also pass in a list of environment variables as well.
+Servers connect automatically unless `disabled` is `true`. There is no V2 `enabled` field.
 
-For example, here's how you can add the test [`@modelcontextprotocol/server-everything`](https://www.npmjs.com/package/@modelcontextprotocol/server-everything) MCP server.
+```jsonc
+{
+  "mcp": {
+    "servers": {
+      "my-server": {
+        "type": "local",
+        "command": ["npx", "-y", "example-mcp-server"],
+        "disabled": true,
+      },
+    },
+  },
+}
+```
+
+As with other configuration, a server in a higher-precedence project config replaces a server with the same name from a lower-precedence config. Use different names when you need separate connections or accounts.
+
+## Local servers
+
+A local server is a command that OpenCode starts using the MCP stdio transport.
 
 ```jsonc title="opencode.jsonc"
 {
   "$schema": "https://opencode.ai/config.json",
   "mcp": {
-    "mcp_everything": {
-      "type": "local",
-      "command": ["npx", "-y", "@modelcontextprotocol/server-everything"],
+    "servers": {
+      "everything": {
+        "type": "local",
+        "command": ["npx", "-y", "@modelcontextprotocol/server-everything"],
+        "cwd": ".",
+        "environment": {
+          "LOG_LEVEL": "info",
+          "MCP_API_KEY": "{env:MCP_API_KEY}",
+        },
+      },
     },
   },
 }
 ```
 
-And to use it I can add `use the mcp_everything tool` to my prompts.
+| Field         | Required | Description                                                                                                         |
+| ------------- | -------- | ------------------------------------------------------------------------------------------------------------------- |
+| `type`        | Yes      | Must be `"local"`.                                                                                                  |
+| `command`     | Yes      | Executable followed by its arguments.                                                                               |
+| `cwd`         | No       | Process working directory. Relative paths resolve from the workspace directory; the workspace is the default.       |
+| `environment` | No       | String environment variables added to the inherited OpenCode process environment.                                   |
+| `disabled`    | No       | Set to `true` to prevent the server from connecting. Defaults to `false`.                                           |
+| `codemode`    | No       | Set to `false` to expose the server's tools directly to the model instead of through Code Mode. Defaults to `true`. |
+| `timeout`     | No       | Per-server timeout overrides.                                                                                       |
 
-```txt "mcp_everything"
-use the mcp_everything tool to add the number 3 and 4
-```
+Use `{env:NAME}` to substitute an environment variable while loading config. Shell expressions such as `$NAME` are not expanded in JSON strings.
 
----
+## Remote servers
 
-#### Options
+A remote server uses the MCP Streamable HTTP transport. Its `url` must be a valid absolute URL.
 
-Here are all the options for configuring a local MCP server.
-
-| Option        | Type    | Required | Description                                                                              |
-| ------------- | ------- | -------- | ---------------------------------------------------------------------------------------- |
-| `type`        | String  | Y        | Type of MCP server connection, must be `"local"`.                                        |
-| `command`     | Array   | Y        | Command and arguments to run the MCP server.                                             |
-| `cwd`         | String  |          | Working directory for the MCP server process. Relative paths resolve from the workspace. |
-| `environment` | Object  |          | Environment variables to set when running the server.                                    |
-| `enabled`     | Boolean |          | Enable or disable the MCP server on startup.                                             |
-| `timeout`     | Number  |          | Timeout in ms for fetching tools from the MCP server. Defaults to 5000 (5 seconds).      |
-
----
-
-## Remote
-
-Add remote MCP servers by setting `type` to `"remote"`.
-
-```json title="opencode.json"
+```jsonc title="opencode.jsonc"
 {
   "$schema": "https://opencode.ai/config.json",
   "mcp": {
-    "my-remote-mcp": {
-      "type": "remote",
-      "url": "https://my-mcp-server.com",
-      "enabled": true,
-      "headers": {
-        "Authorization": "Bearer MY_API_KEY"
-      }
-    }
-  }
+    "servers": {
+      "context7": {
+        "type": "remote",
+        "url": "https://mcp.context7.com/mcp",
+        "oauth": false,
+        "headers": {
+          "CONTEXT7_API_KEY": "{env:CONTEXT7_API_KEY}",
+        },
+      },
+    },
+  },
 }
 ```
 
-The `url` is the URL of the remote MCP server and with the `headers` option you can pass in a list of headers.
+| Field      | Required | Description                                                                                                         |
+| ---------- | -------- | ------------------------------------------------------------------------------------------------------------------- |
+| `type`     | Yes      | Must be `"remote"`.                                                                                                 |
+| `url`      | Yes      | Streamable HTTP endpoint.                                                                                           |
+| `headers`  | No       | String HTTP headers sent to the MCP endpoint.                                                                       |
+| `oauth`    | No       | OAuth client settings, or `false` to disable OAuth support.                                                         |
+| `disabled` | No       | Set to `true` to prevent the server from connecting. Defaults to `false`.                                           |
+| `codemode` | No       | Set to `false` to expose the server's tools directly to the model instead of through Code Mode. Defaults to `true`. |
+| `timeout`  | No       | Per-server timeout overrides.                                                                                       |
 
----
-
-#### Options
-
-| Option    | Type    | Required | Description                                                                         |
-| --------- | ------- | -------- | ----------------------------------------------------------------------------------- |
-| `type`    | String  | Y        | Type of MCP server connection, must be `"remote"`.                                  |
-| `url`     | String  | Y        | URL of the remote MCP server.                                                       |
-| `enabled` | Boolean |          | Enable or disable the MCP server on startup.                                        |
-| `headers` | Object  |          | Headers to send with the request.                                                   |
-| `oauth`   | Object  |          | OAuth authentication configuration. See [OAuth](#oauth) section below.              |
-| `timeout` | Number  |          | Timeout in ms for fetching tools from the MCP server. Defaults to 5000 (5 seconds). |
-
----
+Use `oauth: false` for a server that exclusively uses an API key or another header-based credential.
 
 ## OAuth
 
-OpenCode automatically handles OAuth authentication for remote MCP servers. When a server requires authentication, OpenCode will:
+OAuth support is enabled for remote servers unless `oauth` is `false`. OpenCode discovers the authorization server, uses PKCE, refreshes tokens, and attempts dynamic client registration when the server supports it. OAuth credentials are stored outside project configuration.
 
-1. Detect the 401 response and initiate the OAuth flow
-2. Use **Dynamic Client Registration (RFC 7591)** if supported by the server
-3. Store tokens securely for future requests
+For a server that supports dynamic client registration, only the remote server is required:
 
----
-
-### Automatic
-
-For most OAuth-enabled MCP servers, no special configuration is needed. Just configure the remote server:
-
-```json title="opencode.json"
+```jsonc title="opencode.jsonc"
 {
   "$schema": "https://opencode.ai/config.json",
   "mcp": {
-    "my-oauth-server": {
-      "type": "remote",
-      "url": "https://mcp.example.com/mcp"
-    }
-  }
-}
-```
-
-If the server requires authentication, OpenCode will prompt you to authenticate when you first try to use it. If not, you can [manually trigger the flow](#authenticating) with `opencode mcp auth <server-name>`.
-
----
-
-### Pre-registered
-
-If you have client credentials from the MCP server provider, you can configure them:
-
-```json title="opencode.json" {7-11}
-{
-  "$schema": "https://opencode.ai/config.json",
-  "mcp": {
-    "my-oauth-server": {
-      "type": "remote",
-      "url": "https://mcp.example.com/mcp",
-      "oauth": {
-        "clientId": "{env:MY_MCP_CLIENT_ID}",
-        "clientSecret": "{env:MY_MCP_CLIENT_SECRET}",
-        "scope": "tools:read tools:execute"
-      }
-    }
-  }
-}
-```
-
----
-
-### Authenticating
-
-You can manually trigger authentication or manage credentials.
-
-Authenticate with a specific MCP server:
-
-```bash
-opencode mcp auth my-oauth-server
-```
-
-List all MCP servers and their auth status:
-
-```bash
-opencode mcp list
-```
-
-Remove stored credentials:
-
-```bash
-opencode mcp logout my-oauth-server
-```
-
-The `mcp auth` command will open your browser for authorization. After you authorize, OpenCode will store the tokens securely in `~/.local/share/opencode/mcp-auth.json`.
-
----
-
-#### Disabling OAuth
-
-If you want to disable automatic OAuth for a server (e.g., for servers that use API keys instead), set `oauth` to `false`:
-
-```json title="opencode.json" {7}
-{
-  "$schema": "https://opencode.ai/config.json",
-  "mcp": {
-    "my-api-key-server": {
-      "type": "remote",
-      "url": "https://mcp.example.com/mcp",
-      "oauth": false,
-      "headers": {
-        "Authorization": "Bearer {env:MY_API_KEY}"
-      }
-    }
-  }
-}
-```
-
----
-
-#### OAuth Options
-
-| Option         | Type            | Description                                                                      |
-| -------------- | --------------- | -------------------------------------------------------------------------------- |
-| `oauth`        | Object \| false | OAuth config object, or `false` to disable OAuth auto-detection.                 |
-| `clientId`     | String          | OAuth client ID. If not provided, dynamic client registration will be attempted. |
-| `clientSecret` | String          | OAuth client secret, if required by the authorization server.                    |
-| `scope`        | String          | OAuth scopes to request during authorization.                                    |
-
-#### Debugging
-
-If a remote MCP server is failing to authenticate, you can diagnose issues with:
-
-```bash
-# View auth status for all OAuth-capable servers
-opencode mcp auth list
-
-# Debug connection and OAuth flow for a specific server
-opencode mcp debug my-oauth-server
-```
-
-The `mcp debug` command shows the current auth status, tests HTTP connectivity, and attempts the OAuth discovery flow.
-
----
-
-## Manage
-
-Your MCPs are available as tools in OpenCode, alongside built-in tools. So you can manage them through the OpenCode config like any other tool.
-
----
-
-### Global
-
-This means that you can enable or disable them globally.
-
-```json title="opencode.json" {14}
-{
-  "$schema": "https://opencode.ai/config.json",
-  "mcp": {
-    "my-mcp-foo": {
-      "type": "local",
-      "command": ["bun", "x", "my-mcp-command-foo"]
+    "servers": {
+      "sentry": {
+        "type": "remote",
+        "url": "https://mcp.sentry.dev/mcp",
+      },
     },
-    "my-mcp-bar": {
-      "type": "local",
-      "command": ["bun", "x", "my-mcp-command-bar"]
-    }
   },
-  "tools": {
-    "my-mcp-foo": false
-  }
 }
 ```
 
-We can also use a glob pattern to disable all matching MCPs.
+When a server reports that it needs authentication, start its OAuth flow using
+an MCP management interface and complete authorization in the browser.
 
-```json title="opencode.json" {14}
+If the provider issued client credentials, configure them using V2's snake_case field names:
+
+```jsonc title="opencode.jsonc"
 {
   "$schema": "https://opencode.ai/config.json",
   "mcp": {
-    "my-mcp-foo": {
-      "type": "local",
-      "command": ["bun", "x", "my-mcp-command-foo"]
+    "servers": {
+      "company-tools": {
+        "type": "remote",
+        "url": "https://mcp.example.com/mcp",
+        "oauth": {
+          "client_id": "{env:MCP_CLIENT_ID}",
+          "client_secret": "{env:MCP_CLIENT_SECRET}",
+          "scope": "tools:read tools:execute",
+          "callback_port": 19876,
+          "redirect_uri": "http://127.0.0.1:19876/callback",
+        },
+      },
     },
-    "my-mcp-bar": {
-      "type": "local",
-      "command": ["bun", "x", "my-mcp-command-bar"]
-    }
   },
-  "tools": {
-    "my-mcp*": false
-  }
 }
 ```
 
-Here we are using the glob pattern `my-mcp*` to disable all MCPs.
+| OAuth field     | Description                                                                                     |
+| --------------- | ----------------------------------------------------------------------------------------------- |
+| `client_id`     | Pre-registered OAuth client ID. If omitted, OpenCode attempts dynamic client registration.      |
+| `client_secret` | Client secret for a pre-registered client.                                                      |
+| `scope`         | Space-delimited scopes to request.                                                              |
+| `callback_port` | Local callback port, from `1` through `65535`. An available ephemeral port is used by default.  |
+| `redirect_uri`  | Pre-registered loopback redirect URI. Its path and port must reach the local callback listener. |
 
----
+## Timeouts
 
-### Per agent
+Timeouts are positive integer milliseconds. Configure defaults under `mcp.timeout`; a server's `timeout` fields override matching defaults.
 
-If you have a large number of MCP servers you may want to only enable them per agent and disable them globally. To do this:
-
-1. Disable it as a tool globally.
-2. In your [agent config](/docs/agents#tools), enable the MCP server as a tool.
-
-```json title="opencode.json" {11, 14-18}
+```jsonc title="opencode.jsonc"
 {
   "$schema": "https://opencode.ai/config.json",
   "mcp": {
-    "my-mcp": {
-      "type": "local",
-      "command": ["bun", "x", "my-mcp-command"],
-      "enabled": true
-    }
+    "timeout": {
+      "startup": 45000,
+      "catalog": 30000,
+      "execution": 600000,
+    },
+    "servers": {
+      "slow-tools": {
+        "type": "remote",
+        "url": "https://mcp.example.com/mcp",
+        "timeout": {
+          "catalog": 60000,
+        },
+      },
+    },
   },
-  "tools": {
-    "my-mcp*": false
+}
+```
+
+| Timeout     | Default    | Applies to                                                 |
+| ----------- | ---------- | ---------------------------------------------------------- |
+| `startup`   | 30 seconds | Establishing the transport and initializing the server.    |
+| `catalog`   | 30 seconds | Listing tools, prompts, resources, and resource templates. |
+| `execution` | 12 hours   | Calling tools, getting prompts, and reading resources.     |
+
+## Names and permissions
+
+OpenCode combines the server name and MCP tool name as `<server>_<tool>`. Characters other than letters, numbers, `_`, and `-` are replaced with `_`; for example, server `context 7` and tool `resolve.library/id` become `context_7_resolve_library_id`. MCP prompts become available as commands named `<server>:<prompt>` using the same normalization.
+
+Choose short server names that remain unique after normalization. Under the default Code Mode, MCP tools are grouped by the normalized server name.
+
+Set `codemode` to `false` on a server when its tools should remain on the provider's native tool list:
+
+```jsonc
+{
+  "mcp": {
+    "servers": {
+      "context7": {
+        "type": "remote",
+        "url": "https://mcp.context7.com/mcp",
+        "codemode": false,
+      },
+    },
   },
-  "agent": {
-    "my-agent": {
-      "tools": {
-        "my-mcp*": true
-      }
-    }
-  }
 }
 ```
 
----
+Use permission actions to hide or deny a server's tools without stopping its connection:
 
-#### Glob patterns
-
-The glob pattern uses simple regex globbing patterns:
-
-- `*` matches zero or more of any character (e.g., `"my-mcp*"` matches `my-mcp_search`, `my-mcp_list`, etc.)
-- `?` matches exactly one character
-- All other characters match literally
-
-:::note
-MCP server tools are registered with server name as prefix, so to disable all tools for a server simply use:
-
-```
-"mymcpservername_*": false
-```
-
-:::
-
----
-
-## Examples
-
-Below are examples of some common MCP servers. You can submit a PR if you want to document other servers.
-
----
-
-### Sentry
-
-Add the [Sentry MCP server](https://mcp.sentry.dev) to interact with your Sentry projects and issues.
-
-```json title="opencode.json" {4-8}
+```jsonc
 {
-  "$schema": "https://opencode.ai/config.json",
-  "mcp": {
-    "sentry": {
-      "type": "remote",
-      "url": "https://mcp.sentry.dev/mcp",
-      "oauth": {}
-    }
-  }
+  "permissions": [
+    {
+      "action": "context7_*",
+      "resource": "*",
+      "effect": "deny",
+    },
+  ],
 }
 ```
 
-After adding the configuration, authenticate with Sentry:
+## Session context
 
-```bash
-opencode mcp auth sentry
-```
+When OpenCode invokes an MCP tool on behalf of a session, it includes the invoking
+session's ID in `CallToolRequest.params._meta.sessionID`. This applies to direct tool
+calls and Code Mode over both stdio and Streamable HTTP.
 
-This will open a browser window to complete the OAuth flow and connect OpenCode to your Sentry account.
+The ID is request metadata, not a tool argument, so it does not appear in the
+model-visible tool schema. Treat it as an opaque correlation value: it identifies the
+invoking OpenCode session rather than the MCP transport session, can be absent for
+calls without session context, and must not be used by itself for authentication or
+authorization. Remote MCP servers receive the raw ID and may log or retain it.
 
-Once authenticated, you can use Sentry tools in your prompts to query issues, projects, and error data.
+## Manage servers
 
-```txt "use sentry"
-Show me the latest unresolved issues in my project. use sentry
-```
-
----
-
-### Context7
-
-Add the [Context7 MCP server](https://github.com/upstash/context7) to search through docs.
-
-```json title="opencode.json" {4-7}
-{
-  "$schema": "https://opencode.ai/config.json",
-  "mcp": {
-    "context7": {
-      "type": "remote",
-      "url": "https://mcp.context7.com/mcp"
-    }
-  }
-}
-```
-
-If you have signed up for a free account, you can use your API key and get higher rate-limits.
-
-```json title="opencode.json" {7-9}
-{
-  "$schema": "https://opencode.ai/config.json",
-  "mcp": {
-    "context7": {
-      "type": "remote",
-      "url": "https://mcp.context7.com/mcp",
-      "headers": {
-        "CONTEXT7_API_KEY": "{env:CONTEXT7_API_KEY}"
-      }
-    }
-  }
-}
-```
-
-Here we are assuming that you have the `CONTEXT7_API_KEY` environment variable set.
-
-Add `use context7` to your prompts to use Context7 MCP server.
-
-```txt "use context7"
-Configure a Cloudflare Worker script to cache JSON API responses for five minutes. use context7
-```
-
-Alternatively, you can add something like this to your [AGENTS.md](/docs/rules/).
-
-```md title="AGENTS.md"
-When you need to search docs, use `context7` tools.
-```
-
----
-
-### Grep by Vercel
-
-Add the [Grep by Vercel](https://grep.app) MCP server to search through code snippets on GitHub.
-
-```json title="opencode.json" {4-7}
-{
-  "$schema": "https://opencode.ai/config.json",
-  "mcp": {
-    "gh_grep": {
-      "type": "remote",
-      "url": "https://mcp.grep.app"
-    }
-  }
-}
-```
-
-Since we named our MCP server `gh_grep`, you can add `use the gh_grep tool` to your prompts to get the agent to use it.
-
-```txt "use the gh_grep tool"
-What's the right way to set a custom domain in an SST Astro component? use the gh_grep tool
-```
-
-Alternatively, you can add something like this to your [AGENTS.md](/docs/rules/).
-
-```md title="AGENTS.md"
-If you are unsure how to do something, use `gh_grep` to search code examples from GitHub.
-```
+OpenCode interfaces can add servers to project or global configuration, list
+configured servers and their connection status, authenticate remote servers,
+and remove stored OAuth credentials. Edit configuration directly for OAuth client settings, timeouts, working
+directories, or enablement.

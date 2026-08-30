@@ -1,314 +1,186 @@
----
-title: Troubleshooting
-description: Common issues and how to resolve them.
----
+# Troubleshooting
 
-To debug issues with OpenCode, start by checking the logs and local data it stores on disk.
+<Callout type="tip">
+  You can ask OpenCode to debug itself. Describe the problem and ask it to use this troubleshooting page; it can read
+  the steps below, inspect its service and logs, and help identify the issue.
+</Callout>
 
----
+OpenCode uses a client-server architecture. A background server owns sessions, plugins, permissions, and other application
+state. Start by determining whether an issue is in a client, the shared server, or a specific project.
 
-## Logs
+## Check the background service
 
-Log files are written to:
-
-- **macOS/Linux**: `~/.local/share/opencode/log/`
-- **Windows**: Press `WIN+R` and paste `%USERPROFILE%\.local\share\opencode\log`
-
-Log files are named with timestamps (e.g., `2025-01-09T123456.log`) and the most recent 10 log files are kept.
-
-You can set the log level with the `--log-level` command-line option to get more detailed debug information. For example, `opencode --log-level DEBUG`.
-
----
-
-## Storage
-
-opencode stores session data and other application data on disk at:
-
-- **macOS/Linux**: `~/.local/share/opencode/`
-- **Windows**: Press `WIN+R` and paste `%USERPROFILE%\.local\share\opencode`
-
-This directory contains:
-
-- `auth.json` - Authentication data like API keys, OAuth tokens
-- `log/` - Application logs
-- `project/` - Project-specific data like session and message data
-  - If the project is within a Git repo, it is stored in `./<project-slug>/storage/`
-  - If it is not a Git repo, it is stored in `./global/storage/`
-
----
-
-## Uninstall
-
-To uninstall the OpenCode CLI and remove its related files, run:
+Show the current server status:
 
 ```bash
-opencode uninstall
+opencode2 service status
 ```
 
-The command shows what will be removed and asks for confirmation. See the [CLI reference](/docs/cli#uninstall) for options to keep your configuration or application data.
-
-To remove OpenCode Desktop, uninstall the application through your operating system's app management tools.
-
----
-
-## Desktop app
-
-OpenCode Desktop runs a local OpenCode server (the `opencode-cli` sidecar) in the background. Most issues are caused by a misbehaving plugin, a corrupted cache, or a bad server setting.
-
-### Quick checks
-
-- Fully quit and relaunch the app.
-- If the app shows an error screen, click **Restart** and copy the error details.
-- macOS only: `OpenCode` menu -> **Reload Webview** (helps if the UI is blank/frozen).
-
----
-
-### Disable plugins
-
-If the desktop app is crashing on launch, hanging, or behaving strangely, start by disabling plugins.
-
-#### Check the global config
-
-Open your global config file and look for a `plugin` key.
-
-- **macOS/Linux**: `~/.config/opencode/opencode.jsonc` (or `~/.config/opencode/opencode.json`)
-- **macOS/Linux** (older installs): `~/.local/share/opencode/opencode.jsonc`
-- **Windows**: Press `WIN+R` and paste `%USERPROFILE%\.config\opencode\opencode.jsonc`
-
-If you have plugins configured, temporarily disable them by removing the key or setting it to an empty array:
-
-```jsonc
-{
-  "$schema": "https://opencode.ai/config.json",
-  "plugin": [],
-}
-```
-
-#### Check plugin directories
-
-OpenCode can also load local plugins from disk. Temporarily move these out of the way (or rename the folder) and restart the desktop app:
-
-- **Global plugins**
-  - **macOS/Linux**: `~/.config/opencode/plugins/`
-  - **Windows**: Press `WIN+R` and paste `%USERPROFILE%\.config\opencode\plugins`
-- **Project plugins** (only if you use per-project config)
-  - `<your-project>/.opencode/plugins/`
-
-If the app starts working again, re-enable plugins one at a time to find which one is causing the issue.
-
----
-
-### Clear the cache
-
-If disabling plugins doesn't help (or a plugin install is stuck), clear the cache so OpenCode can rebuild it.
-
-1. Quit OpenCode Desktop completely.
-2. Delete the cache directory:
-
-- **macOS**: Finder -> `Cmd+Shift+G` -> paste `~/.cache/opencode`
-- **Linux**: delete `~/.cache/opencode` (or run `rm -rf ~/.cache/opencode`)
-- **Windows**: Press `WIN+R` and paste `%USERPROFILE%\.cache\opencode`
-
-3. Restart OpenCode Desktop.
-
----
-
-### Fix server connection issues
-
-OpenCode Desktop can either start its own local server (default) or connect to a server URL you configured.
-
-If you see a **"Connection Failed"** dialog (or the app never gets past the splash screen), check for a custom server URL.
-
-#### Clear the desktop default server URL
-
-From the Home screen, click the server name (with the status dot) to open the Server picker. In the **Default server** section, click **Clear**.
-
-#### Remove `server.port` / `server.hostname` from your config
-
-If your `opencode.json(c)` contains a `server` section, temporarily remove it and restart the desktop app.
-
-#### Check environment variables
-
-If you have `OPENCODE_PORT` set in your environment, the desktop app will try to use that port for the local server.
-
-- Unset `OPENCODE_PORT` (or pick a free port) and restart.
-
----
-
-### Linux: Wayland / X11 issues
-
-On Linux, some Wayland setups can cause blank windows or compositor errors.
-
-- If you're on Wayland and the app is blank/crashing, try launching with `OC_ALLOW_WAYLAND=1`.
-- If that makes things worse, remove it and try launching under an X11 session instead.
-
----
-
-### Windows: WebView2 runtime
-
-On Windows, OpenCode Desktop requires the Microsoft Edge **WebView2 Runtime**. If the app opens to a blank window or won't start, install/update WebView2 and try again.
-
----
-
-### Windows: General performance issues
-
-If you're experiencing slow performance, file access issues, or terminal problems on Windows, try using [WSL (Windows Subsystem for Linux)](/docs/windows-wsl). WSL provides a Linux environment that works more seamlessly with OpenCode's features.
-
----
-
-### Notifications not showing
-
-OpenCode Desktop only shows system notifications when:
-
-- notifications are enabled for OpenCode in your OS settings, and
-- the app window is not focused.
-
----
-
-### Reset desktop app storage (last resort)
-
-If the app won't start and you can't clear settings from inside the UI, reset the desktop app's saved state.
-
-1. Quit OpenCode Desktop.
-2. Find and delete these files (they live in the OpenCode Desktop app data directory):
-
-- `opencode.settings.dat` (desktop default server URL)
-- `opencode.global.dat` and `opencode.workspace.*.dat` (UI state like recent servers/projects)
-
-To find the directory quickly:
-
-- **macOS**: Finder -> `Cmd+Shift+G` -> `~/Library/Application Support` (then search for the filenames above)
-- **Linux**: search under `~/.local/share` for the filenames above
-- **Windows**: Press `WIN+R` -> `%APPDATA%` (then search for the filenames above)
-
----
-
-## Getting help
-
-If you're experiencing issues with OpenCode:
-
-1. **Report issues on GitHub**
-
-   The best way to report bugs or request features is through our GitHub repository:
-
-   [**github.com/anomalyco/opencode/issues**](https://github.com/anomalyco/opencode/issues)
-
-   Before creating a new issue, search existing issues to see if your problem has already been reported.
-
-2. **Join our Discord**
-
-   For real-time help and community discussion, join our Discord server:
-
-   [**opencode.ai/discord**](https://opencode.ai/discord)
-
----
-
-## Common issues
-
-Here are some common issues and how to resolve them.
-
----
-
-### OpenCode won't start
-
-1. Check the logs for error messages
-2. Try running with `--print-logs` to see output in the terminal
-3. Ensure you have the latest version with `opencode upgrade`
-
----
-
-### Authentication issues
-
-1. Try re-authenticating with the `/connect` command in the TUI
-2. Check that your API keys are valid
-3. Ensure your network allows connections to the provider's API
-
----
-
-### Model not available
-
-1. Check that you've authenticated with the provider
-2. Verify the model name in your config is correct
-3. Some models may require specific access or subscriptions
-
-If you encounter `ProviderModelNotFoundError` you are most likely incorrectly
-referencing a model somewhere.
-Models should be referenced like so: `<providerId>/<modelId>`
-
-Examples:
-
-- `openai/gpt-4.1`
-- `openrouter/google/gemini-2.5-flash`
-- `opencode/kimi-k2`
-
-To figure out what models you have access to, run `opencode models`
-
----
-
-### ProviderInitError
-
-If you encounter a ProviderInitError, you likely have an invalid or corrupted configuration.
-
-To resolve this:
-
-1. First, verify your provider is set up correctly by following the [providers guide](/docs/providers)
-2. If the issue persists, try clearing your stored configuration:
-
-   ```bash
-   rm -rf ~/.local/share/opencode
-   ```
-
-   On Windows, press `WIN+R` and delete: `%USERPROFILE%\.local\share\opencode`
-
-3. Re-authenticate with your provider using the `/connect` command in the TUI.
-
----
-
-### AI_APICallError and provider package issues
-
-If you encounter API call errors, this may be due to outdated provider packages. opencode dynamically installs provider packages (OpenAI, Anthropic, Google, etc.) as needed and caches them locally.
-
-To resolve provider package issues:
-
-1. Clear the provider package cache:
-
-   ```bash
-   rm -rf ~/.cache/opencode
-   ```
-
-   On Windows, press `WIN+R` and delete: `%USERPROFILE%\.cache\opencode`
-
-2. Restart opencode to reinstall the latest provider packages
-
-This will force opencode to download the most recent versions of provider packages, which often resolves compatibility issues with model parameters and API changes.
-
----
-
-### Copy/paste not working on Linux
-
-Linux users need to have one of the following clipboard utilities installed for copy/paste functionality to work:
-
-**For X11 systems:**
+Verify that its API is healthy:
 
 ```bash
-apt install -y xclip
-# or
-apt install -y xsel
+opencode2 api get /api/health
 ```
 
-**For Wayland systems:**
+If the service is stuck or unhealthy, restart it:
 
 ```bash
-apt install -y wl-clipboard
+opencode2 service restart
 ```
 
-**For headless environments:**
+You can also stop and start it explicitly:
 
 ```bash
-apt install -y xvfb
-# and run:
-Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
-export DISPLAY=:99.0
+opencode2 service stop
+opencode2 service start
 ```
 
-opencode will detect if you're using Wayland and prefer `wl-clipboard`, otherwise it will try to find clipboard tools in order of: `xclip` and `xsel`.
+<Callout type="note">
+  OpenCode normally discovers or starts the shared background service automatically. The service commands are only
+  needed when diagnosing its lifecycle.
+</Callout>
+
+## Allow a browser origin
+
+If a browser client on another origin cannot connect because of CORS, add the client's origin to the service configuration:
+
+```bash
+opencode2 service set cors http://192.168.1.10:3001
+opencode2 service get cors
+```
+
+Use an exact HTTP or HTTPS origin, including the port when needed, without a path or trailing slash. To allow multiple
+origins, pass a comma-separated list as one argument; whitespace around each origin is trimmed:
+
+```bash
+opencode2 service set cors "http://192.168.1.10:3001, https://app.example.com"
+```
+
+`service get cors` prints a JSON array. Remove the configured list with:
+
+```bash
+opencode2 service unset cors
+```
+
+Setting or unsetting service configuration stops the background service. Its next start picks up the new configuration;
+use `opencode2 service start` to start it explicitly.
+
+For a foreground server, repeat `--cors` for each additional allowed origin:
+
+```bash
+opencode2 serve --cors http://192.168.1.10:3001 --cors https://app.example.com
+```
+
+With `serve --service`, supplied `--cors` flags override the persisted list for that process. Without those flags, service
+mode uses the persisted list. CORS does not change the listening address or bypass server authentication.
+
+## Inspect the API
+
+The `api` command uses the local service discovery and authentication flow. It accepts either an HTTP method and path or an
+OpenAPI operation ID.
+
+See the [API reference](/api) for all endpoints and operation IDs.
+
+Pass a JSON request body with `--data` or `-d`, and add headers with `--header` or `-H`.
+
+<Callout type="warning">
+  Running `opencode2 api` may start the background service when no compatible healthy service is available.
+</Callout>
+
+## Read logs
+
+Installed builds write logs to:
+
+```text
+~/.local/share/opencode/log/opencode.log
+```
+
+Follow the log while reproducing the problem:
+
+```bash
+tail -f ~/.local/share/opencode/log/opencode.log
+```
+
+Each line includes a process `run` ID and a `role` field. Use `role=server` for session, provider, plugin, permission, and
+tool activity.
+
+```bash
+grep 'role=server' ~/.local/share/opencode/log/opencode.log
+grep 'run=8fc3b1d5' ~/.local/share/opencode/log/opencode.log
+```
+
+## Capture CPU and memory profiles
+
+On macOS and Linux, you can signal a running OpenCode process to capture diagnostic data. Get the background server PID
+from the health endpoint:
+
+```bash
+opencode2 api get /api/health
+```
+
+Use the `pid` from the response with one of these signals:
+
+- `SIGPROF` captures a ten-second CPU profile:
+
+  ```bash
+  kill -SIGPROF <pid>
+  ```
+
+  The result is written to the log directory as `cpu-<pid>-<timestamp>.cpuprofile`.
+
+- `SIGUSR1` captures a memory (heap) snapshot:
+
+  ```bash
+  kill -SIGUSR1 <pid>
+  ```
+
+  The result is written to the log directory as `heap-<pid>-<timestamp>.heapsnapshot`.
+
+Wait for `CPU profile written` or `heap snapshot written` in `opencode.log` before opening the file. The corresponding
+log entry includes its complete path. You can inspect both file types in Chrome DevTools.
+
+<Callout type="note">
+  Signal-triggered profiles are not available on Windows. Writing a heap snapshot can pause the process and temporarily
+  increase its memory usage.
+</Callout>
+
+## Service files
+
+The shared server registers itself at:
+
+```text
+~/.local/state/opencode/service.json
+```
+
+Its private service configuration is stored separately at:
+
+```text
+~/.config/opencode/service.json
+```
+
+The database normally lives at:
+
+```text
+~/.local/share/opencode/opencode.db
+```
+
+`OPENCODE_DB` can override the database location.
+
+<Callout type="warning">
+  Do not delete or edit service files or the database while troubleshooting. Use the service commands to manage the
+  daemon, and make a backup before inspecting persistent data with external tools.
+</Callout>
+
+## Report an issue
+
+Include the following when reporting a reproducible problem:
+
+- Output from `opencode2 --version`
+- Output from `opencode2 service status`
+- The smallest sequence of steps that reproduces the issue
+- Whether the issue affects the shared service, a specific client, or one project
+- Relevant log lines, including their `run` and `role` fields
+
+Remove API keys, authorization headers, prompts, file contents, and other sensitive data before sharing logs.
+
+File reproducible problems in [GitHub Issues](https://github.com/anomalyco/opencode/issues).
