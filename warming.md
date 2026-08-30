@@ -1,3 +1,11 @@
+---
+url: https://opencode.ai/v2/docs/warming
+title: "Session warming"
+description: "Session warming documentation for OpenCode."
+access_date: 2026-08-30T17:46:54.764Z
+current_date: 2026-08-30T17:46:54.764Z
+---
+
 # Session warming
 
 Session warming sends periodic model requests for recently active sessions.
@@ -5,7 +13,7 @@ This can preserve provider-side prompt caches or other short-lived session
 state while you pause between prompts.
 
 Warming is disabled by default. Enable it with the default settings in any
-[OpenCode configuration file](/config):
+[OpenCode configuration file](config.md):
 
 ```jsonc title="opencode.jsonc"
 {

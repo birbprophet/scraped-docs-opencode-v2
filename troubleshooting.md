@@ -1,3 +1,11 @@
+---
+url: https://opencode.ai/v2/docs/troubleshooting
+title: "Troubleshooting"
+description: "Troubleshooting documentation for OpenCode."
+access_date: 2026-08-30T17:46:54.764Z
+current_date: 2026-08-30T17:46:54.764Z
+---
+
 # Troubleshooting
 
 <Callout type="tip">
@@ -79,7 +87,7 @@ mode uses the persisted list. CORS does not change the listening address or bypa
 The `api` command uses the local service discovery and authentication flow. It accepts either an HTTP method and path or an
 OpenAPI operation ID.
 
-See the [API reference](/api) for all endpoints and operation IDs.
+See the [API reference](api/index.md) for all endpoints and operation IDs.
 
 Pass a JSON request body with `--data` or `-d`, and add headers with `--header` or `-H`.
 

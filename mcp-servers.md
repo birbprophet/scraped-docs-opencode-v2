@@ -1,10 +1,18 @@
+---
+url: https://opencode.ai/v2/docs/mcp-servers
+title: "MCP servers"
+description: "MCP servers documentation for OpenCode."
+access_date: 2026-08-30T17:46:54.764Z
+current_date: 2026-08-30T17:46:54.764Z
+---
+
 # MCP servers
 
 OpenCode can connect to [Model Context Protocol](https://modelcontextprotocol.io/) servers and make their tools, prompts, and instructions available to agents. MCP tools consume model context, so enable only the servers you need.
 
 ## Configure servers
 
-Define each server by a unique name under `mcp.servers` in your [OpenCode configuration](/config). V2 does not place server names directly under `mcp`.
+Define each server by a unique name under `mcp.servers` in your [OpenCode configuration](config.md). V2 does not place server names directly under `mcp`.
 
 ```jsonc title="opencode.jsonc"
 {

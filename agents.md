@@ -1,3 +1,11 @@
+---
+url: https://opencode.ai/v2/docs/agents
+title: "Agents"
+description: "Agents documentation for OpenCode."
+access_date: 2026-08-30T17:46:54.764Z
+current_date: 2026-08-30T17:46:54.764Z
+---
+
 # Agents
 
 Agents combine a system prompt, model preference, tool permissions, and display
@@ -94,7 +102,7 @@ List findings in severity order with file and line references.
 
 ### JSON or JSONC
 
-Use the `agents` field in any [OpenCode configuration file](/config):
+Use the `agents` field in any [OpenCode configuration file](config.md):
 
 ```jsonc title="opencode.jsonc"
 {

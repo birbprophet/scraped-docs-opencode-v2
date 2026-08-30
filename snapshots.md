@@ -1,3 +1,11 @@
+---
+url: https://opencode.ai/v2/docs/snapshots
+title: "Snapshots"
+description: "Snapshots documentation for OpenCode."
+access_date: 2026-08-30T17:46:54.764Z
+current_date: 2026-08-30T17:46:54.764Z
+---
+
 # Snapshots
 
 OpenCode snapshots let clients roll back conversation history and related file changes. They are a convenience for
@@ -5,7 +13,7 @@ revising recent work, not a replacement for Git commits or backups.
 
 ## Configuration
 
-Snapshots are enabled by default. Set `snapshots` to `false` in your [configuration](/config#snapshots) to stop capturing
+Snapshots are enabled by default. Set `snapshots` to `false` in your [configuration](config.md#snapshots) to stop capturing
 filesystem state:
 
 ```jsonc title="opencode.jsonc"

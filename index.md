@@ -1,3 +1,11 @@
+---
+url: https://opencode.ai/v2/docs
+title: "Intro"
+description: "Intro documentation for OpenCode."
+access_date: 2026-08-30T17:46:54.764Z
+current_date: 2026-08-30T17:46:54.764Z
+---
+
 # Intro
 
 These docs are for the beta version of OpenCode, which will become OpenCode 2.0. The beta is still changing: things may
@@ -28,9 +36,9 @@ Homebrew, Arch Linux, Windows package managers, Docker, and standalone binaries 
 ## Connect
 
 OpenCode has built in support for many LLM providers - you can connect to them
-directly [in the TUI](/cli/providers) with `/connect`.
+directly [in the TUI](cli/providers.md) with `/connect`.
 
-See [Providers](/providers) to configure custom providers.
+See [Providers](providers.md) to configure custom providers.
 
 If you'd like easy access to all the best coding models you can try out
 [OpenCode Console](https://console.opencode.ai).
@@ -42,6 +50,6 @@ plan that grants you access to the best open source models.
 
 ## Customize
 
-Make OpenCode your own by editing the [OpenCode config](/config), [loading plugins](/plugins), [connecting MCP
-servers](/mcp-servers), or [creating commands](/commands). For terminal interface themes and keybindings, see [CLI
-configuration](/cli/config).
+Make OpenCode your own by editing the [OpenCode config](config.md), [loading plugins](plugins.md), [connecting MCP
+servers](mcp-servers.md), or [creating commands](commands.md). For terminal interface themes and keybindings, see [CLI
+configuration](cli/config.md).

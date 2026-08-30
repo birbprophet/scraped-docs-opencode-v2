@@ -1,3 +1,11 @@
+---
+url: https://opencode.ai/v2/docs/plugins
+title: "Plugins"
+description: "Plugins documentation for OpenCode."
+access_date: 2026-08-30T17:46:54.764Z
+current_date: 2026-08-30T17:46:54.764Z
+---
+
 # Plugins
 
 Load published packages, versioned packages, scoped packages, local files, or configured plugins from `opencode.json(c)`.

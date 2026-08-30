@@ -1,3 +1,11 @@
+---
+url: https://opencode.ai/v2/docs/providers
+title: "Providers"
+description: "Providers documentation for OpenCode."
+access_date: 2026-08-30T17:46:54.764Z
+current_date: 2026-08-30T17:46:54.764Z
+---
+
 # Providers
 
 OpenCode includes a built-in catalog of providers and models from [models.dev](https://models.dev). You can also add a
@@ -218,4 +226,4 @@ the provider:
 }
 ```
 
-See [Models](/models) for model selection, defaults, capabilities, limits, costs, and variants.
+See [Models](models.md) for model selection, defaults, capabilities, limits, costs, and variants.

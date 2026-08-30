@@ -1,7 +1,15 @@
+---
+url: https://opencode.ai/v2/docs/build/sdk
+title: "Overview"
+description: "Overview documentation for OpenCode."
+access_date: 2026-08-30T17:46:54.764Z
+current_date: 2026-08-30T17:46:54.764Z
+---
+
 # Overview
 
 `@opencode-ai/sdk` hosts OpenCode directly inside your application. Unlike the
-[network client](/build/client), it assembles the OpenCode server and routes API
+[network client](client.md), it assembles the OpenCode server and routes API
 calls through its HTTP router in memory. It opens no HTTP listener and adds no
 network hop between the client and server.
 
@@ -74,5 +82,5 @@ await using opencode = await OpenCode.create({ plugins: [plugin] })
 
 Call `await opencode.plugin(plugin)` to register another plugin after startup.
 
-See the [full plugins documentation](/build/plugins) for plugin hooks,
+See the [full plugins documentation](plugins.md) for plugin hooks,
 transforms, tools, and the complete plugin context.

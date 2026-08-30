@@ -1,3 +1,11 @@
+---
+url: https://opencode.ai/v2/docs/build/sdk/cloudflare
+title: "Cloudflare"
+description: "Cloudflare documentation for OpenCode."
+access_date: 2026-08-30T17:46:54.764Z
+current_date: 2026-08-30T17:46:54.764Z
+---
+
 # Cloudflare
 
 Use `@opencode-ai/sdk/workerd` inside a Cloudflare Durable Object. This profile uses the object's SQLite storage,
@@ -81,5 +89,5 @@ await OpenCodeWorkerd.create({
 })
 ```
 
-See the [full plugins documentation](/build/plugins) for plugin hooks,
+See the [full plugins documentation](../plugins.md) for plugin hooks,
 transforms, tools, and the complete plugin context.

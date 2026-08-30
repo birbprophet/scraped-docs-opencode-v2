@@ -1,3 +1,11 @@
+---
+url: https://opencode.ai/v2/docs/build
+title: "Intro"
+description: "Intro documentation for OpenCode."
+access_date: 2026-08-30T17:46:54.764Z
+current_date: 2026-08-30T17:46:54.764Z
+---
+
 # Intro
 
 OpenCode is used by millions every day. Build on top of it to create your own

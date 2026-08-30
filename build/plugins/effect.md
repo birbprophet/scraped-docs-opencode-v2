@@ -1,3 +1,11 @@
+---
+url: https://opencode.ai/v2/docs/build/plugins/effect
+title: "Effect"
+description: "Effect documentation for OpenCode."
+access_date: 2026-08-30T17:46:54.764Z
+current_date: 2026-08-30T17:46:54.764Z
+---
+
 # Effect
 
 `@opencode-ai/plugin/effect` is the Effect-native version of the OpenCode plugin API. Its context operations return
@@ -43,7 +51,7 @@ plugins.
 }
 ```
 
-See [Configure plugins](/plugins) for enablement, package resolution, and configuration precedence.
+See [Configure plugins](../../plugins.md) for enablement, package resolution, and configuration precedence.
 
 ```ts title="plugins/local-effect.ts"
 import { Plugin } from "@opencode-ai/plugin/effect"
@@ -264,7 +272,7 @@ effect: (ctx) =>
   }),
 ```
 
-Schema: [`Agent.Info`](/api#schema-Agent.Info).
+Schema: [`Agent.Info`](../../api/index.md#schema-Agent.Info).
 
 ```ts
 interface AgentDraft {
@@ -319,7 +327,7 @@ effect: (ctx) =>
   }),
 ```
 
-Schemas: [`Provider.Info`](/api#schema-Provider.Info), [`Model.Info`](/api#schema-Model.Info).
+Schemas: [`Provider.Info`](../../api/index.md#schema-Provider.Info), [`Model.Info`](../../api/index.md#schema-Model.Info).
 
 ```ts
 interface CatalogProviderRecord {
@@ -388,8 +396,8 @@ effect: (ctx) =>
   }),
 ```
 
-Schemas: [`Command.Info`](/api#schema-Command.Info),
-[`Session.Inbox.Delivery`](/api#schema-Session.Inbox.Delivery).
+Schemas: [`Command.Info`](../../api/index.md#schema-Command.Info),
+[`Session.Inbox.Delivery`](../../api/index.md#schema-Session.Inbox.Delivery).
 
 ```ts
 interface CommandInvocation {
@@ -486,8 +494,8 @@ effect: (ctx) =>
   }),
 ```
 
-Schemas: [`Integration.Info`](/api#schema-Integration.Info), [`Integration.Method`](/api#schema-Integration.Method),
-[`Connection.Info`](/api#schema-Connection.Info), [`Form.Answer`](/api#schema-Form.Answer).
+Schemas: [`Integration.Info`](../../api/index.md#schema-Integration.Info), [`Integration.Method`](../../api/index.md#schema-Integration.Method),
+[`Connection.Info`](../../api/index.md#schema-Connection.Info), [`Form.Answer`](../../api/index.md#schema-Form.Answer).
 
 ```ts
 type IntegrationOAuthAuthorization = {
@@ -572,8 +580,8 @@ effect: (ctx) =>
   }),
 ```
 
-Schemas: [`Mcp.Server`](/api#schema-Mcp.Server), [`Mcp.LocalConfigEncoded`](/api#schema-Mcp.LocalConfigEncoded),
-[`Mcp.RemoteConfigEncoded`](/api#schema-Mcp.RemoteConfigEncoded).
+Schemas: [`Mcp.Server`](../../api/index.md#schema-Mcp.Server), [`Mcp.LocalConfigEncoded`](../../api/index.md#schema-Mcp.LocalConfigEncoded),
+[`Mcp.RemoteConfigEncoded`](../../api/index.md#schema-Mcp.RemoteConfigEncoded).
 
 ```ts
 interface MCPDraft {
@@ -617,7 +625,7 @@ effect: (ctx) =>
   }),
 ```
 
-Schemas: [`Plugin.Info`](/api#schema-Plugin.Info), [`Plugin.Source`](/api#schema-Plugin.Source).
+Schemas: [`Plugin.Info`](../../api/index.md#schema-Plugin.Info), [`Plugin.Source`](../../api/index.md#schema-Plugin.Source).
 
 ```ts
 interface PluginApi<E = never> {
@@ -657,8 +665,8 @@ effect: (ctx) =>
   }),
 ```
 
-Schemas: [`Reference.Info`](/api#schema-Reference.Info), [`Reference.LocalSource`](/api#schema-Reference.LocalSource),
-[`Reference.GitSource`](/api#schema-Reference.GitSource).
+Schemas: [`Reference.Info`](../../api/index.md#schema-Reference.Info), [`Reference.LocalSource`](../../api/index.md#schema-Reference.LocalSource),
+[`Reference.GitSource`](../../api/index.md#schema-Reference.GitSource).
 
 ```ts
 interface ReferenceDraft {
@@ -711,9 +719,9 @@ effect: (ctx) =>
   }),
 ```
 
-Schemas: [`Session.Info`](/api#schema-Session.Info), [`Model.Ref`](/api#schema-Model.Ref),
-[`Session.Inbox.User`](/api#schema-Session.Inbox.User),
-[`Session.Inbox.Synthetic`](/api#schema-Session.Inbox.Synthetic).
+Schemas: [`Session.Info`](../../api/index.md#schema-Session.Info), [`Model.Ref`](../../api/index.md#schema-Model.Ref),
+[`Session.Inbox.User`](../../api/index.md#schema-Session.Inbox.User),
+[`Session.Inbox.Synthetic`](../../api/index.md#schema-Session.Inbox.Synthetic).
 
 ```ts
 type SessionDomain = Pick<
@@ -766,7 +774,7 @@ effect: (ctx) =>
   }),
 ```
 
-Schema: [`Skill.Info`](/api#schema-Skill.Info).
+Schema: [`Skill.Info`](../../api/index.md#schema-Skill.Info).
 
 ```ts
 interface SkillDraft {
@@ -880,8 +888,8 @@ Each model request captures a tool snapshot. Reload and disposal affect future s
 executors already captured by an existing request. Executors that close over mutable plugin data still observe
 that data; capture a value inside the transform when it must remain tied to that definition.
 
-Schemas: [`Tool.Content`](/api#schema-Tool.Content), [`Tool.TextContent`](/api#schema-Tool.TextContent),
-[`Tool.FileContent`](/api#schema-Tool.FileContent).
+Schemas: [`Tool.Content`](../../api/index.md#schema-Tool.Content), [`Tool.TextContent`](../../api/index.md#schema-Tool.TextContent),
+[`Tool.FileContent`](../../api/index.md#schema-Tool.FileContent).
 
 ```ts
 interface ToolDraft {
@@ -941,8 +949,8 @@ Provider callbacks receive the current location, working-copy root, canonical pr
 store. Diff callbacks also receive the selected mode, requested context, and output byte budget. Repository discovery
 continues to use OpenCode's built-in Git and Mercurial detectors.
 
-Schemas: [`Vcs.Info`](/api#schema-Vcs.Info), [`Vcs.FileStatus`](/api#schema-Vcs.FileStatus),
-[`FileDiff.Info`](/api#schema-FileDiff.Info).
+Schemas: [`Vcs.Info`](../../api/index.md#schema-Vcs.Info), [`Vcs.FileStatus`](../../api/index.md#schema-Vcs.FileStatus),
+[`FileDiff.Info`](../../api/index.md#schema-FileDiff.Info).
 
 ```ts
 interface VcsDraft {
@@ -993,8 +1001,8 @@ effect: (ctx) =>
   }),
 ```
 
-Schemas: [`WebSearch.Provider`](/api#schema-WebSearch.Provider),
-[`WebSearch.Result`](/api#schema-WebSearch.Result).
+Schemas: [`WebSearch.Provider`](../../api/index.md#schema-WebSearch.Provider),
+[`WebSearch.Result`](../../api/index.md#schema-WebSearch.Result).
 
 ```ts
 interface WebSearchDefinition {
@@ -1048,7 +1056,7 @@ effect: (ctx) =>
   }),
 ```
 
-Schema: [`V2EventEncoded`](/api#schema-V2EventEncoded).
+Schema: [`V2EventEncoded`](../../api/index.md#schema-V2EventEncoded).
 
 ```ts
 type EventSubscribeOutput = OpenCodeEvent

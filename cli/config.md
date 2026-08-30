@@ -1,3 +1,11 @@
+---
+url: https://opencode.ai/v2/docs/cli/config
+title: "Config"
+description: "Config documentation for OpenCode."
+access_date: 2026-08-30T17:46:54.764Z
+current_date: 2026-08-30T17:46:54.764Z
+---
+
 # Config
 
 Most settings can also be changed from the OpenCode TUI. Press `Ctrl+P`, then select **Open settings**.
@@ -44,7 +52,7 @@ Set the theme and color mode:
 | `name` | string                       | Selects the theme.                                                |
 | `mode` | `system`, `dark`, or `light` | Selects the color mode. `system` follows the terminal appearance. |
 
-See [Theme](/cli/theme) for theme configuration.
+See [Theme](theme.md) for theme configuration.
 
 ## Keybinds
 
@@ -64,7 +72,7 @@ Override bindings with the top-level `keybinds` object:
 }
 ```
 
-See [Keybinds](/cli/keybinds) for every available binding.
+See [Keybinds](keybinds.md) for every available binding.
 
 ## Plugins
 
@@ -84,7 +92,7 @@ Load terminal plugins in order:
 }
 ```
 
-See [Plugins](/cli/plugins) for packages, local files, options, and enablement directives.
+See [Plugins](plugins.md) for packages, local files, options, and enablement directives.
 
 ## Scroll
 

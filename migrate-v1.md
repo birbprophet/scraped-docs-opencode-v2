@@ -1,3 +1,11 @@
+---
+url: https://opencode.ai/v2/docs/migrate-v1
+title: "Migrate from V1"
+description: "Migrate from V1 documentation for OpenCode."
+access_date: 2026-08-30T17:46:54.764Z
+current_date: 2026-08-30T17:46:54.764Z
+---
+
 # Migrate from V1
 
 OpenCode 1 and OpenCode 2 can be installed side by side. V1 runs as `opencode`, while V2 installs and runs separately as
@@ -9,7 +17,7 @@ V2 has three intentional breaking changes:
 
 - [Plugins](#plugins) use a new plugin API.
 - The [server API and clients](#server-api-and-clients) have new contracts.
-- [Terminal client configuration](/cli/config) moves from layered `tui.json(c)` files to one global `cli.json` file (auto
+- [Terminal client configuration](cli/config.md) moves from layered `tui.json(c)` files to one global `cli.json` file (auto
   migrated).
 
 Supported V1 functionality outside those areas is intended to remain compatible with V1. Some fields accepted by the V1
@@ -22,7 +30,7 @@ beta compatibility bug rather than an expected migration requirement.
 
 <Callout type="tip">
   If supported V1 functionality does not work in V2, follow the issue-reporting guidance in
-  [Troubleshooting](/troubleshooting) and file a compatibility issue.
+  [Troubleshooting](troubleshooting.md) and file a compatibility issue.
 </Callout>
 
 <Callout type="warning">
@@ -31,7 +39,7 @@ beta compatibility bug rather than an expected migration requirement.
 
 ## Install the beta
 
-The V2 terminal client is published on the `beta` distribution tag. See the [terminal startup guide](/cli).
+The V2 terminal client is published on the `beta` distribution tag. See the [terminal startup guide](cli/index.md).
 
 ## Configuration
 
@@ -115,7 +123,7 @@ V1 groups permission effects by tool. V2 uses one ordered `permissions` array, m
 ```
 
 Permission actions also changed: `bash` is now `shell`, `task` is now `subagent`, and `write` and `patch` are now `edit`.
-See [Permissions](/permissions) for the ordered V2 rule format.
+See [Permissions](permissions.md) for the ordered V2 rule format.
 
 ### Agents and modes
 
@@ -218,7 +226,7 @@ V2 groups servers under `mcp.servers`, replaces `enabled` with the inverse `disa
 
 Remote OAuth fields use snake case: `clientId` becomes `client_id`, `clientSecret` becomes `client_secret`,
 `callbackPort` becomes `callback_port`, and `redirectUri` becomes `redirect_uri`. The V1 `experimental.mcp_timeout` value
-also becomes the default `mcp.timeout.catalog` and `mcp.timeout.execution` values. See [MCP servers](/mcp-servers).
+also becomes the default `mcp.timeout.catalog` and `mcp.timeout.execution` values. See [MCP servers](mcp-servers.md).
 
 ### Compaction
 
@@ -245,7 +253,7 @@ V2 groups the retained-context token budget under `keep` and gives the reserve a
 ```
 
 `auto` keeps its name. V2 has no native `tail_turns` or `prune` field; both legacy fields are ignored with a warning. Recent
-context is retained by token budget instead. See [Compaction](/compaction).
+context is retained by token budget instead. See [Compaction](compaction.md).
 
 ### Skills
 
@@ -266,7 +274,7 @@ V1 separates extra skill paths and URLs. V2 combines both into one ordered array
 }
 ```
 
-Existing skill files and automatic `.opencode/skills/` discovery do not change. See [Skills](/skills).
+Existing skill files and automatic `.opencode/skills/` discovery do not change. See [Skills](skills.md).
 
 ### Commands
 
@@ -296,7 +304,7 @@ Rename the singular `command` map to `commands`. Join a separate model `variant`
 ```
 
 `template`, `description`, `agent`, and `subtask` keep their names. Existing Markdown command definitions remain supported.
-See [Commands](/commands).
+See [Commands](commands.md).
 
 ### References
 
@@ -311,7 +319,7 @@ Rename the deprecated singular `reference` map to `references`:
 ```
 
 V1 already accepts `references`, so no change is needed when the file uses it. Reference entries keep the
-same shapes. See [References](/references).
+same shapes. See [References](references.md).
 
 ### Providers
 
@@ -346,7 +354,7 @@ Rename the singular `provider` map to `providers`. V2 separates the runtime pack
 ```
 
 V1 `npm` becomes `package`, and AI SDK packages receive the `aisdk:` prefix. `api` becomes `settings.baseURL`. Provider
-`options` are separated into `settings`, `headers`, and `body` according to their request role. See [Providers](/providers).
+`options` are separated into `settings`, `headers`, and `body` according to their request role. See [Providers](providers.md).
 
 V2 consolidated two legacy provider namespaces:
 
@@ -393,7 +401,7 @@ Models remain nested under their provider, but several model fields become more 
 }
 ```
 
-See [Models](/models) for the complete native model shape.
+See [Models](models.md) for the complete native model shape.
 
 ### Supported fields without direct native equivalents
 
@@ -426,7 +434,7 @@ they are not mistaken for active configuration:
   `status`, and boolean `interleaved`.
 
 Ignoring these fields is intentional and is not a compatibility regression. If V2 does not preserve behavior identified
-as supported elsewhere in this guide, follow the issue-reporting guidance in [Troubleshooting](/troubleshooting).
+as supported elsewhere in this guide, follow the issue-reporting guidance in [Troubleshooting](troubleshooting.md).
 
 ### Agent files
 
@@ -448,7 +456,7 @@ When converting the frontmatter to native V2 fields:
 - Join `model` and `variant` as `provider/model#variant`.
 - Move `temperature`, `top_p`, and provider-specific options under `request.body`.
 
-V2 translates legacy agent frontmatter automatically, so these edits are optional. See [Agents](/agents).
+V2 translates legacy agent frontmatter automatically, so these edits are optional. See [Agents](agents.md).
 
 ### Command files
 
@@ -471,7 +479,7 @@ variant: high
 model: anthropic/claude-sonnet-4-5#high
 ```
 
-See [Commands](/commands).
+See [Commands](commands.md).
 
 ### Skill files
 
@@ -483,7 +491,7 @@ V2 discovers skills from both `.opencode/skill/` and `.opencode/skills/`. The pr
 
 Move the complete skill directory, not only `SKILL.md`, so relative scripts, references, and other supporting files remain
 available. Keep the directory name stable to preserve the skill ID. Existing skill frontmatter and Markdown bodies do not
-require a V2 rewrite. See [Skills](/skills).
+require a V2 rewrite. See [Skills](skills.md).
 
 ### Instruction files
 
@@ -492,7 +500,7 @@ files from the current directory up to home. For projects outside home, discover
 
 If a V1 setup relied on a `CLAUDE.md` fallback, move that guidance into the applicable `AGENTS.md`. V2 currently only
 discovers `AGENTS.md`; because non-API V1 behavior is intended to remain compatible, also file a compatibility issue with
-the affected project details. See [Instructions](/instructions).
+the affected project details. See [Instructions](instructions.md).
 
 ## Terminal client configuration
 
@@ -505,7 +513,7 @@ V2 replaces layered V1 `tui.json(c)` files with one global terminal client confi
 The terminal client owns this file; the background service does not load it. When `cli.json` is absent, the first V2
 terminal client startup migrates supported global `tui.json` settings and persisted preferences while leaving V1 files
 unchanged. Project-local client configuration is not migrated because V2 client configuration is global. See
-[CLI config](/cli/config) for current client settings.
+[CLI config](cli/config.md) for current client settings.
 
 ## Plugins
 
@@ -542,7 +550,7 @@ plugin API is still being finalized during beta, and detailed plugin migration g
 ready.
 
 Once the V2 plugin API is finalized, OpenCode should be able to migrate the majority of V1 plugins while keeping related
-local modules and dependencies together. See the current beta [Plugins guide](/build/plugins).
+local modules and dependencies together. See the current beta [Plugins guide](build/plugins.md).
 
 ## Server API and clients
 
@@ -550,7 +558,7 @@ OpenCode 2 has a revised, more ergonomic server API and a new set of clients. In
 must migrate to the V2 API.
 
 Use the `@opencode-ai/client` package to access the new clients. The server API and clients are still being finalized
-during beta, so their contracts may continue to change. See the generated [API reference](/api) for the current endpoints,
+during beta, so their contracts may continue to change. See the generated [API reference](api/index.md) for the current endpoints,
 request types, and responses.
 
 ## Verify your setup

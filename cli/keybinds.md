@@ -1,3 +1,11 @@
+---
+url: https://opencode.ai/v2/docs/cli/keybinds
+title: "Keybinds"
+description: "Keybinds documentation for OpenCode."
+access_date: 2026-08-30T17:46:54.764Z
+current_date: 2026-08-30T17:46:54.764Z
+---
+
 # Keybinds
 
 Customize bindings in `cli.json`:
@@ -99,7 +107,7 @@ Unknown command IDs are rejected.
 
 ## Diff Viewer
 
-Press `d` (`diff.switch_source`) to choose **All**, **Committed**, or **Uncommitted**, or select **Base** to change the comparison branch. Choices are remembered until the TUI exits. Set the initial scope with [`diffs.source` in `cli.json`](/cli/config#diffs).
+Press `d` (`diff.switch_source`) to choose **All**, **Committed**, or **Uncommitted**, or select **Base** to change the comparison branch. Choices are remembered until the TUI exits. Set the initial scope with [`diffs.source` in `cli.json`](config.md#diffs).
 
 Scrolling, paging, and start/end shortcuts always control the diff. There is no keyboard focus switch: click files to open them, click folders to expand or collapse them, and use the mouse wheel to scroll the file tree.
 

@@ -1,3 +1,11 @@
+---
+url: https://opencode.ai/v2/docs/sharing
+title: "Session sharing"
+description: "Session sharing documentation for OpenCode."
+access_date: 2026-08-30T17:46:54.764Z
+current_date: 2026-08-30T17:46:54.764Z
+---
+
 # Session sharing
 
 Session sharing is not yet available in OpenCode V2. V2 does not currently

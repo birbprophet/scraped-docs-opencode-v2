@@ -1,7 +1,15 @@
+---
+url: https://opencode.ai/v2/docs/cli/plugins
+title: "Plugins"
+description: "Plugins documentation for OpenCode."
+access_date: 2026-08-30T17:46:54.764Z
+current_date: 2026-08-30T17:46:54.764Z
+---
+
 # Plugins
 
 Plugins configured in `opencode.json(c)` that expose a TUI component are loaded automatically by the CLI. To learn how
-to build plugins, see [Building plugins](/build/plugins). You do not need to add the same package to `cli.json`. The CLI
+to build plugins, see [Building plugins](../build/plugins.md). You do not need to add the same package to `cli.json`. The CLI
 gets the active plugin list from the connected OpenCode server, so this also works when the server is remote.
 
 Use `cli.json` for CLI-only plugins. These plugins run locally in the terminal and remain active when the CLI connects
@@ -54,4 +62,4 @@ OpenCode also discovers JavaScript and TypeScript plugins from `plugins/tui` und
 ```
 
 Discovered plugins can import `@opencode-ai/plugin/tui` directly; OpenCode resolves the package at runtime. See
-[Building CLI plugins](/build/plugins/cli) for examples.
+[Building CLI plugins](../build/plugins/cli.md) for examples.

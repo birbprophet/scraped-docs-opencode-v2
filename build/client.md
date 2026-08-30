@@ -1,9 +1,17 @@
+---
+url: https://opencode.ai/v2/docs/build/client
+title: "JavaScript"
+description: "JavaScript documentation for OpenCode."
+access_date: 2026-08-30T17:46:54.764Z
+current_date: 2026-08-30T17:46:54.764Z
+---
+
 # JavaScript
 
 `@opencode-ai/client` is the generated TypeScript client for the OpenCode HTTP
 API. Use it when your application connects to an OpenCode server over the
 network. Its types and methods are generated from the same contract as the
-[API reference](/api).
+[API reference](../api/index.md).
 
 <Callout type="warning">
   The V2 API and client are beta. Method names, inputs, and outputs may change before the stable release.

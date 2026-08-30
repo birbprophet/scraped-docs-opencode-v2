@@ -1,3 +1,11 @@
+---
+url: https://opencode.ai/v2/docs/compaction
+title: "Compaction"
+description: "Compaction documentation for OpenCode."
+access_date: 2026-08-30T17:46:54.764Z
+current_date: 2026-08-30T17:46:54.764Z
+---
+
 # Compaction
 
 Compaction replaces the active model context from an older part of a session
@@ -31,7 +39,7 @@ second overflow after recovery is returned as an error.
 
 ## Manual compaction
 
-Manual compaction is available through session interfaces. See the generated [API reference](/api) for the server
+Manual compaction is available through session interfaces. See the generated [API reference](api/index.md) for the server
 operation.
 
 A manual request is durably admitted and wakes the session runner. It can
@@ -48,7 +56,7 @@ retry idempotent, but reusing an ID owned by another record returns a conflict.
 
 ## Configuration
 
-Add `compaction` to any [OpenCode configuration file](/config):
+Add `compaction` to any [OpenCode configuration file](config.md):
 
 ```jsonc title="opencode.jsonc"
 {
@@ -104,7 +112,7 @@ sequence and makes the currently admitted values initial. It does not reread
 sources or publish an instruction event. Session movement retains instruction
 state so destination changes become chronological updates. Committed revert
 clears instruction state so the next model attempt requires one complete source
-read. See [Instructions](/instructions) for source ordering and update behavior.
+read. See [Instructions](instructions.md) for source ordering and update behavior.
 
 ## Current limitations
 

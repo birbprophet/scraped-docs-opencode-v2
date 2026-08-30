@@ -1,7 +1,15 @@
+---
+url: https://opencode.ai/v2/docs/build/plugins
+title: "Overview"
+description: "Overview documentation for OpenCode."
+access_date: 2026-08-30T17:46:54.764Z
+current_date: 2026-08-30T17:46:54.764Z
+---
+
 # Overview
 
 Plugins can modify OpenCode's behavior and add new features. To change the terminal UI, build a [CLI
-plugin](/build/plugins/cli).
+plugin](plugins/cli.md).
 
 ```ts title=".opencode/plugins/example.ts"
 import { Plugin } from "@opencode-ai/plugin"
@@ -39,7 +47,7 @@ or files from other locations, add them to `plugins` in `opencode.json(c)`:
 }
 ```
 
-See [Configure plugins](/plugins) for more loading and configuration options.
+See [Configure plugins](../plugins.md) for more loading and configuration options.
 
 ## Lifecycle
 
@@ -59,7 +67,7 @@ export default Plugin.define({
 
 ### Context
 
-The plugin context is essentially an [OpenCode server client](/build/client).
+The plugin context is essentially an [OpenCode server client](client.md).
 Its read and action methods use the same inputs and responses as the client. It
 adds plugin-only methods for transforms, runtime hooks, reloads, registrations,
 and plugin options.
@@ -224,7 +232,7 @@ await ctx.agent.reload()
 
 #### Reference
 
-Schema: [`Agent.Info`](/api#schema-Agent.Info)
+Schema: [`Agent.Info`](../api/index.md#schema-Agent.Info)
 
 ```ts
 interface AgentContext {
@@ -286,7 +294,7 @@ await ctx.catalog.reload()
 
 #### Reference
 
-Schemas: [`Provider.Info`](/api#schema-Provider.Info), [`Model.Info`](/api#schema-Model.Info)
+Schemas: [`Provider.Info`](../api/index.md#schema-Provider.Info), [`Model.Info`](../api/index.md#schema-Model.Info)
 
 ```ts
 interface CatalogContext {
@@ -361,8 +369,8 @@ await ctx.command.reload()
 
 #### Reference
 
-Schemas: [`Command.Info`](/api#schema-Command.Info),
-[`Session.Inbox.Delivery`](/api#schema-Session.Inbox.Delivery)
+Schemas: [`Command.Info`](../api/index.md#schema-Command.Info),
+[`Session.Inbox.Delivery`](../api/index.md#schema-Session.Inbox.Delivery)
 
 ```ts
 interface CommandContext {
@@ -455,8 +463,8 @@ await ctx.integration.reload()
 
 #### Reference
 
-Schemas: [`Integration.Info`](/api#schema-Integration.Info), [`Integration.Method`](/api#schema-Integration.Method),
-[`Connection.Info`](/api#schema-Connection.Info), [`Form.Answer`](/api#schema-Form.Answer)
+Schemas: [`Integration.Info`](../api/index.md#schema-Integration.Info), [`Integration.Method`](../api/index.md#schema-Integration.Method),
+[`Connection.Info`](../api/index.md#schema-Connection.Info), [`Form.Answer`](../api/index.md#schema-Form.Answer)
 
 ```ts
 interface IntegrationContext {
@@ -531,8 +539,8 @@ await ctx.mcp.reload()
 
 #### Reference
 
-Schemas: [`Mcp.Server`](/api#schema-Mcp.Server), [`Mcp.LocalConfigEncoded`](/api#schema-Mcp.LocalConfigEncoded),
-[`Mcp.RemoteConfigEncoded`](/api#schema-Mcp.RemoteConfigEncoded)
+Schemas: [`Mcp.Server`](../api/index.md#schema-Mcp.Server), [`Mcp.LocalConfigEncoded`](../api/index.md#schema-Mcp.LocalConfigEncoded),
+[`Mcp.RemoteConfigEncoded`](../api/index.md#schema-Mcp.RemoteConfigEncoded)
 
 ```ts
 interface MCPContext {
@@ -560,7 +568,7 @@ const plugins = await ctx.plugin.list()
 
 #### Reference
 
-Schemas: [`Plugin.Info`](/api#schema-Plugin.Info), [`Plugin.Source`](/api#schema-Plugin.Source)
+Schemas: [`Plugin.Info`](../api/index.md#schema-Plugin.Info), [`Plugin.Source`](../api/index.md#schema-Plugin.Source)
 
 ```ts
 interface PluginContext {
@@ -595,8 +603,8 @@ await ctx.reference.reload()
 
 #### Reference
 
-Schemas: [`Reference.Info`](/api#schema-Reference.Info), [`Reference.LocalSource`](/api#schema-Reference.LocalSource),
-[`Reference.GitSource`](/api#schema-Reference.GitSource)
+Schemas: [`Reference.Info`](../api/index.md#schema-Reference.Info), [`Reference.LocalSource`](../api/index.md#schema-Reference.LocalSource),
+[`Reference.GitSource`](../api/index.md#schema-Reference.GitSource)
 
 ```ts
 interface ReferenceContext {
@@ -669,8 +677,8 @@ await ctx.session.wait({ sessionID })
 
 #### Reference
 
-Schemas: [`Session.Info`](/api#schema-Session.Info), [`Model.Ref`](/api#schema-Model.Ref),
-[`Session.Inbox.User`](/api#schema-Session.Inbox.User), [`Session.Inbox.Synthetic`](/api#schema-Session.Inbox.Synthetic)
+Schemas: [`Session.Info`](../api/index.md#schema-Session.Info), [`Model.Ref`](../api/index.md#schema-Model.Ref),
+[`Session.Inbox.User`](../api/index.md#schema-Session.Inbox.User), [`Session.Inbox.Synthetic`](../api/index.md#schema-Session.Inbox.Synthetic)
 
 ```ts
 interface SessionContext {
@@ -724,7 +732,7 @@ await ctx.skill.reload()
 
 #### Reference
 
-Schema: [`Skill.Info`](/api#schema-Skill.Info)
+Schema: [`Skill.Info`](../api/index.md#schema-Skill.Info)
 
 ```ts
 interface SkillContext {
@@ -845,8 +853,8 @@ that data; capture a value inside the transform when it must remain tied to that
 
 #### Reference
 
-Schemas: [`Tool.Content`](/api#schema-Tool.Content), [`Tool.TextContent`](/api#schema-Tool.TextContent),
-[`Tool.FileContent`](/api#schema-Tool.FileContent)
+Schemas: [`Tool.Content`](../api/index.md#schema-Tool.Content), [`Tool.TextContent`](../api/index.md#schema-Tool.TextContent),
+[`Tool.FileContent`](../api/index.md#schema-Tool.FileContent)
 
 ```ts
 interface ToolContext {
@@ -897,8 +905,8 @@ continues to use OpenCode's built-in Git and Mercurial detectors.
 
 #### Reference
 
-Schemas: [`Vcs.Info`](/api#schema-Vcs.Info), [`Vcs.FileStatus`](/api#schema-Vcs.FileStatus),
-[`FileDiff.Info`](/api#schema-FileDiff.Info)
+Schemas: [`Vcs.Info`](../api/index.md#schema-Vcs.Info), [`Vcs.FileStatus`](../api/index.md#schema-Vcs.FileStatus),
+[`FileDiff.Info`](../api/index.md#schema-FileDiff.Info)
 
 ```ts
 interface VcsContext {
@@ -954,7 +962,7 @@ await ctx.websearch.reload()
 
 #### Reference
 
-Schemas: [`WebSearch.Provider`](/api#schema-WebSearch.Provider), [`WebSearch.Result`](/api#schema-WebSearch.Result)
+Schemas: [`WebSearch.Provider`](../api/index.md#schema-WebSearch.Provider), [`WebSearch.Result`](../api/index.md#schema-WebSearch.Result)
 
 ```ts
 interface WebSearchContext {
@@ -989,7 +997,7 @@ return () => controller.abort()
 
 #### Reference
 
-Schema: [`V2EventEncoded`](/api#schema-V2EventEncoded)
+Schema: [`V2EventEncoded`](../api/index.md#schema-V2EventEncoded)
 
 ```ts
 interface EventContext {

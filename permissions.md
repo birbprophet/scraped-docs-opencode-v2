@@ -1,3 +1,11 @@
+---
+url: https://opencode.ai/v2/docs/permissions
+title: "Permissions"
+description: "Permissions documentation for OpenCode."
+access_date: 2026-08-30T17:46:54.764Z
+current_date: 2026-08-30T17:46:54.764Z
+---
+
 # Permissions
 
 Permissions control whether an agent may perform an action on a resource. V2

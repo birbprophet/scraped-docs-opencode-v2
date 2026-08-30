@@ -1,3 +1,11 @@
+---
+url: https://opencode.ai/v2/docs/commands
+title: "Commands"
+description: "Commands documentation for OpenCode."
+access_date: 2026-08-30T17:46:54.764Z
+current_date: 2026-08-30T17:46:54.764Z
+---
+
 # Commands
 
 Custom commands turn a named prompt template into a reusable command.
@@ -34,7 +42,7 @@ automatically.
 ## Configure with JSON
 
 Add commands under the `commands` key in any OpenCode JSON or JSONC
-[configuration file](/config). Each entry's key is the command name and
+[configuration file](config.md). Each entry's key is the command name and
 `template` is required.
 
 ```jsonc title="opencode.jsonc"

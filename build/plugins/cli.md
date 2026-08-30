@@ -1,3 +1,11 @@
+---
+url: https://opencode.ai/v2/docs/build/plugins/cli
+title: "CLI"
+description: "CLI documentation for OpenCode."
+access_date: 2026-08-30T17:46:54.764Z
+current_date: 2026-08-30T17:46:54.764Z
+---
+
 # CLI
 
 CLI plugins extend the terminal with commands, routes, slots, Markdown renderers, notifications, and local state.
@@ -434,7 +442,7 @@ Expose the CLI plugin through `./tui`; add OpenTUI peers when the plugin renders
 }
 ```
 
-Set `tui: true` on the [main plugin](/build/plugins) for automatic loading.
+Set `tui: true` on the [main plugin](../plugins.md) for automatic loading.
 
 ```ts title="src/index.ts"
 import { Plugin } from "@opencode-ai/plugin"
@@ -446,7 +454,7 @@ export default Plugin.define({
 })
 ```
 
-Configure a CLI-only package in [`cli.json`](/cli/plugins) so it remains active against remote servers.
+Configure a CLI-only package in [`cli.json`](../../cli/plugins.md) so it remains active against remote servers.
 
 ```json title="cli.json"
 {

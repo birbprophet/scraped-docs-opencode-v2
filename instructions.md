@@ -1,3 +1,11 @@
+---
+url: https://opencode.ai/v2/docs/instructions
+title: "Instructions"
+description: "Instructions documentation for OpenCode."
+access_date: 2026-08-30T17:46:54.764Z
+current_date: 2026-08-30T17:46:54.764Z
+---
+
 # Instructions
 
 Instructions are privileged context that guide an agent throughout a session.
@@ -81,7 +89,7 @@ entire array is selected; arrays are not merged.
   implementation.
 </Callout>
 
-See [Config](/config) for config locations and general precedence.
+See [Config](config.md) for config locations and general precedence.
 
 ## Ordering
 

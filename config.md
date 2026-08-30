@@ -1,3 +1,11 @@
+---
+url: https://opencode.ai/v2/docs/config
+title: "Config"
+description: "Config documentation for OpenCode."
+access_date: 2026-08-30T17:46:54.764Z
+current_date: 2026-08-30T17:46:54.764Z
+---
+
 # Config
 
 You shouldn't have to configure OpenCode manually. Ask OpenCode to update its configuration for you.
@@ -110,7 +118,7 @@ does not retain a `#variant`; agent and command model references can select one.
 }
 ```
 
-See the [models guide](/models) for model selection and local models.
+See the [models guide](models.md) for model selection and local models.
 
 ### Default agent
 
@@ -122,7 +130,7 @@ Choose the primary agent used when a session does not select one explicitly.
 }
 ```
 
-See the [agents guide](/agents) for built-in and custom
+See the [agents guide](agents.md) for built-in and custom
 agents.
 
 ### Autoupdate
@@ -149,7 +157,7 @@ sharing is not implemented yet.
 }
 ```
 
-See the [sharing guide](/sharing) for more details.
+See the [sharing guide](sharing.md) for more details.
 
 ### Username
 
@@ -179,7 +187,7 @@ matching resource.
 }
 ```
 
-See the [permissions guide](/permissions) for rule matching and available actions.
+See the [permissions guide](permissions.md) for rule matching and available actions.
 
 ### Agents
 
@@ -199,7 +207,7 @@ instructions, mode, and permissions.
 }
 ```
 
-See the [agents guide](/agents) for all agent options and file-based agents.
+See the [agents guide](agents.md) for all agent options and file-based agents.
 
 ### Snapshots
 
@@ -211,7 +219,7 @@ Enable or disable filesystem snapshots used by undo and revert behavior.
 }
 ```
 
-See the [snapshots guide](/snapshots) for undo and redo behavior.
+See the [snapshots guide](snapshots.md) for undo and redo behavior.
 
 ### Watcher
 
@@ -241,7 +249,7 @@ field, but it does not run formatters yet.
 }
 ```
 
-See the [formatters guide](/formatters) for accepted fields and current limitations.
+See the [formatters guide](formatters.md) for accepted fields and current limitations.
 
 ### LSP
 
@@ -259,7 +267,7 @@ this field, but it does not start language servers yet.
 }
 ```
 
-See the [LSP guide](/lsp) for accepted fields and current limitations.
+See the [LSP guide](lsp.md) for accepted fields and current limitations.
 
 ### Media
 
@@ -279,7 +287,7 @@ before they are sent to a model.
 }
 ```
 
-See the [attachments guide](/attachments) for image processing and limits.
+See the [attachments guide](attachments.md) for image processing and limits.
 
 ### Tool output
 
@@ -312,7 +320,7 @@ be overridden by an individual server.
 }
 ```
 
-See the [MCP guide](/mcp-servers) for remote servers, OAuth, environment variables, and timeouts.
+See the [MCP guide](mcp-servers.md) for remote servers, OAuth, environment variables, and timeouts.
 
 ### Compaction
 
@@ -330,7 +338,7 @@ Control automatic context compaction and how much recent context it preserves.
 }
 ```
 
-See the [compaction guide](/compaction) for automatic context management.
+See the [compaction guide](compaction.md) for automatic context management.
 
 ### Session warming
 
@@ -348,7 +356,7 @@ interval and 30-minute active window.
 }
 ```
 
-See the [session warming guide](/warming) for request behavior, customization,
+See the [session warming guide](warming.md) for request behavior, customization,
 and cost considerations.
 
 ### Skills
@@ -361,7 +369,7 @@ Add directories or URLs that OpenCode should search for agent skills.
 }
 ```
 
-See the [skills guide](/skills) for skill structure and automatic discovery under `.opencode/skills/`.
+See the [skills guide](skills.md) for skill structure and automatic discovery under `.opencode/skills/`.
 
 ### Commands
 
@@ -378,7 +386,7 @@ Define reusable slash commands as named prompt templates.
 }
 ```
 
-See the [commands guide](/commands) for arguments, models, agents, and file-based commands.
+See the [commands guide](commands.md) for arguments, models, agents, and file-based commands.
 
 ### Instructions
 
@@ -391,7 +399,7 @@ but does not load these entries yet; use `AGENTS.md` for active instructions.
 }
 ```
 
-See the [instructions guide](/instructions) for project instructions and `AGENTS.md`.
+See the [instructions guide](instructions.md) for project instructions and `AGENTS.md`.
 
 ### References
 
@@ -413,7 +421,7 @@ context.
 }
 ```
 
-See the [references guide](/references) for shorthand, visibility, and path resolution.
+See the [references guide](references.md) for shorthand, visibility, and path resolution.
 
 ### Plugins
 
@@ -434,7 +442,7 @@ accepts options.
 }
 ```
 
-See the [plugins guide](/plugins) for plugin loading and configuration.
+See the [plugins guide](plugins.md) for plugin loading and configuration.
 
 ### Providers
 
@@ -460,4 +468,4 @@ headers, and model variants.
 }
 ```
 
-See the [providers guide](/providers) for credentials, custom endpoints, provider packages, and model configuration.
+See the [providers guide](providers.md) for credentials, custom endpoints, provider packages, and model configuration.

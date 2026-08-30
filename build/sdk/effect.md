@@ -1,3 +1,11 @@
+---
+url: https://opencode.ai/v2/docs/build/sdk/effect
+title: "Effect"
+description: "Effect documentation for OpenCode."
+access_date: 2026-08-30T17:46:54.764Z
+current_date: 2026-08-30T17:46:54.764Z
+---
+
 # Effect
 
 `@opencode-ai/sdk/effect` is the Effect-native embedded SDK. Operations return typed Effects and Streams, and closing
@@ -79,7 +87,7 @@ const plugin = Plugin.define({
 yield* opencode.plugin(plugin)
 ```
 
-See the [full Effect plugins documentation](/build/plugins/effect) for plugin
+See the [full Effect plugins documentation](../plugins/effect.md) for plugin
 hooks, transforms, tools, and the complete plugin context.
 
 ## Layer

@@ -1,9 +1,17 @@
+---
+url: https://opencode.ai/v2/docs/models
+title: "Models"
+description: "Models documentation for OpenCode."
+access_date: 2026-08-30T17:46:54.764Z
+current_date: 2026-08-30T17:46:54.764Z
+---
+
 # Models
 
 OpenCode builds its model catalog from [models.dev](https://models.dev), provider integrations, and your configuration.
 Only enabled models whose provider is available for the current project are available for selection.
 
-Configure provider availability in [Providers](/providers).
+Configure provider availability in [Providers](providers.md).
 
 ## Choose a model
 
@@ -15,7 +23,7 @@ name.
 
 Command-line runs can select a model without changing the configured default.
 
-Agents and commands can also select their own model. See [Agents](/agents) and [Commands](/commands).
+Agents and commands can also select their own model. See [Agents](agents.md) and [Commands](commands.md).
 
 ## Variants
 
@@ -40,7 +48,7 @@ The configured model becomes the catalog default when its provider is available 
 session execution falls back to the newest available supported model. An explicit model already selected on a session
 takes precedence over the default; switching models changes that session and does not rewrite your config.
 
-See [Config](/config) for configuration locations and precedence.
+See [Config](config.md) for configuration locations and precedence.
 
 ### Model settings
 

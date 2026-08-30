@@ -1,3 +1,11 @@
+---
+url: https://opencode.ai/v2/docs/attachments
+title: "Attachments"
+description: "Attachments documentation for OpenCode."
+access_date: 2026-08-30T17:46:54.764Z
+current_date: 2026-08-30T17:46:54.764Z
+---
+
 # Attachments
 
 Attachments add local context to a prompt as text or image media. Regardless
@@ -27,7 +35,7 @@ Desktop and web clients provide **Attach file**, paste, and drag-and-drop contro
 desktop file picker limits one selection to 20 MiB in total; the server also applies the per-attachment limit below.
 
 Attachment controls and client-side limits depend on the interface. For programmatic submission, see the generated
-[API reference](/api).
+[API reference](api/index.md).
 
 V2 prompt and command inputs represent each attachment with a `uri` and
 optional `name` and `description`. Use an absolute `file:` URL for a file or

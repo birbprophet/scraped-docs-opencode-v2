@@ -1,3 +1,11 @@
+---
+url: https://opencode.ai/v2/docs/cli
+title: "Intro"
+description: "Intro documentation for OpenCode."
+access_date: 2026-08-30T17:46:54.764Z
+current_date: 2026-08-30T17:46:54.764Z
+---
+
 # Intro
 
 Run the CLI in a project to open the full-screen terminal interface:
@@ -53,4 +61,4 @@ opencode2 --standalone
 opencode2 --server http://localhost:4096
 ```
 
-See [Troubleshooting](/troubleshooting) for shared service diagnostics and the [API reference](/api) for server endpoints.
+See [Troubleshooting](../troubleshooting.md) for shared service diagnostics and the [API reference](../api/index.md) for server endpoints.

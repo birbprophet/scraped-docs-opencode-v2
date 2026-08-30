@@ -1,3 +1,11 @@
+---
+url: https://opencode.ai/v2/docs/skills
+title: "Skills"
+description: "Skills documentation for OpenCode."
+access_date: 2026-08-30T17:46:54.764Z
+current_date: 2026-08-30T17:46:54.764Z
+---
+
 # Skills
 
 Skills are Markdown instructions that OpenCode can advertise to an agent and
