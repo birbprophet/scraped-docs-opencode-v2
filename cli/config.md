@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/cli/config
 title: "Config"
 description: "Config documentation for OpenCode."
-access_date: 2026-08-30T17:46:54.764Z
-current_date: 2026-08-30T17:46:54.764Z
+access_date: 2026-08-31T05:31:00.927Z
+current_date: 2026-08-31T05:31:00.927Z
 ---
 
 # Config
@@ -83,7 +83,7 @@ Load terminal plugins in order:
   "plugins": [
     "-opencode.notifications",
     {
-      "package": "./plugins/status.ts",
+      "package": "./plugins/status",
       "options": {
         "compact": true
       }
@@ -92,7 +92,7 @@ Load terminal plugins in order:
 }
 ```
 
-See [Plugins](plugins.md) for packages, local files, options, and enablement directives.
+See [Plugins](plugins.md) for packages, local plugins, options, and enablement directives.
 
 ## Scroll
 

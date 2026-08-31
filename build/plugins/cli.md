@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/build/plugins/cli
 title: "CLI"
 description: "CLI documentation for OpenCode."
-access_date: 2026-08-30T17:46:54.764Z
-current_date: 2026-08-30T17:46:54.764Z
+access_date: 2026-08-31T05:31:00.927Z
+current_date: 2026-08-31T05:31:00.927Z
 ---
 
 # CLI
@@ -442,14 +442,13 @@ Expose the CLI plugin through `./tui`; add OpenTUI peers when the plugin renders
 }
 ```
 
-Set `tui: true` on the [main plugin](../plugins.md) for automatic loading.
+Export `./tui` beside the [main plugin](../plugins.md) for automatic loading.
 
 ```ts title="src/index.ts"
 import { Plugin } from "@opencode-ai/plugin"
 
 export default Plugin.define({
   id: "acme.server",
-  tui: true,
   setup() {},
 })
 ```

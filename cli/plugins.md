@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/cli/plugins
 title: "Plugins"
 description: "Plugins documentation for OpenCode."
-access_date: 2026-08-30T17:46:54.764Z
-current_date: 2026-08-30T17:46:54.764Z
+access_date: 2026-08-31T05:31:00.927Z
+current_date: 2026-08-31T05:31:00.927Z
 ---
 
 # Plugins
@@ -22,10 +22,10 @@ to a remote server:
     "opencode.example@1.0.0",
     "@example/opencode-tui",
     "@example/opencode-tui@1.0.0",
-    "./plugins/status.ts",
-    "../plugins/status.ts",
-    "/home/user/plugins/status.ts",
-    "file:///home/user/plugins/status.ts"
+    "./plugins/status",
+    "../plugins/status",
+    "/home/user/plugins/status",
+    "file:///home/user/plugins/status"
   ]
 }
 ```
@@ -53,12 +53,14 @@ Pass plugin options with the object form:
 }
 ```
 
-OpenCode also discovers JavaScript and TypeScript plugins from `plugins/tui` under the global config directory and project
-`.opencode` directories.
+OpenCode also discovers plugins under the global config directory and project `.opencode` directories. Each plugin uses
+the same layout as a published package, with server and TUI entrypoints kept together.
 
 ```text title="Plugin discovery paths"
-<global-config>/plugins/tui/status.ts
-<project>/.opencode/plugins/tui/status.ts
+<global-config>/plugins/status/index.ts
+<global-config>/plugins/status/tui.ts
+<project>/.opencode/plugins/status/index.ts
+<project>/.opencode/plugins/status/tui.ts
 ```
 
 Discovered plugins can import `@opencode-ai/plugin/tui` directly; OpenCode resolves the package at runtime. See

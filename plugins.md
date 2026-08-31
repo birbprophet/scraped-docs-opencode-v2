@@ -2,13 +2,14 @@
 url: https://opencode.ai/v2/docs/plugins
 title: "Plugins"
 description: "Plugins documentation for OpenCode."
-access_date: 2026-08-30T17:46:54.764Z
-current_date: 2026-08-30T17:46:54.764Z
+access_date: 2026-08-31T05:31:00.927Z
+current_date: 2026-08-31T05:31:00.927Z
 ---
 
 # Plugins
 
-Load published packages, versioned packages, scoped packages, local files, or configured plugins from `opencode.json(c)`.
+Load published packages, versioned packages, scoped packages, local plugin directories, or configured plugins from
+`opencode.json(c)`.
 
 ```jsonc title="opencode.jsonc"
 {
@@ -17,10 +18,10 @@ Load published packages, versioned packages, scoped packages, local files, or co
     "opencode-acme-plugin",
     "opencode-acme-plugin@1.2.0",
     "@acme/opencode-plugin",
-    "./plugins/local.ts",
+    "./plugins/local",
     "../shared/plugin.ts",
     "/absolute/path/plugin.ts",
-    "file:///home/me/plugins/local.ts",
+    "file:///home/me/plugins/local",
     {
       "package": "@acme/opencode-plugin",
       "options": {
@@ -63,7 +64,7 @@ explicitly or move it under `.opencode/`.
 
 ```jsonc title="opencode.jsonc"
 {
-  "plugins": ["./plugins/local.ts"]
+  "plugins": ["./plugins/local"]
 }
 ```
 
@@ -105,7 +106,7 @@ starts. Exact npm versions and full Git commit hashes stay pinned. Changes to un
 restarting OpenCode.
 
 ```sh
-touch .opencode/plugins/concise.ts
+touch .opencode/plugins/concise/index.ts
 opencode2 service restart
 ```
 

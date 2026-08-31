@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/api
 title: "API"
 description: "OpenCode HTTP API reference and OpenAPI specification."
-access_date: 2026-08-30T17:46:54.764Z
-current_date: 2026-08-30T17:46:54.764Z
+access_date: 2026-08-31T05:31:00.927Z
+current_date: 2026-08-31T05:31:00.927Z
 ---
 
 get `/api/health` Check server health
@@ -2730,6 +2730,24 @@ Items [Skill.Info](#schema-Skill.Info)
 `401` UnauthorizedError
 
 `application/json` [UnauthorizedErrorEncoded](#schema-UnauthorizedErrorEncoded)
+
+post `/api/rpc/{rpcID}/{method}` Call a plugin RPC
+
+Dispatch a method to the currently registered RPC at the requested location.
+
+Operation ID `v2.rpc.call`
+
+### Parameters
+
+| Name | Location | Type | Description |
+| --- | --- | --- | --- |
+| `rpcID` required | path | `string` | No description |
+| `method` required | path | `string` | No description |
+| `location` | query | `object \| null`  `object`  `directory`  `string \| null`  `string`  or  `null`  `workspace`  `string \| null`  `string`  or  `null`  or  `null` | No description |
+
+### Request body required
+
+`application/json` [Rpc.Input](#schema-Rpc.Input)
 
 get `/api/event` Subscribe to events
 
@@ -6937,7 +6955,43 @@ min 0
 
 \> 0
 
-`Plugin.Info` object | object `Plugin.Source` object | object | object | object
+`Plugin.Features` object
+
+`object`
+
+`server`
+
+`true`
+
+Values `true`
+
+`tui`
+
+`true`
+
+Values `true`
+
+`rpc`
+
+`true`
+
+Values `true`
+
+`Plugin.Info` object
+
+`object`
+
+`id`
+
+`string`
+
+`source` [Plugin.Source](#schema-Plugin.Source)
+
+`features` [Plugin.Features](#schema-Plugin.Features)
+
+`state` [Plugin.State](#schema-Plugin.State)
+
+`Plugin.Source` object | object | object | object
 
 `object | object | object | object`
 
@@ -6986,6 +7040,32 @@ or
 `"sdk"` required
 
 Values `"sdk"`
+
+`Plugin.State` object | object
+
+`object | object`
+
+`object`
+
+`status`
+
+`"active"` required
+
+Values `"active"`
+
+or
+
+`object`
+
+`status`
+
+`"failed"` required
+
+Values `"failed"`
+
+`error`
+
+`string` required
 
 `Project` object
 
@@ -7465,7 +7545,81 @@ Values `"local"`
 
 `boolean`
 
-`Reference.Source` Reference.LocalSource | Reference.GitSource `ServiceHealth` object
+`Reference.Source` Reference.LocalSource | Reference.GitSource `Rpc.Input` object
+
+`object`
+
+`input`
+
+`object`
+
+`Rpc.Output` object
+
+`object`
+
+`output`
+
+`object`
+
+`RpcErrorEncoded` object
+
+`object`
+
+`_tag`
+
+`"RpcError"` required
+
+Values `"RpcError"`
+
+`type`
+
+`string` required
+
+`message`
+
+`string` required
+
+`data`
+
+`object | null`
+
+`object`
+
+or
+
+`null`
+
+`RpcInternalErrorEncoded` object
+
+`object`
+
+`_tag`
+
+`"RpcInternalError"` required
+
+Values `"RpcInternalError"`
+
+`type`
+
+`"rpc.internal" | "rpc.invalid_output"` required
+
+Values `"rpc.internal" | "rpc.invalid_output"`
+
+`message`
+
+`string` required
+
+`data`
+
+`object | null`
+
+`object`
+
+or
+
+`null`
+
+`ServiceHealth` object
 
 `object`
 

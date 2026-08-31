@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/config
 title: "Config"
 description: "Config documentation for OpenCode."
-access_date: 2026-08-30T17:46:54.764Z
-current_date: 2026-08-30T17:46:54.764Z
+access_date: 2026-08-31T05:31:00.927Z
+current_date: 2026-08-31T05:31:00.927Z
 ---
 
 # Config
@@ -425,7 +425,7 @@ See the [references guide](references.md) for shorthand, visibility, and path re
 
 ### Plugins
 
-Load plugins from packages or local files. Use the object form when a plugin
+Load plugins from packages or local plugin directories. Use the object form when a plugin
 accepts options.
 
 ```jsonc
@@ -433,7 +433,7 @@ accepts options.
   "plugins": [
     "opencode-example-plugin",
     {
-      "package": "./plugins/local.ts",
+      "package": "./plugins/local",
       "options": {
         "enabled": true,
       },
