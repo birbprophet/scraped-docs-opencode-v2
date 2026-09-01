@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/build/client
 title: "JavaScript"
 description: "JavaScript documentation for OpenCode."
-access_date: 2026-08-31T05:31:00.927Z
-current_date: 2026-08-31T05:31:00.927Z
+access_date: 2026-09-01T05:31:12.537Z
+current_date: 2026-09-01T05:31:12.537Z
 ---
 
 # JavaScript
@@ -139,7 +139,7 @@ and end that listener. Native and typed subscriptions receive the same normal
 do not replay missed events.
 
 The server plugin must be configured and implement the RPC; importing a
-definition does not register it. See [plugin RPC](plugins.md#rpc) for the
+definition does not register it. See [plugin RPC](plugins/rpc.md) for the
 definition and registration API. Any HTTP client can also invoke the generic
 `POST /api/rpc/{rpcID}/{method}` route with `{ "input": ... }` and receive
 `{ "output": ... }`. Omitted input/output fields represent no value.

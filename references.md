@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/references
 title: "References"
 description: "References documentation for OpenCode."
-access_date: 2026-08-30T17:46:54.764Z
-current_date: 2026-08-30T17:46:54.764Z
+access_date: 2026-09-01T05:31:12.537Z
+current_date: 2026-09-01T05:31:12.537Z
 ---
 
 # References
@@ -104,23 +104,37 @@ Git references also support shorthand:
 
 ### Cloning and storage
 
-OpenCode normalizes a remote and stores one checkout under its global data
-directory at `opencode/repos/<host>/<repository-path>`. On a typical Linux
+OpenCode normalizes a remote and stores one checkout per remote and branch
+under its global data directory. Without an explicit branch, the checkout is
+stored at `opencode/repos/<host>/<repository-path>`. On a typical Linux
 installation, for example, `Effect-TS/effect` is stored at:
 
 ```text
 ~/.local/share/opencode/repos/github.com/Effect-TS/effect
 ```
 
-Missing repositories are cloned. Existing checkouts are fetched and reset to
-the requested branch, or to the remote default branch when `branch` is omitted.
-Materialization runs asynchronously when references load or reload, so a new
-reference can appear before its checkout is ready. Clone and refresh failures
-are logged and do not stop other references from loading.
+An explicit branch adds an encoded `@<branch>` suffix to the checkout path.
+
+Missing repositories are cloned. When references load or reload, and after a
+new user prompt is admitted in their Location, OpenCode checks them in the
+background. An existing checkout is eligible when its last refresh attempt was
+at least 24 hours ago, or no attempt has been recorded. A refresh fetches and
+resets to the requested branch, or to the remote default branch when `branch`
+is omitted.
+
+Refresh timestamps persist across service restarts and are shared by Locations
+using the same checkout. Failed refresh attempts are logged and remain subject
+to the 24-hour limit. There is no periodic polling while a Location is unused.
+
+Prompts do not wait for background refreshes. An attachment can therefore
+contain older content even if a later tool read sees the updated checkout.
+Initial cloning is also asynchronous, so a new reference can appear before its
+checkout is ready. Clone and refresh failures do not stop other references
+from loading.
 
 <Callout type="warning">
-  The cache has one checkout per normalized remote, not one per branch. Do not configure the same repository at multiple
-  branches; only one branch can be exposed. Avoid editing cached checkouts because a refresh resets them.
+  Cached checkouts are shared and can update while an agent is using them. Avoid editing cached checkouts because a
+  refresh resets them.
 </Callout>
 
 ## Description and visibility

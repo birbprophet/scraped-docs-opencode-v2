@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/build
 title: "Intro"
 description: "Intro documentation for OpenCode."
-access_date: 2026-08-30T17:46:54.764Z
-current_date: 2026-08-30T17:46:54.764Z
+access_date: 2026-09-01T05:31:12.537Z
+current_date: 2026-09-01T05:31:12.537Z
 ---
 
 # Intro
@@ -11,6 +11,9 @@ current_date: 2026-08-30T17:46:54.764Z
 OpenCode is used by millions every day. Build on top of it to create your own
 applications, integrations, and agent experiences without starting from
 scratch.
+
+We also offer Effect APIs for [plugins](plugins/effect.md),
+[clients](client/effect.md), and [embedded apps](sdk/effect.md).
 
 <CardGroup cols={1}>
   <Card title="Extend OpenCode" href="/build/plugins">

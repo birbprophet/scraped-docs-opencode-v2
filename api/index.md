@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/api
 title: "API"
 description: "OpenCode HTTP API reference and OpenAPI specification."
-access_date: 2026-08-31T05:31:00.927Z
-current_date: 2026-08-31T05:31:00.927Z
+access_date: 2026-09-01T05:31:12.537Z
+current_date: 2026-09-01T05:31:12.537Z
 ---
 
 get `/api/health` Check server health
@@ -190,6 +190,28 @@ Items [Plugin.Info](#schema-Plugin.Info)
 `401` UnauthorizedError
 
 `application/json` [UnauthorizedErrorEncoded](#schema-UnauthorizedErrorEncoded)
+
+post `/api/plugin/update` Update plugin
+
+Update one package plugin and notify active locations to reload it.
+
+Operation ID `v2.plugin.update`
+
+### Parameters
+
+| Name | Location | Type | Description |
+| --- | --- | --- | --- |
+| `location` | query | `object \| null`  `object`  `directory`  `string \| null`  `string`  or  `null`  `workspace`  `string \| null`  `string`  or  `null`  or  `null` | No description |
+
+### Request body required
+
+`application/json`
+
+`object`
+
+`target`
+
+`string` required
 
 get `/api/session` List sessions
 
@@ -7013,9 +7035,19 @@ or
 
 Values `"package"`
 
-`package`
+`target`
 
 `string` required
+
+`version`
+
+`string`
+
+`outdated`
+
+`true`
+
+Values `true`
 
 or
 

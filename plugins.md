@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/plugins
 title: "Plugins"
 description: "Plugins documentation for OpenCode."
-access_date: 2026-08-31T05:31:00.927Z
-current_date: 2026-08-31T05:31:00.927Z
+access_date: 2026-09-01T05:31:12.537Z
+current_date: 2026-09-01T05:31:12.537Z
 ---
 
 # Plugins
@@ -101,9 +101,9 @@ Branches, tags, complete commit hashes, and npm's `::path:` repository-subdirect
 local paths directly; tarball and npm alias targets are not accepted by `plugin add`.
 
 Changes under watched config directories reload automatically. Server startup loads cached package plugins immediately,
-then refreshes unpinned npm and Git plugins in the background. A refreshed package becomes active the next time the server
-starts. Exact npm versions and full Git commit hashes stay pinned. Changes to unwatched local dependencies may still require
-restarting OpenCode.
+installs missing packages in the background, and checks unpinned npm and Git plugins for updates without changing the
+installed package. Exact npm versions and full Git commit hashes stay pinned. Changes to unwatched local dependencies may
+still require restarting OpenCode.
 
 ```sh
 touch .opencode/plugins/concise/index.ts

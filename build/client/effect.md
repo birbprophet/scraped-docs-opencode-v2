@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/build/client/effect
 title: "Effect"
 description: "Effect documentation for OpenCode."
-access_date: 2026-08-31T05:31:00.927Z
-current_date: 2026-08-31T05:31:00.927Z
+access_date: 2026-09-01T05:31:12.537Z
+current_date: 2026-09-01T05:31:12.537Z
 ---
 
 # Effect
@@ -110,7 +110,7 @@ RPC error wrapper; reserved `rpc.*` types identify framework failures.
 RPC events are typed Streams, not callback-style `on` listeners. They receive the
 RPC's events from all locations, each with required `location` and a normal
 prefixed type such as `rpc.acme.updated`. This differs from server-plugin handles,
-which are fixed to their own location. See [plugin RPC](../plugins.md#rpc) for
+which are fixed to their own location. See [Effect plugin RPC](../plugins/effect/rpc.md) for
 definitions, schemas, registration, and live subscription semantics.
 
 ## Local background service

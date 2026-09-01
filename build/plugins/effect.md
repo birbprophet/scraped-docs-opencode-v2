@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/build/plugins/effect
 title: "Effect"
 description: "Effect documentation for OpenCode."
-access_date: 2026-08-31T05:31:00.927Z
-current_date: 2026-08-31T05:31:00.927Z
+access_date: 2026-09-01T05:31:12.537Z
+current_date: 2026-09-01T05:31:12.537Z
 ---
 
 # Effect
@@ -637,59 +637,6 @@ interface Context {
 }
 ```
 
-### RPC
-
-Use the same execution-neutral [`Rpc.define` builder](../plugins.md#rpc).
-Effect clients and plugins accept Effect Schema, Standard Schema, or plain JSON
-Schema. Promise consumers accept only the portable Standard and JSON formats.
-
-```ts
-import { Plugin } from "@opencode-ai/plugin/effect"
-import { Effect } from "effect"
-import { Acme } from "./rpc.js"
-
-export default Plugin.define({
-  id: "acme-effect-plugin",
-  effect: (ctx) =>
-    Effect.gen(function* () {
-      const registration = yield* ctx.rpc.register(Acme, {
-        search: ({ query }, context) =>
-          findText(query).pipe(
-            Effect.flatMap((text) =>
-              text
-                ? Effect.succeed({ text })
-                : Effect.fail(context.error("not_found", "Result not found", { query })),
-            ),
-          ),
-      })
-      yield* registration.events.emit("updated", { itemID: "item-1", text: "ready" })
-    }).pipe(Effect.orDie),
-})
-```
-
-Effect handlers use normal interruption. Registrations belong to the plugin
-scope; `yield* registration.dispose` removes one explicitly. Later registrations
-override earlier ones at the same location, without changing in-flight handlers.
-
-`ctx.rpc(Acme)` returns a local typed subclient. Its methods return Effects and
-`events.subscribe(name)` returns a Stream. Use scoped fibers when listening
-during plugin lifetime:
-
-```ts
-const acme = ctx.rpc(Acme)
-yield *
-  acme.events.subscribe("updated").pipe(
-    Stream.runForEach((event) => Effect.logInfo(event.data.text)),
-    Effect.forkScoped,
-  )
-```
-
-There is no Effect callback-style `on` API. Subscriptions are location-bound,
-live-only, and close when Stream consumption stops. Events use the normal
-ephemeral Bus path. Method `errors` maps become typed Effect error channels. Construct one
-with `context.error(...)` and fail it with `Effect.fail`; unexpected failures and
-transport errors remain separate from the declared method errors.
-
 ### References
 
 Read references available at the current location.
@@ -897,6 +844,10 @@ effect: (ctx) =>
   Effect.gen(function* () {
     const tool = ctx.tool
     yield* tool.transform((draft) => {
+      draft.namespace({
+        name: "acme",
+        description: "Customer account tools",
+      })
       draft.add({
         name: "greeting",
         description: "Create a greeting",
@@ -948,6 +899,7 @@ Schemas: [`Tool.Content`](../../api/index.md#schema-Tool.Content), [`Tool.TextCo
 interface ToolDraft {
   list(): readonly (Tool.Info & { readonly id: string })[]
   get(id: string): (Tool.Info & { readonly id: string }) | undefined
+  namespace(namespace: { name: string; description: string }): void
   add<Input extends Tool.ValueSchema<any>, Output extends Tool.ValueSchema<any> | undefined>(
     tool: Tool.Info<Input, Output>,
   ): void
