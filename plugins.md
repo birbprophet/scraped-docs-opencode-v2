@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/plugins
 title: "Plugins"
 description: "Plugins documentation for OpenCode."
-access_date: 2026-09-01T05:31:12.537Z
-current_date: 2026-09-01T05:31:12.537Z
+access_date: 2026-09-02T05:33:51.689Z
+current_date: 2026-09-02T05:33:51.689Z
 ---
 
 # Plugins
@@ -83,8 +83,14 @@ Install, inspect, list, or remove global package plugins with the CLI.
 opencode2 plugin add opencode-acme-plugin@1.2.0
 opencode2 plugin list
 opencode2 plugin list --builtin
+opencode2 plugin check
+opencode2 plugin update
+opencode2 plugin update opencode-acme-plugin
 opencode2 plugin remove opencode-acme-plugin@1.2.0
 ```
+
+`plugin check` checks server and TUI-only package plugins for updates. `plugin update` updates every outdated package;
+pass a configured package target to check or update only that package. Local plugins and exact package revisions are skipped.
 
 Package installation accepts npm names with versions, tags, or ranges, plus npm-compatible Git package specifications.
 Git repositories can use hosted shortcuts, HTTPS, or SSH, including private repositories available through your existing
