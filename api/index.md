@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/api
 title: "API"
 description: "OpenCode HTTP API reference and OpenAPI specification."
-access_date: 2026-09-02T05:33:51.689Z
-current_date: 2026-09-02T05:33:51.689Z
+access_date: 2026-09-03T05:50:42.670Z
+current_date: 2026-09-03T05:50:42.670Z
 ---
 
 get `/api/health` Check server health
@@ -182,6 +182,30 @@ Operation ID `v2.plugin.list`
 `Plugin.Info[]` required
 
 Items [Plugin.Info](#schema-Plugin.Info)
+
+`400` InvalidRequestError
+
+`application/json` [InvalidRequestErrorEncoded](#schema-InvalidRequestErrorEncoded)
+
+`401` UnauthorizedError
+
+`application/json` [UnauthorizedErrorEncoded](#schema-UnauthorizedErrorEncoded)
+
+post `/api/plugin/await-activation` Wait for plugin activation
+
+Wait for configured plugin activation at a Location to settle, including missing-package installs. Completion does not imply every plugin succeeded or background resource discovery finished. Cancelling this wait does not cancel activation.
+
+Operation ID `v2.plugin.awaitActivation`
+
+### Parameters
+
+| Name | Location | Type | Description |
+| --- | --- | --- | --- |
+| `location` | query | `object \| null`  `object`  `directory`  `string \| null`  `string`  or  `null`  `workspace`  `string \| null`  `string`  or  `null`  or  `null` | No description |
+
+### Responses
+
+`204` <No Content>
 
 `400` InvalidRequestError
 

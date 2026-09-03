@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/build/plugins/effect
 title: "Effect"
 description: "Effect documentation for OpenCode."
-access_date: 2026-09-01T05:31:12.537Z
-current_date: 2026-09-01T05:31:12.537Z
+access_date: 2026-09-03T05:50:42.670Z
+current_date: 2026-09-03T05:50:42.670Z
 ---
 
 # Effect
@@ -175,7 +175,7 @@ export default Plugin.define({
 
 ## Transforms
 
-Transforms synchronously edit a mutable draft. OpenCode applies transforms in plugin order, so later transforms see
+Transforms synchronously edit state through an editor. OpenCode applies transforms in plugin order, so later transforms see
 earlier changes. Yielding the registration keeps it in the plugin scope.
 
 ```ts title="plugins/models-effect/index.ts"
@@ -187,8 +187,8 @@ export default Plugin.define({
   effect: (ctx) =>
     Effect.gen(function* () {
       const catalog = ctx.catalog
-      yield* catalog.transform((draft) => {
-        draft.model.update("acme", "reasoner", (model) => {
+      yield* catalog.transform((editor) => {
+        editor.model.update("acme", "reasoner", (model) => {
           model.name = "Acme Reasoner"
           model.cost = [{ input: 2, output: 12, cache: { read: 0.2, write: 2 } }]
         })
@@ -203,11 +203,11 @@ A later transform can enforce policy across the composed catalog.
 effect: (ctx) =>
   Effect.gen(function* () {
     const catalog = ctx.catalog
-    yield* catalog.transform((draft) => {
-      for (const provider of draft.provider.list()) {
+    yield* catalog.transform((editor) => {
+      for (const provider of editor.provider.list()) {
         for (const model of provider.models.values()) {
           if (model.cost.some((tier) => tier.output > 20)) {
-            draft.model.remove(model.providerID, model.id)
+            editor.model.remove(model.providerID, model.id)
           }
         }
       }
@@ -223,9 +223,9 @@ effect: (ctx) =>
     const catalog = ctx.catalog
     const state = { models: yield* loadFromSource() }
 
-    yield* catalog.transform((draft) => {
+    yield* catalog.transform((editor) => {
       for (const item of state.models) {
-        draft.model.update(item.providerID, item.id, (model) => {
+        editor.model.update(item.providerID, item.id, (model) => {
           model.name = item.name
         })
       }
@@ -263,10 +263,10 @@ Transform or reload agents.
 effect: (ctx) =>
   Effect.gen(function* () {
     const agent = ctx.agent
-    yield* agent.transform((draft) => {
-      draft.default("build")
-      draft.update("build", (item) => (item.description = "Builds features and fixes bugs"))
-      draft.remove("legacy")
+    yield* agent.transform((editor) => {
+      editor.default("build")
+      editor.update("build", (item) => (item.description = "Builds features and fixes bugs"))
+      editor.remove("legacy")
     })
     yield* agent.reload()
   }),
@@ -275,7 +275,7 @@ effect: (ctx) =>
 Schema: [`Agent.Info`](../../api/index.md#schema-Agent.Info).
 
 ```ts
-interface AgentDraft {
+interface AgentEditor {
   list(): readonly Types.DeepMutable<Agent.Info>[]
   get(id: string): Types.DeepMutable<Agent.Info> | undefined
   default(id: string | undefined): void
@@ -284,7 +284,7 @@ interface AgentDraft {
 }
 
 interface AgentDomain extends AgentApi<unknown> {
-  readonly transform: Transform<AgentDraft>
+  readonly transform: Transform<AgentEditor>
   readonly reload: () => Effect.Effect<void>
 }
 ```
@@ -316,12 +316,12 @@ Transform providers and models, then reload after source data changes.
 effect: (ctx) =>
   Effect.gen(function* () {
     const catalog = ctx.catalog
-    yield* catalog.transform((draft) => {
-      draft.provider.update("anthropic", (provider) => (provider.name = "Anthropic"))
-      draft.model.update("anthropic", "claude-sonnet-4-5", (model) => (model.name = "Claude Sonnet 4.5"))
-      draft.model.default.set("anthropic", "claude-sonnet-4-5")
-      draft.model.remove("anthropic", "legacy-model")
-      draft.provider.remove("legacy-provider")
+    yield* catalog.transform((editor) => {
+      editor.provider.update("anthropic", (provider) => (provider.name = "Anthropic"))
+      editor.model.update("anthropic", "claude-sonnet-4-5", (model) => (model.name = "Claude Sonnet 4.5"))
+      editor.model.default.set("anthropic", "claude-sonnet-4-5")
+      editor.model.remove("anthropic", "legacy-model")
+      editor.provider.remove("legacy-provider")
     })
     yield* catalog.reload()
   }),
@@ -335,7 +335,7 @@ interface CatalogProviderRecord {
   readonly models: ReadonlyMap<string, Types.DeepMutable<Model.Info>>
 }
 
-interface CatalogDraft {
+interface CatalogEditor {
   readonly provider: {
     list(): readonly CatalogProviderRecord[]
     get(providerID: string): CatalogProviderRecord | undefined
@@ -354,7 +354,7 @@ interface CatalogDraft {
 }
 
 interface CatalogDomain extends CatalogApi<unknown> {
-  readonly transform: Transform<CatalogDraft>
+  readonly transform: Transform<CatalogEditor>
   readonly reload: () => Effect.Effect<void>
 }
 ```
@@ -379,8 +379,8 @@ effect: (ctx) =>
   Effect.gen(function* () {
     const command = ctx.command
     const session = ctx.session
-    yield* command.transform((draft) => {
-      draft.add({
+    yield* command.transform((editor) => {
+      editor.add({
         name: "security-review",
         description: "Review changes for security issues",
         execute: (input) =>
@@ -412,12 +412,12 @@ interface CommandDefinition {
   readonly execute: (input: CommandInvocation) => Effect.Effect<void, unknown>
 }
 
-interface CommandDraft {
+interface CommandEditor {
   add(definition: CommandDefinition): void
 }
 
 interface CommandDomain extends Pick<CommandApi<unknown>, "list"> {
-  readonly transform: Transform<CommandDraft>
+  readonly transform: Transform<CommandEditor>
   readonly reload: () => Effect.Effect<void>
 }
 ```
@@ -476,9 +476,9 @@ resources.
 effect: (ctx) =>
   Effect.gen(function* () {
     const integration = ctx.integration
-    yield* integration.transform((draft) => {
-      draft.update("acme", (item) => (item.name = "Acme"))
-      draft.method.update({
+    yield* integration.transform((editor) => {
+      editor.update("acme", (item) => (item.name = "Acme"))
+      editor.method.update({
         integrationID: "acme",
         method: { id: "device", type: "oauth", label: "Sign in with Acme" },
         authorize: () =>
@@ -515,7 +515,7 @@ type IntegrationOAuthMethodRegistration = {
   readonly label?: (credential: Credential.OAuth) => string | undefined
 }
 
-interface IntegrationDraft {
+interface IntegrationEditor {
   list(): readonly IntegrationRef[]
   get(id: string): IntegrationRef | undefined
   update(id: string, update: (integration: IntegrationRef) => void): void
@@ -528,7 +528,7 @@ interface IntegrationDraft {
 }
 
 interface IntegrationDomain extends Omit<IntegrationApi<unknown>, "wellknown"> {
-  readonly transform: Transform<IntegrationDraft>
+  readonly transform: Transform<IntegrationEditor>
   readonly reload: () => Effect.Effect<void>
   readonly connection: {
     readonly active: (integrationID: string) => Effect.Effect<ConnectionInfo | undefined>
@@ -550,19 +550,19 @@ effect: (ctx) =>
   }),
 ```
 
-Plugins manage MCP servers only through transforms. Use `draft.set` to add or replace a server, `draft.update` to
-change its configuration, and `draft.remove` to remove it. Inspect configuration with `draft.list` and `draft.get`.
+Plugins manage MCP servers only through transforms. Use `editor.set` to add or replace a server, `editor.update` to
+change its configuration, and `editor.remove` to remove it. Inspect configuration with `editor.list` and `editor.get`.
 
 ```ts
 effect: (ctx) =>
   Effect.gen(function* () {
     const mcp = ctx.mcp
-    yield* mcp.transform((draft) => {
-      const servers = draft.list()
-      const docs = draft.get("docs")
-      draft.set("docs", { type: "remote", url: "https://mcp.example.com" })
-      draft.update("docs", (server) => (server.disabled = false))
-      draft.remove("legacy")
+    yield* mcp.transform((editor) => {
+      const servers = editor.list()
+      const docs = editor.get("docs")
+      editor.set("docs", { type: "remote", url: "https://mcp.example.com" })
+      editor.update("docs", (server) => (server.disabled = false))
+      editor.remove("legacy")
     })
   }),
 ```
@@ -584,7 +584,7 @@ Schemas: [`Mcp.Server`](../../api/index.md#schema-Mcp.Server), [`Mcp.LocalConfig
 [`Mcp.RemoteConfigEncoded`](../../api/index.md#schema-Mcp.RemoteConfigEncoded).
 
 ```ts
-interface MCPDraft {
+interface MCPEditor {
   list(): readonly [string, Types.DeepMutable<Mcp.ServerConfig>][]
   get(name: string): Types.DeepMutable<Mcp.ServerConfig> | undefined
   set(name: string, config: Mcp.ServerConfig): void
@@ -593,7 +593,7 @@ interface MCPDraft {
 }
 
 interface MCPDomain extends Pick<McpApi<unknown>, "list"> {
-  readonly transform: Transform<MCPDraft>
+  readonly transform: Transform<MCPEditor>
   readonly reload: () => Effect.Effect<void>
 }
 ```
@@ -650,16 +650,18 @@ effect: (ctx) =>
   }),
 ```
 
-Add or remove local and Git references, then reload after external state changes.
+Add or remove local and Git references, then reload after external state changes. `get(name)` returns the current configured
+source, or `undefined` when the name is absent.
 
 ```ts
 effect: (ctx) =>
   Effect.gen(function* () {
     const reference = ctx.reference
-    yield* reference.transform((draft) => {
-      draft.add("handbook", { type: "local", path: "/workspace/docs/handbook" })
-      draft.add("standards", { type: "git", repository: "https://github.com/acme/standards", branch: "main" })
-      draft.remove("legacy")
+    yield* reference.transform((editor) => {
+      editor.add("handbook", { type: "local", path: "/workspace/docs/handbook" })
+      editor.add("standards", { type: "git", repository: "https://github.com/acme/standards", branch: "main" })
+      const handbook = editor.get("handbook")
+      editor.remove("legacy")
     })
     yield* reference.reload()
   }),
@@ -669,14 +671,15 @@ Schemas: [`Reference.Info`](../../api/index.md#schema-Reference.Info), [`Referen
 [`Reference.GitSource`](../../api/index.md#schema-Reference.GitSource).
 
 ```ts
-interface ReferenceDraft {
+interface ReferenceEditor {
   add(name: string, source: ReferenceLocalSource | ReferenceGitSource): void
   remove(name: string): void
   list(): readonly (readonly [string, ReferenceLocalSource | ReferenceGitSource])[]
+  get(name: string): ReferenceLocalSource | ReferenceGitSource | undefined
 }
 
 interface ReferenceDomain extends ReferenceApi<unknown> {
-  readonly transform: Transform<ReferenceDraft>
+  readonly transform: Transform<ReferenceEditor>
   readonly reload: () => Effect.Effect<void>
 }
 ```
@@ -753,22 +756,24 @@ effect: (ctx) =>
   }),
 ```
 
-Transform and reload skills. Use the re-exported Effect schema constructors for branded values.
+Transform and reload skills. Use the re-exported Effect schema constructors for branded values. `get(id)` returns the
+current editor entry, or `undefined` when the skill is absent.
 
 ```ts
 effect: (ctx) =>
   Effect.gen(function* () {
     const skill = ctx.skill
-    yield* skill.transform((draft) => {
-      draft.add(Skill.Info.make({
+    yield* skill.transform((editor) => {
+      editor.add(Skill.Info.make({
         id: Skill.ID.make("review"),
         name: Skill.Name.make("Review"),
         description: "Review the current changes",
         location: "/workspace/.opencode/skills/review.md",
         content: "Review the current changes for correctness and missing tests.",
       }))
-      draft.update("review", (item) => (item.autoinvoke = true))
-      draft.remove("legacy")
+      const review = editor.get("review")
+      editor.update("review", (item) => (item.autoinvoke = true))
+      editor.remove("legacy")
     })
     yield* skill.reload()
   }),
@@ -777,15 +782,16 @@ effect: (ctx) =>
 Schema: [`Skill.Info`](../../api/index.md#schema-Skill.Info).
 
 ```ts
-interface SkillDraft {
+interface SkillEditor {
   list(): readonly Types.DeepMutable<Skill.Info>[]
+  get(id: string): Types.DeepMutable<Skill.Info> | undefined
   add(skill: Skill.Info): void
   update(id: string, update: (skill: Types.DeepMutable<Skill.Info>) => void): void
   remove(id: string): void
 }
 
 interface SkillDomain extends SkillApi<unknown> {
-  readonly transform: Transform<SkillDraft>
+  readonly transform: Transform<SkillEditor>
   readonly reload: () => Effect.Effect<void>
 }
 ```
@@ -835,20 +841,20 @@ interface StorageDomain {
 Register typed tools with Effect `Schema`. The executor receives decoded input and returns an Effect containing typed
 output, display content, or metadata.
 
-The draft supports `add`, `update`, and `remove`. The transform callback is synchronous: it must not return an Effect or Promise. Load
+The editor supports `add`, `update`, and `remove`. The transform callback is synchronous: it must not return an Effect or Promise. Load
 external data before registering or reloading. OpenCode replays active transforms in registration order on a fresh
-draft; for the same effective tool name, a later valid registration overrides an earlier one.
+editor; for the same effective tool name, a later valid registration overrides an earlier one.
 
 ```ts
 effect: (ctx) =>
   Effect.gen(function* () {
     const tool = ctx.tool
-    yield* tool.transform((draft) => {
-      draft.namespace({
+    yield* tool.transform((editor) => {
+      editor.namespace({
         name: "acme",
         description: "Customer account tools",
       })
-      draft.add({
+      editor.add({
         name: "greeting",
         description: "Create a greeting",
         input: Schema.Struct({ name: Schema.String }),
@@ -874,11 +880,11 @@ namespaces and unsupported characters in tool names become `_`. Missing names ar
 them rather than mutating nested values. Invalid updates are logged and leave the previous definition intact.
 
 ```ts
-yield* ctx.tool.transform((draft) => {
-  draft.update("acme_greeting", (tool) => {
+yield* ctx.tool.transform((editor) => {
+  editor.update("acme_greeting", (tool) => {
     tool.description = "Greet the user by name"
   })
-  draft.remove("acme_obsolete")
+  editor.remove("acme_obsolete")
 })
 ```
 
@@ -896,7 +902,7 @@ Schemas: [`Tool.Content`](../../api/index.md#schema-Tool.Content), [`Tool.TextCo
 [`Tool.FileContent`](../../api/index.md#schema-Tool.FileContent).
 
 ```ts
-interface ToolDraft {
+interface ToolEditor {
   list(): readonly (Tool.Info & { readonly id: string })[]
   get(id: string): (Tool.Info & { readonly id: string }) | undefined
   namespace(namespace: { name: string; description: string }): void
@@ -908,7 +914,7 @@ interface ToolDraft {
 }
 
 interface ToolDomain {
-  readonly transform: Transform<ToolDraft>
+  readonly transform: Transform<ToolEditor>
   readonly reload: () => Effect.Effect<void>
 }
 ```
@@ -930,14 +936,14 @@ effect: (ctx) =>
 ```
 
 Register a location-scoped provider through a scoped transform. Providers matching the detected repository type are
-selected automatically; use `draft.default.set` to select a different provider.
+selected automatically; use `editor.default.set` to select a different provider.
 
 ```ts
 effect: (ctx) =>
   Effect.gen(function* () {
     const vcs = ctx.vcs
-    yield* vcs.transform((draft) => {
-      draft.add({
+    yield* vcs.transform((editor) => {
+      editor.add({
         id: "custom",
         name: "Custom VCS",
         info: () => Effect.succeed({ branch: { current: "feature", default: "main" } }),
@@ -945,7 +951,7 @@ effect: (ctx) =>
         status: (scope) => readStatus(scope.worktree),
         diff: (input) => readDiff(input),
       })
-      draft.default.set("custom")
+      editor.default.set("custom")
     })
   }),
 ```
@@ -958,7 +964,7 @@ Schemas: [`Vcs.Info`](../../api/index.md#schema-Vcs.Info), [`Vcs.FileStatus`](..
 [`FileDiff.Info`](../../api/index.md#schema-FileDiff.Info).
 
 ```ts
-interface VcsDraft {
+interface VcsEditor {
   add(definition: VcsDefinition): void
   readonly default: {
     get(): string | undefined
@@ -967,7 +973,7 @@ interface VcsDraft {
 }
 
 interface VcsDomain extends VcsApi<unknown> {
-  readonly transform: Transform<VcsDraft>
+  readonly transform: Transform<VcsEditor>
   readonly reload: () => Effect.Effect<void>
 }
 ```
@@ -994,13 +1000,13 @@ Register an Effect executor and select the default provider. Set the default to 
 effect: (ctx) =>
   Effect.gen(function* () {
     const websearch = ctx.websearch
-    yield* websearch.transform((draft) => {
-      draft.add({
+    yield* websearch.transform((editor) => {
+      editor.add({
         id: "internal",
         name: "Internal search",
         execute: ({ query }) => searchInternal(query),
       })
-      draft.default.set("internal")
+      editor.default.set("internal")
     })
     yield* websearch.reload()
   }),
@@ -1016,7 +1022,7 @@ interface WebSearchDefinition {
   readonly execute: (input: WebSearch.ProviderInput) => Effect.Effect<readonly WebSearch.Result[], unknown>
 }
 
-interface WebSearchDraft {
+interface WebSearchEditor {
   add(definition: WebSearchDefinition): void
   readonly default: {
     get(): string | false | undefined
@@ -1025,7 +1031,7 @@ interface WebSearchDraft {
 }
 
 interface WebSearchDomain extends WebsearchApi<unknown> {
-  readonly transform: Transform<WebSearchDraft>
+  readonly transform: Transform<WebSearchEditor>
   readonly reload: () => Effect.Effect<void>
 }
 ```

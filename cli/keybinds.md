@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/cli/keybinds
 title: "Keybinds"
 description: "Keybinds documentation for OpenCode."
-access_date: 2026-09-02T05:33:51.689Z
-current_date: 2026-09-02T05:33:51.689Z
+access_date: 2026-09-03T05:50:42.670Z
+current_date: 2026-09-03T05:50:42.670Z
 ---
 
 # Keybinds
@@ -351,6 +351,7 @@ The retired `diff.toggle`, `diff.expand`, `diff.expand_all`, `diff.collapse`, an
 | `dialog.mcp.toggle`            | `space`       | Toggle MCP server                   |
 | `dialog.plugins.install`       | `shift+i`     | Install plugin from plugin dialog   |
 | `dialog.plugins.update`        | `ctrl+u`      | Update plugin from plugin dialog    |
+| `dialog.plugins.check`         | `ctrl+r`      | Check for plugin updates            |
 
 ## Terminal And Plugins
 

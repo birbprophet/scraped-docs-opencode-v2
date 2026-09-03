@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/migrate-v1
 title: "Migrate from V1"
 description: "Migrate from V1 documentation for OpenCode."
-access_date: 2026-08-30T17:46:54.764Z
-current_date: 2026-08-30T17:46:54.764Z
+access_date: 2026-09-03T05:50:42.670Z
+current_date: 2026-09-03T05:50:42.670Z
 ---
 
 # Migrate from V1
@@ -405,13 +405,14 @@ See [Models](models.md) for the complete native model shape.
 
 ### Supported fields without direct native equivalents
 
-Most fields that keep the same shape, including `shell`, `model`, `default_agent`, `autoupdate`, `watcher`, `formatter`,
+Most fields that keep the same shape, including `shell`, `model`, `default_agent`, `watcher`, `formatter`,
 `lsp`, `instructions`, `enterprise`, and `tool_output`, require no migration.
 
 The V1 provider filters do not have one-to-one native V2 config fields, but their behavior remains supported:
 
 - `enabled_providers` becomes an internal deny-by-default provider policy followed by allows for the listed providers.
 - `disabled_providers` becomes internal deny policies for the listed providers.
+- `autoupdate` becomes `update`: `false` maps to `"disable"`, `"notify"` remains `"notify"`, and `true` maps to `"auto"`.
 - `small_model` becomes the `model` selection for the built-in `title` agent. Native V2 configuration should use
   `agents.title.model` instead.
 
