@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/config
 title: "Config"
 description: "Config documentation for OpenCode."
-access_date: 2026-09-03T05:50:42.670Z
-current_date: 2026-09-03T05:50:42.670Z
+access_date: 2026-09-04T05:30:46.093Z
+current_date: 2026-09-04T05:30:46.093Z
 ---
 
 # Config
@@ -135,15 +135,13 @@ agents.
 
 ### Updates
 
-Control updates from the global config. Set `update` to `"disable"` to skip
-updates, `"notify"` to report available updates without installing them, or
-`"auto"` to automatically install compatible non-major updates.
-Major updates are reported but never installed automatically.
+Control update checks from the global config. Set `update` to `"disable"` to
+skip them or `"notify"` to show available updates before installing them.
 Project-level values are ignored.
 
 ```jsonc
 {
-  "update": "auto",
+  "update": "notify",
 }
 ```
 

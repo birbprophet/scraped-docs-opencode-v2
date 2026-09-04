@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/api
 title: "API"
 description: "OpenCode HTTP API reference and OpenAPI specification."
-access_date: 2026-09-03T05:50:42.670Z
-current_date: 2026-09-03T05:50:42.670Z
+access_date: 2026-09-04T05:30:46.093Z
+current_date: 2026-09-04T05:30:46.093Z
 ---
 
 get `/api/health` Check server health
@@ -2663,7 +2663,7 @@ Operation ID `v2.fs.read`
 
 get `/api/fs/list` List directory
 
-List direct children of one directory relative to the requested location.
+List direct children using an absolute path or a path relative to the requested location, including parents and siblings outside its directory. Entry paths remain relative to the requested location; listing does not switch locations.
 
 Operation ID `v2.fs.list`
 
@@ -2672,7 +2672,7 @@ Operation ID `v2.fs.list`
 | Name | Location | Type | Description |
 | --- | --- | --- | --- |
 | `location` | query | `object \| null`  `object`  `directory`  `string \| null`  `string`  or  `null`  `workspace`  `string \| null`  `string`  or  `null`  or  `null` | No description |
-| `path` | query | `string \| null`  `string`  or  `null` | No description |
+| `path` | query | `string \| null`  An absolute path or a path relative to the requested location. Defaults to the location directory.  `string`  or  `null` | No description |
 
 ### Responses
 
@@ -4537,9 +4537,15 @@ pattern ^\[^#\]+$
 
 pattern ^\[^#\]+$
 
+`subagent`
+
+`boolean`
+
 `subtask`
 
 `boolean`
+
+Deprecated alias for subagent.
 
 `Config.DirectoryEncoded` object
 

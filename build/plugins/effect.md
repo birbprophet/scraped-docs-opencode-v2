@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/build/plugins/effect
 title: "Effect"
 description: "Effect documentation for OpenCode."
-access_date: 2026-09-03T05:50:42.670Z
-current_date: 2026-09-03T05:50:42.670Z
+access_date: 2026-09-04T05:30:46.093Z
+current_date: 2026-09-04T05:30:46.093Z
 ---
 
 # Effect
@@ -1110,7 +1110,8 @@ effect: (ctx) =>
   }),
 ```
 
-Modify model request settings and optionally scope the hook to one provider.
+Modify model request settings and optionally scope the hook to one provider. The event carries the same `kind` as
+the HTTP hooks below.
 
 ```ts
 effect: (ctx) =>
@@ -1125,14 +1126,18 @@ effect: (ctx) =>
 ```
 
 Modify native provider requests or responses. Their bodies are one-shot streams; clone or replace a body before reading
-it.
+it. Both hooks run for every request a session issues; `event.kind` is `"primary"`, `"compaction"`, `"title"`, or
+`"generate"` depending on which flow issued it.
 
 ```ts
 effect: (ctx) =>
   Effect.gen(function* () {
     const session = ctx.session
     yield* session.hook("http.request", (event) =>
-      Effect.sync(() => event.request.headers.set("x-session-id", event.sessionID)),
+      Effect.sync(() => {
+        event.request.headers.set("x-session-id", event.sessionID)
+        if (event.kind === "title") event.request.headers.set("x-priority", "background")
+      }),
     )
     yield* session.hook("http.response", (event) =>
       Effect.sync(() => {

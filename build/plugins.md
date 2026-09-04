@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/build/plugins
 title: "Overview"
 description: "Overview documentation for OpenCode."
-access_date: 2026-09-03T05:50:42.670Z
-current_date: 2026-09-03T05:50:42.670Z
+access_date: 2026-09-04T05:30:46.093Z
+current_date: 2026-09-04T05:30:46.093Z
 ---
 
 # Overview
@@ -1145,7 +1145,8 @@ Generation options depend on the selected protocol and model:
 
 #### Model request
 
-Modify model request settings and optionally scope the hook to one provider.
+Modify model request settings and optionally scope the hook to one provider. The event carries the same `kind`
+as the HTTP hooks below.
 
 ```ts
 await ctx.session.hook(
@@ -1162,9 +1163,14 @@ await ctx.session.hook(
 Modify native provider requests or responses. Their bodies are one-shot streams; clone or replace a body before reading
 it.
 
+Both hooks run for every request a session issues. `event.kind` says which flow issued it: `"primary"` for the agent
+loop, `"compaction"` for checkpoint summaries, `"title"` for title generation, and `"generate"` for transient
+`ctx.session.generate` calls. Use it instead of the agent ID to tell auxiliary requests apart.
+
 ```ts
 await ctx.session.hook("http.request", (event) => {
   event.request.headers.set("x-session-id", event.sessionID)
+  if (event.kind === "title") event.request.headers.set("x-priority", "background")
 })
 
 await ctx.session.hook("http.response", (event) => {

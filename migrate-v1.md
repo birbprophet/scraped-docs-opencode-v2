@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/migrate-v1
 title: "Migrate from V1"
 description: "Migrate from V1 documentation for OpenCode."
-access_date: 2026-09-03T05:50:42.670Z
-current_date: 2026-09-03T05:50:42.670Z
+access_date: 2026-09-04T05:30:46.093Z
+current_date: 2026-09-04T05:30:46.093Z
 ---
 
 # Migrate from V1
@@ -278,7 +278,7 @@ Existing skill files and automatic `.opencode/skills/` discovery do not change. 
 
 ### Commands
 
-Rename the singular `command` map to `commands`. Join a separate model `variant` to the model reference:
+Rename the singular `command` map to `commands` and `subtask` to `subagent`. Join a separate model `variant` to the model reference:
 
 ```jsonc
 // V1
@@ -287,7 +287,8 @@ Rename the singular `command` map to `commands`. Join a separate model `variant`
     "review": {
       "template": "Review the current changes.",
       "model": "anthropic/claude-sonnet-4-5",
-      "variant": "high"
+      "variant": "high",
+      "subtask": true
     }
   }
 }
@@ -297,13 +298,15 @@ Rename the singular `command` map to `commands`. Join a separate model `variant`
   "commands": {
     "review": {
       "template": "Review the current changes.",
-      "model": "anthropic/claude-sonnet-4-5#high"
+      "model": "anthropic/claude-sonnet-4-5#high",
+      "subagent": true
     }
   }
 }
 ```
 
-`template`, `description`, `agent`, and `subtask` keep their names. Existing Markdown command definitions remain supported.
+`template`, `description`, and `agent` keep their names. Legacy `subtask` remains accepted; delegated commands now run
+automatically in the background and report their results to the parent session. Existing Markdown command definitions remain supported.
 See [Commands](commands.md).
 
 ### References
@@ -412,7 +415,8 @@ The V1 provider filters do not have one-to-one native V2 config fields, but thei
 
 - `enabled_providers` becomes an internal deny-by-default provider policy followed by allows for the listed providers.
 - `disabled_providers` becomes internal deny policies for the listed providers.
-- `autoupdate` becomes `update`: `false` maps to `"disable"`, `"notify"` remains `"notify"`, and `true` maps to `"auto"`.
+- `autoupdate` becomes `update`: `false` maps to `"disable"`, while `"notify"` and `true` map to `"notify"`.
+- The previous V2 value `update: "auto"` is treated as `update: "notify"`.
 - `small_model` becomes the `model` selection for the built-in `title` agent. Native V2 configuration should use
   `agents.title.model` instead.
 
@@ -468,16 +472,19 @@ V1 command files may use `command/` or `commands/`. V2 discovers both. The prefe
 ```
 
 Move files from `command/` to the same relative path under `commands/` to preserve command names. The Markdown body remains
-the command template, and `description`, `agent`, and `subtask` frontmatter keep the same names. If frontmatter has separate
+the command template, and `description` and `agent` frontmatter keep the same names. Rename `subtask` to `subagent` to use
+the native name for background delegation. If frontmatter has separate
 `model` and `variant` fields, append the variant to the model and remove `variant`:
 
 ```yaml
 # V1
 model: anthropic/claude-sonnet-4-5
 variant: high
+subtask: true
 
 # V2
 model: anthropic/claude-sonnet-4-5#high
+subagent: true
 ```
 
 See [Commands](commands.md).

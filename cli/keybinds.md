@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/cli/keybinds
 title: "Keybinds"
 description: "Keybinds documentation for OpenCode."
-access_date: 2026-09-03T05:50:42.670Z
-current_date: 2026-09-03T05:50:42.670Z
+access_date: 2026-09-04T05:30:46.093Z
+current_date: 2026-09-04T05:30:46.093Z
 ---
 
 # Keybinds
@@ -323,7 +323,12 @@ The retired `diff.toggle`, `diff.expand`, `diff.expand_all`, `diff.collapse`, an
 | `composer.subagent.interrupt` | `ctrl+d` | Interrupt subagent   |
 | `composer.shell.up`           | `up`     | Previous shell       |
 | `composer.shell.down`         | `down`   | Next shell           |
+| `composer.shell.select`       | `return` | View shell output    |
 | `composer.shell.kill`         | `ctrl+d` | Kill shell command   |
+
+Select a running command in the **Shell** tab and press **Enter**, or click it, to view captured stdout and stderr.
+Use **↑/↓**, **Page Up/Down**, or **Home** to scroll, **End** to follow new output, and **Esc** to return without stopping the command.
+The viewer shows recent output and stays open after exit; output redirected to a file is not included.
 
 ## Dialogs And Autocomplete
 
