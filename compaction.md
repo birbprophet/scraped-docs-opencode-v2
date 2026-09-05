@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/compaction
 title: "Compaction"
 description: "Compaction documentation for OpenCode."
-access_date: 2026-09-03T05:50:42.670Z
-current_date: 2026-09-03T05:50:42.670Z
+access_date: 2026-09-05T05:29:51.059Z
+current_date: 2026-09-05T05:29:51.059Z
 ---
 
 # Compaction
@@ -43,11 +43,11 @@ Manual compaction is available through session interfaces. See the generated [AP
 operation.
 
 A manual request is durably admitted and wakes the session runner. It can
-compact short histories that would not trigger automatic compaction. If the
-session is busy, compaction runs at the next safe drain boundary before later
-steered or queued prompts are promoted. Repeated requests while one is pending
+compact short histories that would not trigger automatic compaction. By default,
+compaction runs at the next safe step boundary before pending steered or queued
+prompts, even if they were submitted first. Repeated requests while one is pending
 coalesce into that pending request. Whether compaction completes or fails, the
-barrier is then settled so later prompts can proceed.
+barrier is then settled so pending prompts can proceed.
 
 The server operation returns the admitted compaction input; it does not wait
 for summary generation. Clients can then wait for the session or follow the

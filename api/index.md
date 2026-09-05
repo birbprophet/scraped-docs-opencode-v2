@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/api
 title: "API"
 description: "OpenCode HTTP API reference and OpenAPI specification."
-access_date: 2026-09-04T05:30:46.093Z
-current_date: 2026-09-04T05:30:46.093Z
+access_date: 2026-09-05T05:29:51.059Z
+current_date: 2026-09-05T05:29:51.059Z
 ---
 
 get `/api/health` Check server health
@@ -3666,9 +3666,9 @@ Items [Reference.Info](#schema-Reference.Info)
 
 `application/json` [UnauthorizedErrorEncoded](#schema-UnauthorizedErrorEncoded)
 
-get `/api/worktree/{projectID}` List worktrees
+get `/api/worktree` List worktrees
 
-List known local worktrees for a project.
+Discover worktrees through the requested location's strategies and return its project's inventory.
 
 Operation ID `v2.worktree.list`
 
@@ -3676,25 +3676,11 @@ Operation ID `v2.worktree.list`
 
 | Name | Location | Type | Description |
 | --- | --- | --- | --- |
-| `projectID` required | path | `string` | No description |
+| `location` | query | `object \| null`  `object`  `directory`  `string \| null`  `string`  or  `null`  `workspace`  `string \| null`  `string`  or  `null`  or  `null` | No description |
 
-### Responses
+post `/api/worktree` Create worktree
 
-`200` Worktree.List
-
-`application/json` [Worktree.List](#schema-Worktree.List)
-
-`400` InvalidRequestError
-
-`application/json` [InvalidRequestErrorEncoded](#schema-InvalidRequestErrorEncoded)
-
-`401` UnauthorizedError
-
-`application/json` [UnauthorizedErrorEncoded](#schema-UnauthorizedErrorEncoded)
-
-post `/api/worktree/{projectID}` Create worktree
-
-Create a worktree for a project and run its configured setup script.
+Create a local worktree using the location's registered strategy and directory defaults, then run the project's setup script.
 
 Operation ID `v2.worktree.create`
 
@@ -3702,37 +3688,15 @@ Operation ID `v2.worktree.create`
 
 | Name | Location | Type | Description |
 | --- | --- | --- | --- |
-| `projectID` required | path | `string` | No description |
+| `location` | query | `object \| null`  `object`  `directory`  `string \| null`  `string`  or  `null`  `workspace`  `string \| null`  `string`  or  `null`  or  `null` | No description |
 
 ### Request body required
 
-`application/json`
+`application/json` [Worktree.CreateInput](#schema-Worktree.CreateInput)
 
-`object`
+delete `/api/worktree` Remove worktree
 
-`strategy`
-
-`string` required
-
-`from`
-
-`string`
-
-`branch`
-
-`string`
-
-`directory`
-
-`string` required
-
-`name`
-
-`string`
-
-delete `/api/worktree/{projectID}` Remove worktree
-
-Remove a managed worktree from a project.
+Remove a managed worktree from the requested location's project using its recorded strategy.
 
 Operation ID `v2.worktree.remove`
 
@@ -3740,21 +3704,11 @@ Operation ID `v2.worktree.remove`
 
 | Name | Location | Type | Description |
 | --- | --- | --- | --- |
-| `projectID` required | path | `string` | No description |
+| `location` | query | `object \| null`  `object`  `directory`  `string \| null`  `string`  or  `null`  `workspace`  `string \| null`  `string`  or  `null`  or  `null` | No description |
 
 ### Request body required
 
-`application/json`
-
-`object`
-
-`directory`
-
-`string` required
-
-`force`
-
-`boolean` required
+`application/json` [Worktree.RemoveInput](#schema-Worktree.RemoveInput)
 
 ### Responses
 
@@ -3766,9 +3720,9 @@ Operation ID `v2.worktree.remove`
 
 `application/json` [UnauthorizedErrorEncoded](#schema-UnauthorizedErrorEncoded)
 
-post `/api/worktree/{projectID}/refresh` Refresh worktrees
+post `/api/worktree/refresh` Refresh worktrees
 
-Reconcile stored worktrees with the project repositories.
+Discover worktrees from the requested location and reconcile the shared project inventory.
 
 Operation ID `v2.worktree.refresh`
 
@@ -3776,7 +3730,7 @@ Operation ID `v2.worktree.refresh`
 
 | Name | Location | Type | Description |
 | --- | --- | --- | --- |
-| `projectID` required | path | `string` | No description |
+| `location` | query | `object \| null`  `object`  `directory`  `string \| null`  `string`  or  `null`  `workspace`  `string \| null`  `string`  or  `null`  or  `null` | No description |
 
 ### Responses
 
@@ -4784,6 +4738,14 @@ Additional properties [Config.ModelEncoded](#schema-Config.ModelEncoded)
 `duration`
 
 `string`
+
+`Config.Worktree` object
+
+`object`
+
+`directory`
+
+`string` required
 
 `ConfigWebSearch.InfoEncoded` object
 
@@ -8139,6 +8101,10 @@ Values `"completed"`
 
 Values `"auto" | "manual"`
 
+`model` [Model.Ref](#schema-Model.Ref)
+
+`providerState` [Session.Message.ProviderState\_5](#schema-Session.Message.ProviderState_5)
+
 `summary`
 
 `string` required
@@ -8338,6 +8304,10 @@ Values `"model-switched"`
 `object`
 
 `Session.Message.ProviderState_4` object
+
+`object`
+
+`Session.Message.ProviderState_5` object
 
 `object`
 
@@ -9309,6 +9279,30 @@ Reports whether this request destroyed an existing workspace.
 
 True when this request transitioned the workspace from existing to destroyed.
 
+`Worktree.CreateInput` object
+
+`object`
+
+`strategy`
+
+`string`
+
+`from`
+
+`string`
+
+`branch`
+
+`string`
+
+`directory`
+
+`string`
+
+`name`
+
+`string`
+
 `Worktree.Directory` object
 
 `object`
@@ -9334,6 +9328,18 @@ True when this request transitioned the workspace from existing to destroyed.
 `Worktree.Directory[]`
 
 Items [Worktree.Directory](#schema-Worktree.Directory)
+
+`Worktree.RemoveInput` object
+
+`object`
+
+`directory`
+
+`string` required
+
+`force`
+
+`boolean` required
 
 `WorktreeErrorEncoded` object
 

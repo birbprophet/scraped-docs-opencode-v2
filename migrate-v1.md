@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/migrate-v1
 title: "Migrate from V1"
 description: "Migrate from V1 documentation for OpenCode."
-access_date: 2026-09-04T05:30:46.093Z
-current_date: 2026-09-04T05:30:46.093Z
+access_date: 2026-09-05T05:29:51.059Z
+current_date: 2026-09-05T05:29:51.059Z
 ---
 
 # Migrate from V1
@@ -415,8 +415,7 @@ The V1 provider filters do not have one-to-one native V2 config fields, but thei
 
 - `enabled_providers` becomes an internal deny-by-default provider policy followed by allows for the listed providers.
 - `disabled_providers` becomes internal deny policies for the listed providers.
-- `autoupdate` becomes `update`: `false` maps to `"disable"`, while `"notify"` and `true` map to `"notify"`.
-- The previous V2 value `update: "auto"` is treated as `update: "notify"`.
+- `autoupdate` becomes `update`: `false` maps to `"disable"`, `"notify"` maps to `"notify"`, and `true` maps to `"auto"`.
 - `small_model` becomes the `model` selection for the built-in `title` agent. Native V2 configuration should use
   `agents.title.model` instead.
 

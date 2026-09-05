@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/config
 title: "Config"
 description: "Config documentation for OpenCode."
-access_date: 2026-09-04T05:30:46.093Z
-current_date: 2026-09-04T05:30:46.093Z
+access_date: 2026-09-05T05:29:51.059Z
+current_date: 2026-09-05T05:29:51.059Z
 ---
 
 # Config
@@ -136,7 +136,10 @@ agents.
 ### Updates
 
 Control update checks from the global config. Set `update` to `"disable"` to
-skip them or `"notify"` to show available updates before installing them.
+skip them, `"notify"` to show available updates before installing them, or
+`"auto"` to install updates automatically. When omitted, `update` defaults to `"notify"`.
+
+Automatic installation does not restart a running server. Restart it manually to activate the installed update.
 Project-level values are ignored.
 
 ```jsonc
@@ -421,6 +424,25 @@ context.
 ```
 
 See the [references guide](references.md) for shorthand, visibility, and path resolution.
+
+### Worktrees
+
+Set the parent directory for new local worktrees. OpenCode appends the requested or generated worktree name.
+
+```jsonc
+{
+  "worktree": {
+    "directory": "../worktrees",
+  },
+}
+```
+
+Relative paths resolve against the config file that declares them; `~/` resolves against the user's home directory.
+Without this setting, creation uses the server's data directory under `worktree/<first-six-project-ID-characters>`.
+Configuration applies to the caller's location, not every clone sharing a project ID. Changing it does not move existing worktrees.
+
+Git is the built-in default. A [plugin](build/plugins.md#worktrees) that registers a strategy automatically becomes the
+default for its location. Strategy-specific options belong to that plugin, not the `worktree` config object.
 
 ### Plugins
 
