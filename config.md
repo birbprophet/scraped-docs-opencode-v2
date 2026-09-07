@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/config
 title: "Config"
 description: "Config documentation for OpenCode."
-access_date: 2026-09-05T05:29:51.059Z
-current_date: 2026-09-05T05:29:51.059Z
+access_date: 2026-09-07T05:31:35.985Z
+current_date: 2026-09-07T05:31:35.985Z
 ---
 
 # Config
@@ -303,6 +303,26 @@ Set the maximum number of lines and bytes retained from a tool result.
   },
 }
 ```
+
+### Web search
+
+Use `"random"` to randomly choose a search provider for each session and keep using it until it
+returns HTTP 429. OpenCode then retries the query with another available provider.
+
+```jsonc
+{
+  "websearch": {
+    "provider": "random",
+  },
+}
+```
+
+- Rate-limited providers cool down for `Retry-After`, or 60 seconds if it is missing or invalid.
+- When every provider is cooling down, the search fails without waiting.
+- Each session remembers its preferred provider; cooldowns are shared within a Location.
+- State is kept in memory. Moving a session or restarting its Location services resets its preference.
+- API and plugin queries without session context share a Location-level preference.
+- Set `provider` to a provider ID to disable automatic switching, or set `websearch` to `false` to disable search.
 
 ### MCP
 

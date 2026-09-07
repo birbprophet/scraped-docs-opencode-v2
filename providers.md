@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/providers
 title: "Providers"
 description: "Providers documentation for OpenCode."
-access_date: 2026-09-02T05:33:51.689Z
-current_date: 2026-09-02T05:33:51.689Z
+access_date: 2026-09-07T05:31:35.985Z
+current_date: 2026-09-07T05:31:35.985Z
 ---
 
 # Providers
@@ -43,6 +43,19 @@ The `providers` object is keyed by provider ID. Each provider accepts these fiel
 | `headers`  | String-valued HTTP headers added to requests.                   |
 | `body`     | JSON fields merged into request bodies.                         |
 | `models`   | Models to add or override, keyed by catalog model ID.           |
+
+## OpenCode Go
+
+[OpenCode Go](console/go.md) is an optional subscription that provides access to coding models tested by the OpenCode team.
+Subscribe in the [console](https://console.opencode.ai), copy your API key, then run `/connect` in the TUI and select
+**OpenCode Go**:
+
+```text
+/connect
+```
+
+Paste your API key, then run `/models` to select a Go model. See the [Go guide](console/go.md) for setup, usage limits,
+endpoints, and privacy details.
 
 ## Azure OpenAI and Microsoft Foundry
 

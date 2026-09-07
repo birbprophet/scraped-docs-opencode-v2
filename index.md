@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs
 title: "Intro"
 description: "Intro documentation for OpenCode."
-access_date: 2026-08-30T17:46:54.764Z
-current_date: 2026-08-30T17:46:54.764Z
+access_date: 2026-09-07T05:31:35.985Z
+current_date: 2026-09-07T05:31:35.985Z
 ---
 
 # Intro
@@ -41,9 +41,9 @@ directly [in the TUI](cli/providers.md) with `/connect`.
 See [Providers](providers.md) to configure custom providers.
 
 If you'd like easy access to all the best coding models you can try out
-[OpenCode Console](https://console.opencode.ai).
+[OpenCode Console](console.md).
 
-You can also try [OpenCode Go](https://opencode.ai/go) a $10/month subscription
+You can also try [OpenCode Go](console/go.md) a $10/month subscription
 plan that grants you access to the best open source models.
 
 ---

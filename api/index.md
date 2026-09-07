@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/api
 title: "API"
 description: "OpenCode HTTP API reference and OpenAPI specification."
-access_date: 2026-09-05T05:29:51.059Z
-current_date: 2026-09-05T05:29:51.059Z
+access_date: 2026-09-07T05:31:35.985Z
+current_date: 2026-09-07T05:31:35.985Z
 ---
 
 get `/api/health` Check server health
@@ -2191,7 +2191,7 @@ Operation ID `v2.credential.activate`
 
 get `/api/project` List projects patch `/api/project/{projectID}` Update project
 
-Update project display metadata and workspace commands.
+Update the project canonical directory, display metadata, and workspace commands.
 
 Operation ID `v2.project.update`
 
@@ -4756,6 +4756,8 @@ Additional properties [Config.ModelEncoded](#schema-Config.ModelEncoded)
 `"random" | string` required
 
 `"random"`
+
+Reuse a randomly selected provider until it is rate limited, then switch to another available provider.
 
 Values `"random"`
 
