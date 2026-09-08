@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/api
 title: "API"
 description: "OpenCode HTTP API reference and OpenAPI specification."
-access_date: 2026-09-07T05:31:35.985Z
-current_date: 2026-09-07T05:31:35.985Z
+access_date: 2026-09-08T05:31:36.444Z
+current_date: 2026-09-08T05:31:36.444Z
 ---
 
 get `/api/health` Check server health
@@ -4641,53 +4641,7 @@ Values `"context"`
 
 `object`
 
-`Config.ProviderEncoded` object
-
-`object`
-
-`canonical`
-
-`string`
-
-`name`
-
-`string`
-
-`env`
-
-`string[]`
-
-Items
-
-`string`
-
-`package`
-
-`string`
-
-`settings`
-
-`object`
-
-`headers`
-
-`object`
-
-Additional properties
-
-`string`
-
-`body`
-
-`object`
-
-`models`
-
-`object`
-
-Additional properties [Config.ModelEncoded](#schema-Config.ModelEncoded)
-
-`Config.Reference.GitEncoded` object
+`Config.ProviderEncoded` object `Config.Reference.GitEncoded` object
 
 `object`
 
@@ -6451,6 +6405,8 @@ Values `"context"`
 
 `string`
 
+`compaction` [Provider.Compaction](#schema-Provider.Compaction)
+
 `settings`
 
 `object`
@@ -7389,6 +7345,34 @@ Values `"uri"`
 
 `mention` [Prompt.Mention](#schema-Prompt.Mention)
 
+`Provider.Compaction` object | object
+
+`object | object`
+
+`object`
+
+`mode`
+
+`"local"` required
+
+Values `"local"`
+
+or
+
+`object`
+
+`mode`
+
+`"provider"` required
+
+Values `"provider"`
+
+`threshold`
+
+`integer`
+
+\> 0
+
 `Provider.Info` object
 
 `object`
@@ -7418,6 +7402,8 @@ Values `"auto" | "enabled" | "disabled"`
 `package`
 
 `string` required
+
+`compaction` [Provider.Compaction](#schema-Provider.Compaction)
 
 `settings`
 
@@ -8115,6 +8101,8 @@ Values `"auto" | "manual"`
 
 `string` required
 
+`providerContext` [Session.ProviderContext](#schema-Session.ProviderContext)
+
 `Session.Message.Compaction.Failed` object
 
 `object`
@@ -8616,6 +8604,50 @@ Items [Prompt.SkillAttachment](#schema-Prompt.SkillAttachment)
 `"user"` required
 
 Values `"user"`
+
+`Session.ProviderContext` object
+
+`object`
+
+`version`
+
+`1` required
+
+Values `1`
+
+`provenance` [Session.ProviderContext.Provenance](#schema-Session.ProviderContext.Provenance)
+
+`messages`
+
+`object` required
+
+`Session.ProviderContext.Provenance` object
+
+`object`
+
+`providerID`
+
+`string` required
+
+`provider`
+
+`string` required
+
+`modelID`
+
+`string` required
+
+`route`
+
+`string` required
+
+`protocol`
+
+`string` required
+
+`endpoint`
+
+`string` required
 
 `Session.Revert` object
 

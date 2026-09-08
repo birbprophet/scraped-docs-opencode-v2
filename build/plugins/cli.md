@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/build/plugins/cli
 title: "CLI"
 description: "CLI documentation for OpenCode."
-access_date: 2026-09-05T05:29:51.059Z
-current_date: 2026-09-05T05:29:51.059Z
+access_date: 2026-09-08T05:31:36.444Z
+current_date: 2026-09-08T05:31:36.444Z
 ---
 
 # CLI
@@ -11,7 +11,7 @@ current_date: 2026-09-05T05:29:51.059Z
 CLI plugins extend the terminal with commands, routes, slots, Markdown renderers, notifications, and local state.
 
 ```ts title="src/tui.ts"
-import { Plugin } from "@opencode-ai/plugin/tui"
+import { Plugin } from "@opencode/plugin/tui"
 
 export default Plugin.define({
   id: "acme.cli",
@@ -21,7 +21,7 @@ export default Plugin.define({
 })
 ```
 
-Import `@opencode-ai/plugin/tui` directly. OpenCode resolves this import at runtime, so local CLI plugins do not need an
+Import `@opencode/plugin/tui` directly. OpenCode resolves this import at runtime, so local CLI plugins do not need an
 absolute path to an OpenCode checkout.
 
 ## Context
@@ -116,7 +116,7 @@ context.data.session.permission.invalidate(sessionID)
 Forms can be listed, refreshed, replied to, or cancelled at a location.
 
 ```ts
-import type { FormCancelInput, FormReplyInput } from "@opencode-ai/client"
+import type { FormCancelInput, FormReplyInput } from "@opencode/client"
 
 async function handleForm(reply: FormReplyInput, cancel: FormCancelInput) {
   const location = context.location
@@ -229,7 +229,7 @@ const renderer = context.renderer
 Use `usePlugin` to access the current context inside JSX rendered by a route, dialog, or slot.
 
 ```tsx
-import { usePlugin } from "@opencode-ai/plugin/tui"
+import { usePlugin } from "@opencode/plugin/tui"
 
 function Status() {
   const context = usePlugin()
@@ -466,8 +466,8 @@ The slot receives reactive `name`, `sessionID`, `width`, `presentation`, and `fo
 until there is enough room for a side panel.
 
 ```tsx
-import type { PanelInput } from "@opencode-ai/plugin/tui/context"
-import { usePlugin } from "@opencode-ai/plugin/tui"
+import type { PanelInput } from "@opencode/plugin/tui/context"
+import { usePlugin } from "@opencode/plugin/tui"
 
 function ReviewPanel(props: { panel: PanelInput }) {
   const context = usePlugin()
@@ -514,7 +514,7 @@ Expose the CLI plugin through `./tui`; add OpenTUI peers when the plugin renders
     "./tui": "./src/tui.tsx"
   },
   "dependencies": {
-    "@opencode-ai/plugin": "beta"
+    "@opencode/plugin": "beta"
   },
   "peerDependencies": {
     "@opentui/core": ">=0.5.8",
@@ -527,7 +527,7 @@ Expose the CLI plugin through `./tui`; add OpenTUI peers when the plugin renders
 Export `./tui` beside the [main plugin](../plugins.md) for automatic loading.
 
 ```ts title="src/index.ts"
-import { Plugin } from "@opencode-ai/plugin"
+import { Plugin } from "@opencode/plugin"
 
 export default Plugin.define({
   id: "acme.server",

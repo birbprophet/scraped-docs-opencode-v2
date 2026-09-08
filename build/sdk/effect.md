@@ -2,17 +2,17 @@
 url: https://opencode.ai/v2/docs/build/sdk/effect
 title: "Effect"
 description: "Effect documentation for OpenCode."
-access_date: 2026-08-30T17:46:54.764Z
-current_date: 2026-08-30T17:46:54.764Z
+access_date: 2026-09-08T05:31:36.444Z
+current_date: 2026-09-08T05:31:36.444Z
 ---
 
 # Effect
 
-`@opencode-ai/sdk/effect` is the Effect-native embedded SDK. Operations return typed Effects and Streams, and closing
+`@opencode/sdk/effect` is the Effect-native embedded SDK. Operations return typed Effects and Streams, and closing
 the owning Scope releases the router, Location services, fibers, and plugin registrations.
 
 ```sh
-bun add @opencode-ai/sdk@dev effect
+bun add @opencode/sdk@dev effect
 ```
 
 ## Create a host
@@ -20,7 +20,7 @@ bun add @opencode-ai/sdk@dev effect
 Create the host inside `Effect.scoped`, then use its generated API groups or the `sessions` alias.
 
 ```ts
-import { AbsolutePath, Location, OpenCode } from "@opencode-ai/sdk/effect"
+import { AbsolutePath, Location, OpenCode } from "@opencode/sdk/effect"
 import { Effect } from "effect"
 
 const program = Effect.scoped(
@@ -41,7 +41,7 @@ const session = await Effect.runPromise(program)
 ```
 
 The embedded host uses the same schema values, declared errors, request options, and Streams as
-`@opencode-ai/client/effect`.
+`@opencode/client/effect`.
 
 ```ts
 const health = yield* opencode.health.get()
@@ -68,7 +68,7 @@ Customize your OpenCode instance by registering Effect plugins. Use the embedded
 host to customize agents, models, tools, and other behavior:
 
 ```ts
-import { Plugin } from "@opencode-ai/plugin/effect"
+import { Plugin } from "@opencode/plugin/effect"
 import { Effect } from "effect"
 
 const plugin = Plugin.define({
@@ -95,7 +95,7 @@ hooks, transforms, tools, and the complete plugin context.
 Use `OpenCode.layer()` when the embedded host should be an application service.
 
 ```ts
-import { OpenCode } from "@opencode-ai/sdk/effect"
+import { OpenCode } from "@opencode/sdk/effect"
 import { Effect } from "effect"
 
 const program = Effect.gen(function* () {

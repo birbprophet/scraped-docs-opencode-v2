@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/build/plugins
 title: "Overview"
 description: "Overview documentation for OpenCode."
-access_date: 2026-09-07T05:31:35.985Z
-current_date: 2026-09-07T05:31:35.985Z
+access_date: 2026-09-08T05:31:36.444Z
+current_date: 2026-09-08T05:31:36.444Z
 ---
 
 # Overview
@@ -12,7 +12,7 @@ Plugins can modify OpenCode's behavior and add new features. To change the termi
 plugin](plugins/cli.md).
 
 ```ts title=".opencode/plugins/example/index.ts"
-import { Plugin } from "@opencode-ai/plugin"
+import { Plugin } from "@opencode/plugin"
 
 export default Plugin.define({
   id: "example",
@@ -54,7 +54,7 @@ See [Configure plugins](../plugins.md) for more loading and configuration option
 `setup` runs when the plugin loads. It may return a cleanup function that runs when the plugin unloads.
 
 ```ts
-import { Plugin } from "@opencode-ai/plugin"
+import { Plugin } from "@opencode/plugin"
 
 export default Plugin.define({
   id: "example",
@@ -111,7 +111,7 @@ Pass plugin options with the object form in `opencode.json(c)`.
 Read those values from `ctx.options` during `setup`.
 
 ```ts title="plugins/company/index.ts"
-import { Plugin } from "@opencode-ai/plugin"
+import { Plugin } from "@opencode/plugin"
 
 export default Plugin.define({
   id: "company",
@@ -132,7 +132,7 @@ completed.
 Say we have a plugin that adds one model to the catalog.
 
 ```ts title="plugins/models/index.ts"
-import { Plugin } from "@opencode-ai/plugin"
+import { Plugin } from "@opencode/plugin"
 
 export default Plugin.define({
   id: "company.models",
@@ -156,7 +156,7 @@ already read is never modified by later rebuilds.
 A later plugin can enforce a maximum output price across every model, including models added by earlier plugins.
 
 ```ts title="plugins/model-budget/index.ts"
-import { Plugin } from "@opencode-ai/plugin"
+import { Plugin } from "@opencode/plugin"
 
 export default Plugin.define({
   id: "company.model-budget",
@@ -178,7 +178,7 @@ Captured inputs are not watched automatically. Load external data before the syn
 `reload()` after those inputs change.
 
 ```ts title="plugins/models/index.ts"
-import { Plugin } from "@opencode-ai/plugin"
+import { Plugin } from "@opencode/plugin"
 
 export default Plugin.define({
   id: "company.models",
@@ -962,7 +962,7 @@ Register a local worktree strategy using the normal plugin lifecycle. The implem
 option validation and the backend's `create`, `remove`, and `list` operations.
 
 ```ts title="plugins/worktrees/index.ts"
-import { Plugin } from "@opencode-ai/plugin"
+import { Plugin } from "@opencode/plugin"
 import { makeStrategy } from "./strategy"
 
 export default Plugin.define({
@@ -1026,7 +1026,7 @@ await ctx.worktree.remove({
 ```
 
 Missing owners fail removal rather than falling back to Git. A strategy can throw `new Worktree.OperationError({
-message: "Uncommitted changes", forceRequired: true })`, importing `Worktree` from `@opencode-ai/plugin`, to request
+message: "Uncommitted changes", forceRequired: true })`, importing `Worktree` from `@opencode/plugin`, to request
 force confirmation without depending on Core or Git errors.
 
 #### Reference
@@ -1321,7 +1321,7 @@ Retry decisions follow these rules:
 #### Session reference
 
 ```ts
-import type { SessionPrompt } from "@opencode-ai/plugin/promise/session"
+import type { SessionPrompt } from "@opencode/plugin/promise/session"
 
 interface SessionHooks {
   prompt: SessionPrompt
@@ -1492,7 +1492,7 @@ manifest is:
     "./rpc": "./src/rpc.ts"
   },
   "dependencies": {
-    "@opencode-ai/plugin": "beta"
+    "@opencode/plugin": "beta"
   }
 }
 ```
@@ -1512,7 +1512,7 @@ A plugin can support V1 and V2 from the same package entrypoint. Default export
 one object with a V1 `server()` function and a V2 `setup()` function:
 
 ```ts title="src/index.ts"
-import { Plugin } from "@opencode-ai/plugin"
+import { Plugin } from "@opencode/plugin"
 
 export default {
   ...Plugin.define({

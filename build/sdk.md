@@ -2,13 +2,13 @@
 url: https://opencode.ai/v2/docs/build/sdk
 title: "Overview"
 description: "Overview documentation for OpenCode."
-access_date: 2026-09-01T05:31:12.537Z
-current_date: 2026-09-01T05:31:12.537Z
+access_date: 2026-09-08T05:31:36.444Z
+current_date: 2026-09-08T05:31:36.444Z
 ---
 
 # Overview
 
-`@opencode-ai/sdk` hosts OpenCode directly inside your application. Unlike the
+`@opencode/sdk` hosts OpenCode directly inside your application. Unlike the
 [network client](client.md), it assembles the OpenCode server and routes API
 calls through its HTTP router in memory. It opens no HTTP listener and adds no
 network hop between the client and server.
@@ -16,7 +16,7 @@ network hop between the client and server.
 For Cloudflare Durable Objects, see the [Cloudflare guide](sdk/cloudflare.md).
 
 <Callout type="warning">
-  The V2 SDK is beta. Install the current preview with `bun add @opencode-ai/sdk@dev`; its API may change before a
+  The V2 SDK is beta. Install the current preview with `bun add @opencode/sdk@dev`; its API may change before a
   stable release.
 </Callout>
 
@@ -26,7 +26,7 @@ For Cloudflare Durable Objects, see the [Cloudflare guide](sdk/cloudflare.md).
 release its router, Location services, fibers, and scoped plugin registrations:
 
 ```ts
-import { OpenCode } from "@opencode-ai/sdk"
+import { OpenCode } from "@opencode/sdk"
 
 await using opencode = await OpenCode.create()
 const session = await opencode.sessions.create({
@@ -43,7 +43,7 @@ Call `await opencode.close()` explicitly when explicit resource management is
 not available.
 
 The embedded host uses the same Promise values, declared errors, request
-options, and `AsyncIterable` streams as `@opencode-ai/client`. It exposes the
+options, and `AsyncIterable` streams as `@opencode/client`. It exposes the
 full generated client and adds the convenience aliases `sessions` and `events`
 for the session and event groups.
 
@@ -65,8 +65,8 @@ Customize your OpenCode instance by registering plugins. Pass plugins to
 the embedded host starts:
 
 ```ts
-import { Plugin } from "@opencode-ai/plugin"
-import { OpenCode } from "@opencode-ai/sdk"
+import { Plugin } from "@opencode/plugin"
+import { OpenCode } from "@opencode/sdk"
 
 const plugin = Plugin.define({
   id: "customize-agent",

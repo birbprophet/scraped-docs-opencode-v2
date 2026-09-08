@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/migrate-v1
 title: "Migrate from V1"
 description: "Migrate from V1 documentation for OpenCode."
-access_date: 2026-09-05T05:29:51.059Z
-current_date: 2026-09-05T05:29:51.059Z
+access_date: 2026-09-08T05:31:36.444Z
+current_date: 2026-09-08T05:31:36.444Z
 ---
 
 # Migrate from V1
@@ -564,7 +564,7 @@ local modules and dependencies together. See the current beta [Plugins guide](bu
 OpenCode 2 has a revised, more ergonomic server API and a new set of clients. Integrations that call the V1 server API
 must migrate to the V2 API.
 
-Use the `@opencode-ai/client` package to access the new clients. The server API and clients are still being finalized
+Use the `@opencode/client` package to access the new clients. The server API and clients are still being finalized
 during beta, so their contracts may continue to change. See the generated [API reference](api/index.md) for the current endpoints,
 request types, and responses.
 

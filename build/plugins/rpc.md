@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/build/plugins/rpc
 title: "RPC"
 description: "RPC documentation for OpenCode."
-access_date: 2026-09-01T05:31:12.537Z
-current_date: 2026-09-01T05:31:12.537Z
+access_date: 2026-09-08T05:31:36.444Z
+current_date: 2026-09-08T05:31:36.444Z
 ---
 
 # RPC
@@ -16,7 +16,7 @@ called by other plugins or clients.
 Use `Rpc.define` to list the RPC's methods, errors, and events.
 
 ```ts title="src/rpc.ts"
-import { Rpc } from "@opencode-ai/plugin/rpc"
+import { Rpc } from "@opencode/plugin/rpc"
 
 export const Acme = Rpc.define({
   id: "acme",
@@ -135,7 +135,7 @@ Scalars, arrays, `null`, and `undefined` are not valid event data.
 Register the implementation inside `setup`:
 
 ```ts title="src/index.ts"
-import { Plugin } from "@opencode-ai/plugin"
+import { Plugin } from "@opencode/plugin"
 import { Acme } from "./rpc.js"
 
 export default Plugin.define({
@@ -175,7 +175,7 @@ Create an OpenCode client, then use `client.rpc` to create a subclient for the
 RPC:
 
 ```ts
-import { OpenCode } from "@opencode-ai/client"
+import { OpenCode } from "@opencode/client"
 import { Acme } from "opencode-acme-plugin/rpc"
 
 const client = OpenCode.make({
@@ -192,7 +192,7 @@ Plugins already have an OpenCode client. For example, a TUI plugin can create
 the same RPC subclient from `context.client`:
 
 ```ts title="src/tui.ts"
-import { Plugin } from "@opencode-ai/plugin/tui"
+import { Plugin } from "@opencode/plugin/tui"
 import { Acme } from "opencode-acme-plugin/rpc"
 
 export default Plugin.define({

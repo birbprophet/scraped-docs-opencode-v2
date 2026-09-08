@@ -2,24 +2,24 @@
 url: https://opencode.ai/v2/docs/build/plugins/effect
 title: "Effect"
 description: "Effect documentation for OpenCode."
-access_date: 2026-09-04T05:30:46.093Z
-current_date: 2026-09-04T05:30:46.093Z
+access_date: 2026-09-08T05:31:36.444Z
+current_date: 2026-09-08T05:31:36.444Z
 ---
 
 # Effect
 
-`@opencode-ai/plugin/effect` is the Effect-native version of the OpenCode plugin API. Its context operations return
+`@opencode/plugin/effect` is the Effect-native version of the OpenCode plugin API. Its context operations return
 Effects or Streams, callbacks return Effects, and plugin lifetime is represented by `Scope`. Install `effect` with the
 plugin package.
 
 ```sh
-bun add @opencode-ai/plugin@beta effect
+bun add @opencode/plugin@beta effect
 ```
 
 Export an Effect plugin from `.opencode/plugins/` to load it automatically.
 
 ```ts title=".opencode/plugins/concise/index.ts"
-import { Plugin } from "@opencode-ai/plugin/effect"
+import { Plugin } from "@opencode/plugin/effect"
 import { Effect } from "effect"
 
 export default Plugin.define({
@@ -54,7 +54,7 @@ plugins.
 See [Configure plugins](../../plugins.md) for enablement, package resolution, and configuration precedence.
 
 ```ts title="plugins/local-effect/index.ts"
-import { Plugin } from "@opencode-ai/plugin/effect"
+import { Plugin } from "@opencode/plugin/effect"
 import { Effect } from "effect"
 
 export default Plugin.define({
@@ -72,7 +72,7 @@ The `effect` runs when the plugin loads. Its scope closes when the plugin reload
 fibers, and finalizers are released together.
 
 ```ts
-import { Plugin } from "@opencode-ai/plugin/effect"
+import { Plugin } from "@opencode/plugin/effect"
 import { Effect } from "effect"
 
 export default Plugin.define({
@@ -160,7 +160,7 @@ Pass options with the object form in `opencode.json(c)`.
 Read options from `ctx.options`. Narrow unknown values before use.
 
 ```ts title="plugins/company-effect/index.ts"
-import { Plugin } from "@opencode-ai/plugin/effect"
+import { Plugin } from "@opencode/plugin/effect"
 import { Effect } from "effect"
 
 export default Plugin.define({
@@ -179,7 +179,7 @@ Transforms synchronously edit state through an editor. OpenCode applies transfor
 earlier changes. Yielding the registration keeps it in the plugin scope.
 
 ```ts title="plugins/models-effect/index.ts"
-import { Plugin } from "@opencode-ai/plugin/effect"
+import { Plugin } from "@opencode/plugin/effect"
 import { Effect } from "effect"
 
 export default Plugin.define({
@@ -1322,7 +1322,7 @@ entrypoint and declare both runtime dependencies.
     ".": "./src/index.ts"
   },
   "dependencies": {
-    "@opencode-ai/plugin": "beta",
+    "@opencode/plugin": "beta",
     "effect": "4.0.0-rc.111"
   }
 }
@@ -1331,7 +1331,7 @@ entrypoint and declare both runtime dependencies.
 The package entrypoint exports `Plugin.define` with an `effect` function.
 
 ```ts title="src/index.ts"
-import { Plugin } from "@opencode-ai/plugin/effect"
+import { Plugin } from "@opencode/plugin/effect"
 import { Effect } from "effect"
 
 export default Plugin.define({

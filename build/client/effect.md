@@ -2,17 +2,17 @@
 url: https://opencode.ai/v2/docs/build/client/effect
 title: "Effect"
 description: "Effect documentation for OpenCode."
-access_date: 2026-09-01T05:31:12.537Z
-current_date: 2026-09-01T05:31:12.537Z
+access_date: 2026-09-08T05:31:36.444Z
+current_date: 2026-09-08T05:31:36.444Z
 ---
 
 # Effect
 
-`@opencode-ai/client/effect` is the Effect-native client for the OpenCode HTTP API. It returns typed Effects and Streams
+`@opencode/client/effect` is the Effect-native client for the OpenCode HTTP API. It returns typed Effects and Streams
 and decodes responses into OpenCode schema values.
 
 ```sh
-bun add @opencode-ai/client@beta effect
+bun add @opencode/client@beta effect
 ```
 
 ## Create a client
@@ -20,7 +20,7 @@ bun add @opencode-ai/client@beta effect
 Create a client with the server URL, then call methods grouped by API resource.
 
 ```ts
-import { AbsolutePath, Location, OpenCode } from "@opencode-ai/client/effect"
+import { AbsolutePath, Location, OpenCode } from "@opencode/client/effect"
 import { Effect } from "effect"
 import { FetchHttpClient } from "effect/unstable/http"
 
@@ -115,7 +115,7 @@ definitions, schemas, registration, and live subscription semantics.
 
 ## Local background service
 
-The Node-only `@opencode-ai/client/effect/service` entrypoint discovers, starts, authenticates, and stops the local
+The Node-only `@opencode/client/effect/service` entrypoint discovers, starts, authenticates, and stops the local
 background service as Effects.
 
 ```sh
@@ -126,8 +126,8 @@ Create an authenticated client for the ensured service.
 
 ```ts
 import { NodeFileSystem } from "@effect/platform-node"
-import { OpenCode } from "@opencode-ai/client/effect"
-import { Service } from "@opencode-ai/client/effect/service"
+import { OpenCode } from "@opencode/client/effect"
+import { Service } from "@opencode/client/effect/service"
 import { Effect } from "effect"
 import { FetchHttpClient, HttpClient, HttpClientRequest } from "effect/unstable/http"
 

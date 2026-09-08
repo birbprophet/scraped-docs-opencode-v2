@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/models
 title: "Models"
 description: "Models documentation for OpenCode."
-access_date: 2026-08-30T17:46:54.764Z
-current_date: 2026-08-30T17:46:54.764Z
+access_date: 2026-09-08T05:31:36.444Z
+current_date: 2026-09-08T05:31:36.444Z
 ---
 
 # Models
@@ -278,7 +278,7 @@ For an OpenAI-compatible server, define a provider package, endpoint, and at lea
   "providers": {
     "local": {
       "name": "Local server",
-      "package": "@opencode-ai/ai/providers/openai-compatible",
+      "package": "@opencode/ai/providers/openai-compatible",
       "settings": {
         "baseURL": "http://127.0.0.1:1234/v1",
       },

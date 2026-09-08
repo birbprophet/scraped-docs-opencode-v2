@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/config
 title: "Config"
 description: "Config documentation for OpenCode."
-access_date: 2026-09-07T05:31:35.985Z
-current_date: 2026-09-07T05:31:35.985Z
+access_date: 2026-09-08T05:31:36.444Z
+current_date: 2026-09-08T05:31:36.444Z
 ---
 
 # Config
@@ -360,7 +360,29 @@ Control automatic context compaction and how much recent context it preserves.
 }
 ```
 
-See the [compaction guide](compaction.md) for automatic context management.
+Local summaries remain the default. Opt into native provider compaction for both
+automatic and manual requests with a provider or model policy:
+
+```jsonc
+{
+  "providers": {
+    "openai": {
+      "compaction": { "mode": "provider", "threshold": 120000 },
+      "models": {
+        "gpt-4.1": { "compaction": { "mode": "local" } },
+      },
+    },
+  },
+}
+```
+
+A model policy replaces the whole provider policy. The optional positive integer
+`threshold` defaults to the selected model's usable input budget and cannot exceed
+its safe ceiling. Provider checkpoints keep recent user messages within the same
+`compaction.tokens` budget that local summaries use for their retained tail.
+Top-level `compaction.auto: false` disables new automatic compaction without
+discarding installed checkpoints. See the [compaction guide](compaction.md) for
+budgeting and overflow recovery.
 
 ### Session warming
 

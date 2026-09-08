@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/cli/plugins
 title: "Plugins"
 description: "Plugins documentation for OpenCode."
-access_date: 2026-08-31T05:31:00.927Z
-current_date: 2026-08-31T05:31:00.927Z
+access_date: 2026-09-08T05:31:36.444Z
+current_date: 2026-09-08T05:31:36.444Z
 ---
 
 # Plugins
@@ -63,5 +63,5 @@ the same layout as a published package, with server and TUI entrypoints kept tog
 <project>/.opencode/plugins/status/tui.ts
 ```
 
-Discovered plugins can import `@opencode-ai/plugin/tui` directly; OpenCode resolves the package at runtime. See
+Discovered plugins can import `@opencode/plugin/tui` directly; OpenCode resolves the package at runtime. See
 [Building CLI plugins](../build/plugins/cli.md) for examples.

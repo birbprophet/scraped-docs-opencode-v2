@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs
 title: "Intro"
 description: "Intro documentation for OpenCode."
-access_date: 2026-09-07T05:31:35.985Z
-current_date: 2026-09-07T05:31:35.985Z
+access_date: 2026-09-08T05:31:36.444Z
+current_date: 2026-09-08T05:31:36.444Z
 ---
 
 # Intro
@@ -18,18 +18,22 @@ versions installed and run them side by side.
 
 <div data-install-code>
   <CodeBlock
-    code={`$ npm install -g @opencode-ai/cli@beta
-$ bun install -g --trust @opencode-ai/cli@beta
-$ pnpm add -g --allow-build=@opencode-ai/cli @opencode-ai/cli@beta
-$ yarn global add @opencode-ai/cli@beta
+    code={`$ npm install -g @opencode/cli@beta
+$ bun install -g --trust @opencode/cli@beta
+$ pnpm add -g --allow-build=@opencode/cli @opencode/cli@beta
+$ yarn global add @opencode/cli@beta
+$ paru -S opencode-beta
 $ curl -fsSL https://opencode.ai/v2/install | bash`}
   />
 </div>
 
-The package uses a trusted postinstall script to select the native `opencode2` binary for your platform. The Bun and pnpm
+The npm package uses a trusted postinstall script to select the native `opencode2` binary for your platform. The Bun and pnpm
 commands above explicitly allow that script to run.
 
-Homebrew, Arch Linux, Windows package managers, Docker, and standalone binaries are not supported during the beta.
+On Arch Linux, install [`opencode-beta`](https://aur.archlinux.org/packages/opencode-beta) from the AUR with `paru`.
+It provides the `opencode2` command; manage updates through your AUR helper.
+
+Homebrew, Windows package managers, Docker, and standalone binaries are not supported during the beta.
 
 ---
 

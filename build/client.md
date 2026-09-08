@@ -2,13 +2,13 @@
 url: https://opencode.ai/v2/docs/build/client
 title: "JavaScript"
 description: "JavaScript documentation for OpenCode."
-access_date: 2026-09-01T05:31:12.537Z
-current_date: 2026-09-01T05:31:12.537Z
+access_date: 2026-09-08T05:31:36.444Z
+current_date: 2026-09-08T05:31:36.444Z
 ---
 
 # JavaScript
 
-`@opencode-ai/client` is the TypeScript client for the OpenCode HTTP
+`@opencode/client` is the TypeScript client for the OpenCode HTTP
 API. Use it when your application connects to an OpenCode server over the
 network. Its native types and methods are generated from the same contract as the
 [API reference](../api/index.md). Plugin RPC types come from imported RPC definitions.
@@ -20,7 +20,7 @@ network. Its native types and methods are generated from the same contract as th
 ## Install
 
 ```sh
-bun add @opencode-ai/client@beta
+bun add @opencode/client@beta
 ```
 
 ## Create a client
@@ -28,7 +28,7 @@ bun add @opencode-ai/client@beta
 Create a client with the server URL, then call methods grouped by API resource:
 
 ```ts
-import { OpenCode } from "@opencode-ai/client"
+import { OpenCode } from "@opencode/client"
 
 const client = OpenCode.make({
   baseUrl: "http://localhost:4096",
@@ -90,7 +90,7 @@ subscriber receives the current `server.connected` marker, not past business eve
 Import a plugin's shared contract and pass it to `client.rpc`:
 
 ```ts
-import { OpenCode } from "@opencode-ai/client"
+import { OpenCode } from "@opencode/client"
 import { Acme } from "opencode-acme-plugin/rpc"
 
 const acme = client.rpc(Acme)
@@ -148,7 +148,7 @@ definition and registration API. Any HTTP client can also invoke the generic
 
 The main client entrypoints are browser-compatible and do not include local
 process management. In a Node application, import the native Promise service
-API from `@opencode-ai/client/service`.
+API from `@opencode/client/service`.
 
 - `Service.discover()` returns a healthy registered endpoint without starting
   a process.
@@ -157,8 +157,8 @@ API from `@opencode-ai/client/service`.
 - `Service.headers(endpoint)` creates the authentication headers for a client.
 
 ```ts
-import { OpenCode } from "@opencode-ai/client"
-import { Service } from "@opencode-ai/client/service"
+import { OpenCode } from "@opencode/client"
+import { Service } from "@opencode/client/service"
 
 const endpoint = await Service.ensure()
 const client = OpenCode.make({

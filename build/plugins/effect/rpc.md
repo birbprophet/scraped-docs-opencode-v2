@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/build/plugins/effect/rpc
 title: "RPC"
 description: "RPC documentation for OpenCode."
-access_date: 2026-09-01T05:31:12.537Z
-current_date: 2026-09-01T05:31:12.537Z
+access_date: 2026-09-08T05:31:36.444Z
+current_date: 2026-09-08T05:31:36.444Z
 ---
 
 # RPC
@@ -16,7 +16,7 @@ Streams.
 Use `Rpc.define` with Effect Schema to define the RPC.
 
 ```ts title="src/rpc.ts"
-import { Rpc } from "@opencode-ai/plugin/rpc"
+import { Rpc } from "@opencode/plugin/rpc"
 import { Schema } from "effect"
 
 export const Acme = Rpc.define({
@@ -87,7 +87,7 @@ events: {
 Register the implementation from the plugin Effect:
 
 ```ts title="src/index.ts"
-import { Plugin } from "@opencode-ai/plugin/effect"
+import { Plugin } from "@opencode/plugin/effect"
 import { Effect } from "effect"
 import { Acme } from "./rpc.js"
 
@@ -126,7 +126,7 @@ Once the RPC is registered, it can be called over HTTP or from another plugin.
 Create the Effect client, then create the RPC subclient:
 
 ```ts
-import { OpenCode } from "@opencode-ai/client/effect"
+import { OpenCode } from "@opencode/client/effect"
 import { Effect } from "effect"
 import { FetchHttpClient } from "effect/unstable/http"
 import { Acme } from "opencode-acme-plugin/rpc"
