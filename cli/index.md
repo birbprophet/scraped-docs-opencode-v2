@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/cli
 title: "Intro"
 description: "Intro documentation for OpenCode."
-access_date: 2026-08-30T17:46:54.764Z
-current_date: 2026-08-30T17:46:54.764Z
+access_date: 2026-09-09T05:31:22.457Z
+current_date: 2026-09-09T05:31:22.457Z
 ---
 
 # Intro
@@ -62,3 +62,26 @@ opencode2 --server http://localhost:4096
 ```
 
 See [Troubleshooting](../troubleshooting.md) for shared service diagnostics and the [API reference](../api/index.md) for server endpoints.
+
+## Uninstall
+
+Preview the files and installation that will be removed:
+
+```bash
+opencode2 uninstall --dry-run
+```
+
+Run `opencode2 uninstall` to confirm removal. OpenCode stops registered background services and persistent terminals before
+removing global data, cache, configuration, and state. These directories are shared by OpenCode versions and channels.
+
+To retain configuration and session data:
+
+```bash
+opencode2 uninstall --keep-config --keep-data
+```
+
+- `--keep-config` (`-c`) retains configuration files.
+- `--keep-data` (`-d`) retains session data and snapshots. Cache and state are still removed.
+- `--force` (`-f`) skips confirmation; use it for noninteractive removal.
+- Package-manager installations use the detected package manager. Curl installations print the final command to remove
+  the executable manually.

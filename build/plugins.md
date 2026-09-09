@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/build/plugins
 title: "Overview"
 description: "Overview documentation for OpenCode."
-access_date: 2026-09-08T05:31:36.444Z
-current_date: 2026-09-08T05:31:36.444Z
+access_date: 2026-09-09T05:31:22.457Z
+current_date: 2026-09-09T05:31:22.457Z
 ---
 
 # Overview
@@ -1031,8 +1031,12 @@ force confirmation without depending on Core or Git errors.
 
 #### Reference
 
-Implementations receive the final destination after naming and collision handling. Return that directory from `create`;
-`list` must report only directories the strategy owns, plus any repository roots. Core owns inventory and startup commands.
+Implementations receive a suggested destination after naming and collision handling. Return the actual directory from
+`create`; it may differ when a backend requires its own layout. OpenCode resolves the returned path and uses it for
+inventory, startup commands, and the API result. The returned directory must exist.
+
+Strategies choosing another destination handle naming collisions there. OpenCode still creates the suggested parent
+directory before calling the strategy. `list` must report only directories the strategy owns, plus any repository roots.
 
 ```ts
 interface WorktreeDefinition {

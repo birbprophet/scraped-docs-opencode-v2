@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/api
 title: "API"
 description: "OpenCode HTTP API reference and OpenAPI specification."
-access_date: 2026-09-08T05:31:36.444Z
-current_date: 2026-09-08T05:31:36.444Z
+access_date: 2026-09-09T05:31:22.457Z
+current_date: 2026-09-09T05:31:22.457Z
 ---
 
 get `/api/health` Check server health
@@ -539,6 +539,22 @@ Operation ID `v2.session.remove`
 | Name | Location | Type | Description |
 | --- | --- | --- | --- |
 | `sessionID` required | path | `string`  pattern ^ses | No description |
+
+### Responses
+
+`204` <No Content>
+
+`400` InvalidRequestError
+
+`application/json` [InvalidRequestErrorEncoded](#schema-InvalidRequestErrorEncoded)
+
+`401` UnauthorizedError
+
+`application/json` [UnauthorizedErrorEncoded](#schema-UnauthorizedErrorEncoded)
+
+`404` SessionNotFoundError
+
+`application/json` [SessionNotFoundErrorEncoded](#schema-SessionNotFoundErrorEncoded)
 
 post `/api/session/{sessionID}/fork` Fork session
 
@@ -1302,29 +1318,6 @@ Operation ID `v2.session.message`
 | --- | --- | --- | --- |
 | `sessionID` required | path | `string`  pattern ^ses | No description |
 | `messageID` required | path | `string`  pattern ^msg\_ | No description |
-
-patch `/api/session/{sessionID}/message/{messageID}` Update assistant message content
-
-Replace the content of a completed assistant message in an idle session.
-
-Operation ID `v2.session.messageUpdate`
-
-### Parameters
-
-| Name | Location | Type | Description |
-| --- | --- | --- | --- |
-| `sessionID` required | path | `string`  pattern ^ses | No description |
-| `messageID` required | path | `string`  pattern ^msg\_ | No description |
-
-### Request body required
-
-`application/json`
-
-`object`
-
-`content`
-
-`Session.Message.Assistant.Text | Session.Message.Assistant.Reasoning | Session.Message.Assistant.Tool[]` required
 
 put `/api/session/{sessionID}/environment` Set session environment
 

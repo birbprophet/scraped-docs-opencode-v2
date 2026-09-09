@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/config
 title: "Config"
 description: "Config documentation for OpenCode."
-access_date: 2026-09-08T05:31:36.444Z
-current_date: 2026-09-08T05:31:36.444Z
+access_date: 2026-09-09T05:31:22.457Z
+current_date: 2026-09-09T05:31:22.457Z
 ---
 
 # Config
@@ -479,7 +479,20 @@ Set the parent directory for new local worktrees. OpenCode appends the requested
 }
 ```
 
-Relative paths resolve against the config file that declares them; `~/` resolves against the user's home directory.
+Relative paths resolve against the project's primary checkout, including when called from a subdirectory or linked
+worktree. This applies to global and project configuration alike; absolute paths are used as-is, and `~/` resolves
+against the user's home directory.
+
+For example, this global configuration places new worktrees under each project's own `.lane/trees/` directory:
+
+```jsonc
+{
+  "worktree": {
+    "directory": ".lane/trees",
+  },
+}
+```
+
 Without this setting, creation uses the server's data directory under `worktree/<first-six-project-ID-characters>`.
 Configuration applies to the caller's location, not every clone sharing a project ID. Changing it does not move existing worktrees.
 

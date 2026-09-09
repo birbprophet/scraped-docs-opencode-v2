@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/cli/keybinds
 title: "Keybinds"
 description: "Keybinds documentation for OpenCode."
-access_date: 2026-09-04T05:30:46.093Z
-current_date: 2026-09-04T05:30:46.093Z
+access_date: 2026-09-09T05:31:22.457Z
+current_date: 2026-09-09T05:31:22.457Z
 ---
 
 # Keybinds
@@ -104,6 +104,22 @@ Unknown command IDs are rejected.
 | `server.pair`              | `none`                    | Pair device                         |
 | `service.restart`          | `none`                    | Restart service                     |
 | `permission.mode`          | `none`                    | Toggle auto-approve permissions     |
+
+## Mini
+
+The `app.clear` command works only in [`opencode2 mini`](index.md). Press `ctrl+l` to clear the visible screen and draw the prompt again. The terminal keeps the scrollback.
+
+```json title="cli.json"
+{
+  "keybinds": {
+    "app.clear": "ctrl+l"
+  }
+}
+```
+
+| ID          | Default  | Description      |
+| ----------- | -------- | ---------------- |
+| `app.clear` | `ctrl+l` | Clear the screen |
 
 ## Diff Viewer
 
