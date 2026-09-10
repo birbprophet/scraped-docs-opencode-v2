@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/build/plugins/effect
 title: "Effect"
 description: "Effect documentation for OpenCode."
-access_date: 2026-09-08T05:31:36.444Z
-current_date: 2026-09-08T05:31:36.444Z
+access_date: 2026-09-10T05:30:37.846Z
+current_date: 2026-09-10T05:30:37.846Z
 ---
 
 # Effect
@@ -1095,7 +1095,9 @@ effect: (ctx) =>
 
 ### Sessions
 
-Modify assembled system instructions, messages, or tools immediately before model dispatch.
+Modify assembled system instructions, messages, or tools immediately before model dispatch. `context` runs for the
+agent loop; `compaction`, `generate`, and `title` run for those auxiliary requests. `compaction` and `title` accept a
+`result` that skips the model call.
 
 ```ts
 effect: (ctx) =>
@@ -1105,6 +1107,11 @@ effect: (ctx) =>
       Effect.sync(() => {
         event.system.push({ text: "Keep the review focused on correctness." })
         delete event.tools.write
+      }),
+    )
+    yield* session.hook("compaction", (event) =>
+      Effect.map(summarize(event.messages), (summary) => {
+        event.result = { summary }
       }),
     )
   }),
@@ -1184,6 +1191,9 @@ Context-overflow recovery remains separate because it compacts the conversation 
 ```ts
 interface SessionHooks {
   readonly context: SessionContext
+  readonly compaction: SessionCompaction
+  readonly generate: SessionGenerate
+  readonly title: SessionTitle
   readonly "model.request": SessionModelRequest
   readonly "http.request": SessionHttpRequest
   readonly "http.response": SessionHttpResponse

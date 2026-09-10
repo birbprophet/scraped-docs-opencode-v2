@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/api
 title: "API"
 description: "OpenCode HTTP API reference and OpenAPI specification."
-access_date: 2026-09-09T05:31:22.457Z
-current_date: 2026-09-09T05:31:22.457Z
+access_date: 2026-09-10T05:30:37.846Z
+current_date: 2026-09-10T05:30:37.846Z
 ---
 
 get `/api/health` Check server health
@@ -1403,7 +1403,7 @@ min 0
 
 get `/api/session/{sessionID}/message` Get session messages
 
-Retrieve projected messages for a session. Items keep the requested order across pages; use cursor.next or cursor.previous to move through the ordered timeline.
+Retrieve projected messages for a session, optionally filtered by type. Items keep the requested order across pages; use cursor.next or cursor.previous to move through the ordered timeline, passing the same type filter on each page.
 
 Operation ID `v2.message.list`
 
@@ -1415,6 +1415,7 @@ Operation ID `v2.message.list`
 | `limit` | query | `string \| null`  Maximum number of messages to return. When omitted, the endpoint returns its default page size.  `string`  or  `null` | No description |
 | `order` | query | `"asc" \| "desc" \| null`  Message order for the first page. Use desc for newest first or asc for oldest first.  `"asc" \| "desc"`  Values `"asc" \| "desc"`  or  `null` | No description |
 | `cursor` | query | `string \| null`  `string`  Opaque pagination cursor returned as cursor.previous or cursor.next in the previous response. Do not combine with order.  or  `null` | No description |
+| `type` | query | `"agent-switched" \| "model-switched" \| "location-switched" \| "user" \| "synthetic" \| "system" \| "skill" \| "shell" \| "assistant" \| "compaction" \| null`  Filter by message type before pagination. When omitted, all message types are returned. Pass the same type when following cursors.  `"agent-switched" \| "model-switched" \| "location-switched" \| "user" \| "synthetic" \| "system" \| "skill" \| "shell" \| "assistant" \| "compaction"`  Values `"agent-switched" \| "model-switched" \| "location-switched" \| "user" \| "synthetic" \| "system" \| "skill" \| "shell" \| "assistant" \| "compaction"`  or  `null` | No description |
 
 get `/api/model` List models
 
@@ -6400,6 +6401,10 @@ Values `"context"`
 
 `compaction` [Provider.Compaction](#schema-Provider.Compaction)
 
+`websocket`
+
+`boolean`
+
 `settings`
 
 `object`
@@ -7398,6 +7403,10 @@ Values `"auto" | "enabled" | "disabled"`
 
 `compaction` [Provider.Compaction](#schema-Provider.Compaction)
 
+`websocket`
+
+`boolean`
+
 `settings`
 
 `object`
@@ -8042,61 +8051,7 @@ Values `"text"`
 
 `state` [Session.Message.ProviderState](#schema-Session.Message.ProviderState)
 
-`Session.Message.Assistant.Tool` object `Session.Message.Compaction` Session.Message.Compaction.Running | Session.Message.Compaction.Completed | Session.Message.Compaction.Failed `Session.Message.Compaction.Completed` object
-
-`object`
-
-`type`
-
-`"compaction"` required
-
-Values `"compaction"`
-
-`id`
-
-`string` required
-
-pattern ^msg\_
-
-`metadata`
-
-`object`
-
-`time`
-
-`object` required
-
-`created`
-
-`number` required
-
-`status`
-
-`"completed"` required
-
-Values `"completed"`
-
-`reason`
-
-`"auto" | "manual"` required
-
-Values `"auto" | "manual"`
-
-`model` [Model.Ref](#schema-Model.Ref)
-
-`providerState` [Session.Message.ProviderState\_5](#schema-Session.Message.ProviderState_5)
-
-`summary`
-
-`string` required
-
-`recent`
-
-`string` required
-
-`providerContext` [Session.ProviderContext](#schema-Session.ProviderContext)
-
-`Session.Message.Compaction.Failed` object
+`Session.Message.Assistant.Tool` object `Session.Message.Compaction` Session.Message.Compaction.Running | Session.Message.Compaction.Completed | Session.Message.Compaction.Failed `Session.Message.Compaction.Completed` object `Session.Message.Compaction.Failed` object
 
 `object`
 
@@ -8137,6 +8092,10 @@ Values `"failed"`
 Values `"auto" | "manual"`
 
 `error` [Session.StructuredError](#schema-Session.StructuredError)
+
+`cost` [Money.USD](#schema-Money.USD)
+
+`tokens` [TokenUsage.Info](#schema-TokenUsage.Info)
 
 `Session.Message.Compaction.Running` object
 

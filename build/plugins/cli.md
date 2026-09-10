@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/build/plugins/cli
 title: "CLI"
 description: "CLI documentation for OpenCode."
-access_date: 2026-09-08T05:31:36.444Z
-current_date: 2026-09-08T05:31:36.444Z
+access_date: 2026-09-10T05:30:37.846Z
+current_date: 2026-09-10T05:30:37.846Z
 ---
 
 # CLI
@@ -381,13 +381,15 @@ context.ui.router.navigate({ type: "home" })
 return unregister
 ```
 
-Tabs can be listed, opened, focused, and closed when session tabs are enabled.
+Tabs can be listed, opened, focused, moved, and closed when session tabs are enabled. `open` leaves focus unchanged;
+`focus` opens the tab when needed.
 
 ```ts
 if (context.ui.tabs.enabled()) {
-  context.ui.tabs.open(sessionID)
-  const tabs = context.ui.tabs.list()
+  context.ui.tabs.open(backgroundSessionID)
   context.ui.tabs.focus(sessionID)
+  const tabs = context.ui.tabs.list()
+  context.ui.tabs.move(backgroundSessionID, tabs.length - 1)
   context.ui.tabs.close(sessionID)
   context.ui.tabs.close()
 }

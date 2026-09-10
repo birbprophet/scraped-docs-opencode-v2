@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/build/plugins
 title: "Overview"
 description: "Overview documentation for OpenCode."
-access_date: 2026-09-09T05:31:22.457Z
-current_date: 2026-09-09T05:31:22.457Z
+access_date: 2026-09-10T05:30:37.846Z
+current_date: 2026-09-10T05:30:37.846Z
 ---
 
 # Overview
@@ -1203,30 +1203,39 @@ Keep prompt hooks retry-safe. They are not an exactly-once side-effect boundary:
 - Concurrent submissions can run hooks more than once, but only the first successful admission wins.
 - Prompt hooks transform input and do not expose a typed rejection API.
 
-#### Model context
+#### Model requests
 
-Modify assembled system instructions, messages, tools, generation settings, or provider options immediately before model
-dispatch.
+Modify assembled system instructions, messages, tools, or request options immediately before model dispatch. Each
+kind of request a session issues has its own hook, so a plugin can treat the agent loop and auxiliary requests
+differently:
+
+- `context` runs for the agent loop, including tool-driven continuations.
+- `compaction` runs for checkpoint summaries. `messages` is the transcript being summarized; OpenCode appends its
+  summary prompt after hooks run. Set `result` to record the compaction yourself and skip the model call; it takes the
+  same fields as a completed compaction message.
+- `generate` runs for transient `ctx.session.generate` calls.
+- `title` runs for title generation. It has no `agent` or `tools`. Set `result` to supply the title yourself.
 
 ```ts
 await ctx.session.hook("context", (event) => {
   event.system.push({ text: "Keep the review focused on correctness." })
   delete event.tools.write
-  event.generation.temperature = 0.2
-  event.generation.maxTokens = 8_000
+  event.options.temperature = 0.2
+  event.options.maxTokens = 8_000
+})
+
+await ctx.session.hook("compaction", async (event) => {
+  event.result = { summary: await summarize(event.messages) }
 })
 ```
 
-Context changes affect only the outgoing model call, not persisted history or
-configuration. The hook runs again for subsequent calls such as tool-driven
-continuations, transient session generation, and compaction, but not for title requests.
-
-Compaction context hooks receive the selected session agent. Its model-request
-and HTTP hooks retain the `compaction` agent identity for provider-specific handling.
+Changes affect only the outgoing model call, not persisted history or configuration. A hook that should apply to
+every request must register for each kind.
 
 Request overrides follow these rules:
 
-- `generation` and `providerOptions` start empty for each model call; they do not contain resolved model settings.
+- `options` starts empty for each model call; it does not contain resolved model settings.
+- Typed keys are generation settings; any other key is passed to the selected protocol as a provider option.
 - Hooks run in registration order and see overrides made by earlier hooks.
 - Request overrides take precedence over model defaults, which take precedence over route defaults.
 - Provider option objects merge recursively; arrays and scalar values replace earlier values.
@@ -1242,7 +1251,7 @@ settings to the matching provider. For example, OpenAI Responses uses `reasoning
 await ctx.session.hook(
   "context",
   (event) => {
-    event.providerOptions.reasoningEffort = "high"
+    event.options.reasoningEffort = "high"
   },
   { providerID: "openai" },
 )
@@ -1330,6 +1339,9 @@ import type { SessionPrompt } from "@opencode/plugin/promise/session"
 interface SessionHooks {
   prompt: SessionPrompt
   context: SessionContextHook
+  compaction: SessionContextHook & { result?: SessionCompactionResult }
+  generate: SessionContextHook
+  title: SessionRequestHook & { result?: string }
   "model.request": SessionModelRequestHook
   "http.request": SessionHttpRequestHook
   "http.response": SessionHttpResponseHook
@@ -1347,14 +1359,12 @@ interface SessionRetryHook {
   decision: RetryDecision
 }
 
-interface SessionContextHook {
+interface SessionRequestHook {
   readonly sessionID: string
-  readonly agent: string
   readonly model: { providerID: string; id: string; variant?: string }
   system: SystemPart[]
   messages: Message[]
-  tools: Record<string, { description: string; input: JsonSchema }>
-  generation: {
+  options: {
     maxTokens?: number
     temperature?: number
     topP?: number
@@ -1363,8 +1373,19 @@ interface SessionContextHook {
     presencePenalty?: number
     seed?: number
     stop?: string[]
-  }
-  providerOptions: Record<string, unknown>
+  } & Record<string, unknown>
+}
+
+interface SessionContextHook extends SessionRequestHook {
+  readonly agent: string
+  tools: Record<string, { description: string; input: JsonSchema }>
+}
+
+interface SessionCompactionResult {
+  summary: string
+  providerState?: Record<string, unknown>
+  metadata?: Record<string, unknown>
+  tokens?: TokenUsage
 }
 
 interface SessionHookContext {

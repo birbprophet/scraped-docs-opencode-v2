@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/cli
 title: "Intro"
 description: "Intro documentation for OpenCode."
-access_date: 2026-09-09T05:31:22.457Z
-current_date: 2026-09-09T05:31:22.457Z
+access_date: 2026-09-10T05:30:37.846Z
+current_date: 2026-09-10T05:30:37.846Z
 ---
 
 # Intro
@@ -62,6 +62,25 @@ opencode2 --server http://localhost:4096
 ```
 
 See [Troubleshooting](../troubleshooting.md) for shared service diagnostics and the [API reference](../api/index.md) for server endpoints.
+
+## Paths
+
+Print a specific local path for use with other tools:
+
+```bash
+opencode2 debug paths db
+sqlite3 "$(opencode2 debug paths db)"
+```
+
+The optional selector accepts `db`, `home`, `data`, `config`, `cache`, `state`, `tmp`, `bin`, `log`, or `repos` and prints
+only the path and a newline. The database path respects the release channel and `OPENCODE_DB`; relative database overrides
+resolve under the data directory, and `:memory:` is printed as-is. This command does not start a server or open the database.
+
+Omit the selector to show all paths with labels:
+
+```bash
+opencode2 debug paths
+```
 
 ## Uninstall
 

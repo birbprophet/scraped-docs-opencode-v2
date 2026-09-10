@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/config
 title: "Config"
 description: "Config documentation for OpenCode."
-access_date: 2026-09-09T05:31:22.457Z
-current_date: 2026-09-09T05:31:22.457Z
+access_date: 2026-09-10T05:30:37.846Z
+current_date: 2026-09-10T05:30:37.846Z
 ---
 
 # Config
@@ -544,4 +544,7 @@ headers, and model variants.
 }
 ```
 
-See the [providers guide](providers.md) for credentials, custom endpoints, provider packages, and model configuration.
+`websocket: true` on a provider or model opts into its supported session
+WebSocket; a model policy overrides the provider policy.
+
+See the [providers guide](providers.md) for credentials, custom endpoints, provider packages, the WebSocket transport, and model configuration.
