@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/build/client
 title: "JavaScript"
 description: "JavaScript documentation for OpenCode."
-access_date: 2026-09-08T05:31:36.444Z
-current_date: 2026-09-08T05:31:36.444Z
+access_date: 2026-09-11T05:30:56.426Z
+current_date: 2026-09-11T05:30:56.426Z
 ---
 
 # JavaScript
@@ -12,10 +12,6 @@ current_date: 2026-09-08T05:31:36.444Z
 API. Use it when your application connects to an OpenCode server over the
 network. Its native types and methods are generated from the same contract as the
 [API reference](../api/index.md). Plugin RPC types come from imported RPC definitions.
-
-<Callout type="warning">
-  The V2 API and client are beta. Method names, inputs, and outputs may change before the stable release.
-</Callout>
 
 ## Install
 

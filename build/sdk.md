@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/build/sdk
 title: "Overview"
 description: "Overview documentation for OpenCode."
-access_date: 2026-09-08T05:31:36.444Z
-current_date: 2026-09-08T05:31:36.444Z
+access_date: 2026-09-11T05:30:56.426Z
+current_date: 2026-09-11T05:30:56.426Z
 ---
 
 # Overview
@@ -15,10 +15,11 @@ network hop between the client and server.
 
 For Cloudflare Durable Objects, see the [Cloudflare guide](sdk/cloudflare.md).
 
-<Callout type="warning">
-  The V2 SDK is beta. Install the current preview with `bun add @opencode/sdk@dev`; its API may change before a
-  stable release.
-</Callout>
+Install the SDK:
+
+```sh
+bun add @opencode/sdk@beta
+```
 
 ## Create a host
 

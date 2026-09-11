@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/build/sdk/effect
 title: "Effect"
 description: "Effect documentation for OpenCode."
-access_date: 2026-09-08T05:31:36.444Z
-current_date: 2026-09-08T05:31:36.444Z
+access_date: 2026-09-11T05:30:56.426Z
+current_date: 2026-09-11T05:30:56.426Z
 ---
 
 # Effect
@@ -12,7 +12,7 @@ current_date: 2026-09-08T05:31:36.444Z
 the owning Scope releases the router, Location services, fibers, and plugin registrations.
 
 ```sh
-bun add @opencode/sdk@dev effect
+bun add @opencode/sdk@beta effect
 ```
 
 ## Create a host

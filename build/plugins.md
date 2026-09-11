@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/build/plugins
 title: "Overview"
 description: "Overview documentation for OpenCode."
-access_date: 2026-09-10T05:30:37.846Z
-current_date: 2026-09-10T05:30:37.846Z
+access_date: 2026-09-11T05:30:56.426Z
+current_date: 2026-09-11T05:30:56.426Z
 ---
 
 # Overview
@@ -660,6 +660,16 @@ Inspect or resolve pending permission requests.
 const pending = await ctx.permission.list({ sessionID })
 const request = await ctx.permission.get({ sessionID, requestID })
 await ctx.permission.reply({ sessionID, requestID, reply: "once" })
+```
+
+Replace the session-scoped permission rules. They are evaluated after the agent's rules, and the
+last matching rule wins. Child sessions inherit the rules in effect when they are created.
+
+```ts
+await ctx.permission.rules({
+  sessionID,
+  permissions: [{ action: "edit", resource: "/path/to/original/checkout/**", effect: "deny" }],
+})
 ```
 
 ### Sessions
@@ -1517,7 +1527,7 @@ manifest is:
     "./rpc": "./src/rpc.ts"
   },
   "dependencies": {
-    "@opencode/plugin": "beta"
+    "@opencode/plugin": "latest"
   }
 }
 ```
@@ -1527,9 +1537,8 @@ The `./rpc` export is optional; include it when publishing a shared
 without loading your implementation.
 
 Use versions compatible with the OpenCode release you target and test the
-installed package, not only a workspace-linked copy. Because the plugin API is
-beta, publish compatible plugin updates when V2 entrypoints or contracts
-change.
+installed package, not only a workspace-linked copy. Publish a compatible
+plugin update when you adopt a newer API contract.
 
 ## Support V1
 

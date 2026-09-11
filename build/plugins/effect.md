@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/build/plugins/effect
 title: "Effect"
 description: "Effect documentation for OpenCode."
-access_date: 2026-09-10T05:30:37.846Z
-current_date: 2026-09-10T05:30:37.846Z
+access_date: 2026-09-11T05:30:56.426Z
+current_date: 2026-09-11T05:30:56.426Z
 ---
 
 # Effect
@@ -1332,7 +1332,7 @@ entrypoint and declare both runtime dependencies.
     ".": "./src/index.ts"
   },
   "dependencies": {
-    "@opencode/plugin": "beta",
+    "@opencode/plugin": "latest",
     "effect": "4.0.0-rc.111"
   }
 }

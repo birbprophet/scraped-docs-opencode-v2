@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/build/plugins/cli
 title: "CLI"
 description: "CLI documentation for OpenCode."
-access_date: 2026-09-10T05:30:37.846Z
-current_date: 2026-09-10T05:30:37.846Z
+access_date: 2026-09-11T05:30:56.426Z
+current_date: 2026-09-11T05:30:56.426Z
 ---
 
 # CLI
@@ -516,7 +516,7 @@ Expose the CLI plugin through `./tui`; add OpenTUI peers when the plugin renders
     "./tui": "./src/tui.tsx"
   },
   "dependencies": {
-    "@opencode/plugin": "beta"
+    "@opencode/plugin": "latest"
   },
   "peerDependencies": {
     "@opentui/core": ">=0.5.8",

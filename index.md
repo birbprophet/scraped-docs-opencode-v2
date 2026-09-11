@@ -2,14 +2,13 @@
 url: https://opencode.ai/v2/docs
 title: "Intro"
 description: "Intro documentation for OpenCode."
-access_date: 2026-09-08T05:31:36.444Z
-current_date: 2026-09-08T05:31:36.444Z
+access_date: 2026-09-11T05:30:56.426Z
+current_date: 2026-09-11T05:30:56.426Z
 ---
 
 # Intro
 
-These docs are for the beta version of OpenCode, which will become OpenCode 2.0. The beta is still changing: things may
-break, and APIs, configuration, and plugin APIs may change.
+These docs describe OpenCode 2 and its released APIs, configuration, and plugin system.
 
 OpenCode 2 installs and runs as `opencode2`. It does not replace OpenCode 1's `opencode` binary, so you can keep both
 versions installed and run them side by side.
@@ -33,7 +32,7 @@ commands above explicitly allow that script to run.
 On Arch Linux, install [`opencode-beta`](https://aur.archlinux.org/packages/opencode-beta) from the AUR with `paru`.
 It provides the `opencode2` command; manage updates through your AUR helper.
 
-Homebrew, Windows package managers, Docker, and standalone binaries are not supported during the beta.
+Homebrew, Windows package managers, Docker, and standalone binaries are not supported in V2.
 
 ---
 
