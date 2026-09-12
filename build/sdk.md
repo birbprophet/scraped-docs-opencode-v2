@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/build/sdk
 title: "Overview"
 description: "Overview documentation for OpenCode."
-access_date: 2026-09-11T05:30:56.426Z
-current_date: 2026-09-11T05:30:56.426Z
+access_date: 2026-09-12T05:29:58.668Z
+current_date: 2026-09-12T05:29:58.668Z
 ---
 
 # Overview
@@ -18,7 +18,7 @@ For Cloudflare Durable Objects, see the [Cloudflare guide](sdk/cloudflare.md).
 Install the SDK:
 
 ```sh
-bun add @opencode/sdk@beta
+bun add @opencode/sdk
 ```
 
 ## Create a host

@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/websearch
 title: "Websearch"
 description: "Websearch documentation for OpenCode."
-access_date: 2026-09-11T05:30:56.426Z
-current_date: 2026-09-11T05:30:56.426Z
+access_date: 2026-09-12T05:29:58.668Z
+current_date: 2026-09-12T05:29:58.668Z
 ---
 
 # Websearch
@@ -30,7 +30,7 @@ OpenCode includes four search providers:
 Connect an account from the TUI with `/connect`, or set the provider's environment variable before starting OpenCode.
 
 ```bash
-$ TAVILY_API_KEY=your-key opencode2
+$ TAVILY_API_KEY=your-key opencode
 ```
 
 ## Selection

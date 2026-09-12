@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/cli/config
 title: "Config"
 description: "Config documentation for OpenCode."
-access_date: 2026-08-31T05:31:00.927Z
-current_date: 2026-08-31T05:31:00.927Z
+access_date: 2026-09-12T05:29:58.668Z
+current_date: 2026-09-12T05:29:58.668Z
 ---
 
 # Config
@@ -139,6 +139,22 @@ Configure notifications and sounds:
 | `volume`        | number from `0` to `1` | Sets sound volume.                                                                                   |
 | `sound_pack`    | string                 | Selects the active sound pack.                                                                       |
 | `sounds`        | object                 | Overrides files for `default`, `question`, `permission`, `error`, `done`, or `subagent_done` events. |
+
+## Session
+
+Choose whether the TUI prompts before granting permission requests:
+
+```json title="cli.json"
+{
+  "session": {
+    "permissions": "prompt"
+  }
+}
+```
+
+| Field         | Values                   | Description                                                             |
+| ------------- | ------------------------ | ----------------------------------------------------------------------- |
+| `permissions` | `prompt` or `autoaccept` | Prompts for permission requests or accepts every request automatically. |
 
 ## Diffs
 

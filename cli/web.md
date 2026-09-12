@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/cli/web
 title: "Web"
 description: "Run OpenCode in the browser."
-access_date: 2026-09-11T05:30:56.426Z
-current_date: 2026-09-11T05:30:56.426Z
+access_date: 2026-09-12T05:29:58.668Z
+current_date: 2026-09-12T05:29:58.668Z
 ---
 
 # Web
@@ -14,7 +14,7 @@ TUI. It's available by default and password protected.
 ## Access
 
 ```bash
-$ opencode2 pair
+$ opencode pair
 
   URLs      http://127.0.0.1:49374
   Username  opencode
@@ -22,42 +22,42 @@ $ opencode2 pair
 ```
 
 By default the server runs on port 49374 and listens only on localhost. You can
-change this config with the `opencode2 service` command.
+change this config with the `opencode service` command.
 
 ## Configure
 
-Set any option with `opencode2 service set`:
+Set any option with `opencode service set`:
 
 ```bash
 # Listen on every network interface
-$ opencode2 service set hostname 0.0.0.0
+$ opencode service set hostname 0.0.0.0
 
 # Use a fixed port instead of the channel default
-$ opencode2 service set port 49374
+$ opencode service set port 49374
 
 # Replace the generated password
-$ opencode2 service set password "a-long-secret"
+$ opencode service set password "a-long-secret"
 
 # Allow a web client served from another origin
-$ opencode2 service set cors https://app.example.com,https://other.example.com
+$ opencode service set cors https://app.example.com,https://other.example.com
 
 # Pass an environment variable to the server process
-$ opencode2 service set env OPENCODE_LOG_LEVEL DEBUG
+$ opencode service set env OPENCODE_LOG_LEVEL DEBUG
 ```
 
 Changing a setting stops the background server. To apply the new config
 
 ```bash
-$ opencode2 service start
+$ opencode service start
 ```
 
 ## Standalone
 
-`opencode2 serve` runs the same server in the foreground instead of through the
+`opencode serve` runs the same server in the foreground instead of through the
 shared background service.
 
 ```bash
-$ opencode2 serve --hostname 0.0.0.0 --port 4096
+$ opencode serve --hostname 0.0.0.0 --port 4096
 server listening on http://0.0.0.0:4096
 server password <password>
 ```
@@ -65,7 +65,7 @@ server password <password>
 Use it when you want to:
 
 - Run OpenCode on a shared, always-on, or remote host, then connect clients with
-  `opencode2 --server <url>`.
+  `opencode --server <url>`.
 - Control the hostname, port, and CORS origins for a single process.
 - Run under a supervisor like systemd, Docker, or another environment that expects
   a foreground process.
@@ -75,5 +75,5 @@ Use it when you want to:
 Connect a client to it with `--server`:
 
 ```bash
-$ opencode2 --server http://127.0.0.1:4096
+$ opencode --server http://127.0.0.1:4096
 ```

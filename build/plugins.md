@@ -2,14 +2,16 @@
 url: https://opencode.ai/v2/docs/build/plugins
 title: "Overview"
 description: "Overview documentation for OpenCode."
-access_date: 2026-09-11T05:30:56.426Z
-current_date: 2026-09-11T05:30:56.426Z
+access_date: 2026-09-12T05:29:58.668Z
+current_date: 2026-09-12T05:29:58.668Z
 ---
 
 # Overview
 
 Plugins can modify OpenCode's behavior and add new features. To change the terminal UI, build a [CLI
 plugin](plugins/cli.md).
+
+Migrating an existing OpenCode 1 plugin? Follow the [V1 plugin migration guide](plugins/migrate-v1.md).
 
 ```ts title=".opencode/plugins/example/index.ts"
 import { Plugin } from "@opencode/plugin"
@@ -1228,7 +1230,7 @@ differently:
 
 ```ts
 await ctx.session.hook("context", (event) => {
-  event.system.push({ text: "Keep the review focused on correctness." })
+  event.system.push({ type: "text", text: "Keep the review focused on correctness." })
   delete event.tools.write
   event.options.temperature = 0.2
   event.options.maxTokens = 8_000

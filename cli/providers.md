@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/cli/providers
 title: "Providers"
 description: "Connect provider accounts and manage credentials from the CLI and TUI."
-access_date: 2026-09-11T05:30:56.426Z
-current_date: 2026-09-11T05:30:56.426Z
+access_date: 2026-09-12T05:29:58.668Z
+current_date: 2026-09-12T05:29:58.668Z
 ---
 
 # Providers
@@ -37,20 +37,20 @@ Use `auth login` for the same provider methods without opening the TUI. With no 
 interactive provider picker.
 
 ```bash
-opencode2 auth login
+opencode auth login
 ```
 
 Pass an integration ID or name to skip the first picker. Use `--method key` to select API-key entry explicitly.
 
 ```bash
-opencode2 auth login anthropic --method key
+opencode auth login anthropic --method key
 ```
 
 Method IDs are provider-specific. Run the command without `--method` to see the available methods when a provider has
 more than one.
 
 ```bash
-opencode2 auth login openai
+opencode auth login openai
 ```
 
 API-key entry and provider forms require an interactive terminal. OAuth methods that ask you to paste an authorization
@@ -76,15 +76,15 @@ Set a provider's supported environment variable on the server process that runs 
 server, pass it when starting standalone mode.
 
 ```bash
-ANTHROPIC_API_KEY=sk-ant-... opencode2 --standalone
+ANTHROPIC_API_KEY=sk-ant-... opencode --standalone
 ```
 
 For the shared background server, add the variable to its managed environment. This stops a running service; the next
 OpenCode command starts it with the new value.
 
 ```bash
-opencode2 service set env ANTHROPIC_API_KEY sk-ant-...
-opencode2 auth list
+opencode service set env ANTHROPIC_API_KEY sk-ant-...
+opencode auth list
 ```
 
 Environment connections appear in `auth list` with type `environment`. They are not accounts: `auth logout` cannot
@@ -92,8 +92,8 @@ remove them, so unset the variable to disconnect. A saved account takes preceden
 the same integration.
 
 ```bash
-opencode2 auth list
-opencode2 service unset env ANTHROPIC_API_KEY
+opencode auth list
+opencode service unset env ANTHROPIC_API_KEY
 ```
 
 Some cloud providers also use their native ambient credential chain instead of an API-key variable:
@@ -107,7 +107,7 @@ Some cloud providers also use their native ambient credential chain instead of a
 
 ```bash
 gcloud auth application-default login
-GOOGLE_CLOUD_PROJECT=my-project opencode2
+GOOGLE_CLOUD_PROJECT=my-project opencode
 ```
 
 See [Providers](../providers.md) for provider-specific and server-side setup.
@@ -118,14 +118,14 @@ Each successful API-key, OAuth, or command login creates a saved account. The ne
 active account by its label or credential ID.
 
 ```bash
-opencode2 auth list
-opencode2 auth switch anthropic work
+opencode auth list
+opencode auth switch anthropic work
 ```
 
 Remove a saved account with `auth logout`. Both commands open pickers when their arguments are omitted.
 
 ```bash
-opencode2 auth logout anthropic work
+opencode auth logout anthropic work
 ```
 
 In the TUI, `/connect` provides the same add, activate, rename, and delete operations for saved accounts.
@@ -135,7 +135,7 @@ In the TUI, `/connect` provides the same add, activate, rename, and delete opera
 Saved API keys and OAuth tokens live in the server's SQLite database. For the local server, print its database path with:
 
 ```bash
-opencode2 debug paths db
+opencode debug paths db
 ```
 
 The usual release path is `~/.local/share/opencode/opencode.db`; `XDG_DATA_HOME`, the release channel, and `OPENCODE_DB`

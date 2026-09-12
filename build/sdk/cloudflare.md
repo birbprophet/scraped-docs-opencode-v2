@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/build/sdk/cloudflare
 title: "Cloudflare"
 description: "Cloudflare documentation for OpenCode."
-access_date: 2026-09-11T05:30:56.426Z
-current_date: 2026-09-11T05:30:56.426Z
+access_date: 2026-09-12T05:29:58.668Z
+current_date: 2026-09-12T05:29:58.668Z
 ---
 
 # Cloudflare
@@ -12,7 +12,7 @@ Use `@opencode/sdk/workerd` inside a Cloudflare Durable Object. This profile use
 persists durable events for eviction recovery, and replaces unavailable local filesystem and process services.
 
 ```sh
-bun add @opencode/sdk@beta
+bun add @opencode/sdk
 ```
 
 Hold one host for the lifetime of the Durable Object instance instead of creating one for every request.

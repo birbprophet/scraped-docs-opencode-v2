@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/build/client
 title: "JavaScript"
 description: "JavaScript documentation for OpenCode."
-access_date: 2026-09-11T05:30:56.426Z
-current_date: 2026-09-11T05:30:56.426Z
+access_date: 2026-09-12T05:29:58.668Z
+current_date: 2026-09-12T05:29:58.668Z
 ---
 
 # JavaScript
@@ -16,7 +16,7 @@ network. Its native types and methods are generated from the same contract as th
 ## Install
 
 ```sh
-bun add @opencode/client@beta
+bun add @opencode/client
 ```
 
 ## Create a client

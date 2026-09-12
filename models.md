@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/models
 title: "Models"
 description: "Models documentation for OpenCode."
-access_date: 2026-09-11T05:30:56.426Z
-current_date: 2026-09-11T05:30:56.426Z
+access_date: 2026-09-12T05:29:58.668Z
+current_date: 2026-09-12T05:29:58.668Z
 ---
 
 # Models
@@ -38,7 +38,7 @@ Availability is project-specific:
 Use `--model` to choose a model for one command-line run without changing the configured default:
 
 ```bash
-opencode2 run --model anthropic/claude-sonnet-4-5 "Refactor parseToken"
+opencode run --model anthropic/claude-sonnet-4-5 "Refactor parseToken"
 ```
 
 Agents and commands can also choose their own model. See [Agents](agents.md) and [Commands](commands.md).
@@ -69,7 +69,7 @@ Variants are named options for one model, often used for reasoning effort or tok
 one for a run, session, agent, or command:
 
 ```bash
-opencode2 run --model openai/gpt-5.2#high "Review this migration plan"
+opencode run --model openai/gpt-5.2#high "Review this migration plan"
 ```
 
 Variant names come from the selected model's current catalog metadata. Names such as `low`, `high`, and `max` are not

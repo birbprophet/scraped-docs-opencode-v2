@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/build/client/effect
 title: "Effect"
 description: "Effect documentation for OpenCode."
-access_date: 2026-09-08T05:31:36.444Z
-current_date: 2026-09-08T05:31:36.444Z
+access_date: 2026-09-12T05:29:58.668Z
+current_date: 2026-09-12T05:29:58.668Z
 ---
 
 # Effect
@@ -12,7 +12,7 @@ current_date: 2026-09-08T05:31:36.444Z
 and decodes responses into OpenCode schema values.
 
 ```sh
-bun add @opencode/client@beta effect
+bun add @opencode/client effect
 ```
 
 ## Create a client

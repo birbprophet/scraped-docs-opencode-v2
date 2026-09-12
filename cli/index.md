@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/cli
 title: "Intro"
 description: "Intro documentation for OpenCode."
-access_date: 2026-09-10T05:30:37.846Z
-current_date: 2026-09-10T05:30:37.846Z
+access_date: 2026-09-12T05:29:58.668Z
+current_date: 2026-09-12T05:29:58.668Z
 ---
 
 # Intro
@@ -11,13 +11,13 @@ current_date: 2026-09-10T05:30:37.846Z
 Run the CLI in a project to open the full-screen terminal interface:
 
 ```bash
-opencode2
+opencode
 ```
 
 Pass a directory to work in a different project:
 
 ```bash
-opencode2 ~/code/my-project
+opencode ~/code/my-project
 ```
 
 Suggested terminals:
@@ -32,22 +32,22 @@ palette.
 
 ## Automation
 
-Use `opencode2 run` to submit a prompt without opening the interactive interface. It is designed for scripts, CI jobs, and
+Use `opencode run` to submit a prompt without opening the interactive interface. It is designed for scripts, CI jobs, and
 other workflows that need model output directly in the terminal.
 
 ```bash
-opencode2 run "Explain this repository"
+opencode run "Explain this repository"
 ```
 
 ## Mini
 
-Use `opencode2 mini` to start OpenCode's minimal interactive interface instead of the full-screen TUI.
+Use `opencode mini` to start OpenCode's minimal interactive interface instead of the full-screen TUI.
 
 ```bash
-opencode2 mini
+opencode mini
 ```
 
-Run `opencode2 mini --help` to see its session, model, agent, prompt, and replay options.
+Run `opencode mini --help` to see its session, model, agent, prompt, and replay options.
 
 ## Background service
 
@@ -57,8 +57,8 @@ connects to that server, which owns sessions, configuration, integrations, permi
 Use `--standalone` to run with a private server, or `--server` to connect to a specific server URL:
 
 ```bash
-opencode2 --standalone
-opencode2 --server http://localhost:4096
+opencode --standalone
+opencode --server http://localhost:4096
 ```
 
 See [Troubleshooting](../troubleshooting.md) for shared service diagnostics and the [API reference](../api/index.md) for server endpoints.
@@ -68,8 +68,8 @@ See [Troubleshooting](../troubleshooting.md) for shared service diagnostics and 
 Print a specific local path for use with other tools:
 
 ```bash
-opencode2 debug paths db
-sqlite3 "$(opencode2 debug paths db)"
+opencode debug paths db
+sqlite3 "$(opencode debug paths db)"
 ```
 
 The optional selector accepts `db`, `home`, `data`, `config`, `cache`, `state`, `tmp`, `bin`, `log`, or `repos` and prints
@@ -79,7 +79,7 @@ resolve under the data directory, and `:memory:` is printed as-is. This command 
 Omit the selector to show all paths with labels:
 
 ```bash
-opencode2 debug paths
+opencode debug paths
 ```
 
 ## Uninstall
@@ -87,16 +87,16 @@ opencode2 debug paths
 Preview the files and installation that will be removed:
 
 ```bash
-opencode2 uninstall --dry-run
+opencode uninstall --dry-run
 ```
 
-Run `opencode2 uninstall` to confirm removal. OpenCode stops registered background services and persistent terminals before
+Run `opencode uninstall` to confirm removal. OpenCode stops registered background services and persistent terminals before
 removing global data, cache, configuration, and state. These directories are shared by OpenCode versions and channels.
 
 To retain configuration and session data:
 
 ```bash
-opencode2 uninstall --keep-config --keep-data
+opencode uninstall --keep-config --keep-data
 ```
 
 - `--keep-config` (`-c`) retains configuration files.

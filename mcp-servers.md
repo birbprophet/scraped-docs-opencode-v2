@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/mcp-servers
 title: "MCP servers"
 description: "MCP servers documentation for OpenCode."
-access_date: 2026-09-11T05:30:56.426Z
-current_date: 2026-09-11T05:30:56.426Z
+access_date: 2026-09-12T05:29:58.668Z
+current_date: 2026-09-12T05:29:58.668Z
 ---
 
 # MCP servers
@@ -15,14 +15,14 @@ OpenCode connects to [Model Context Protocol](https://modelcontextprotocol.io/) 
 Add a remote server from the project that should use it, then check its connection:
 
 ```sh
-opencode2 mcp add context7 --url https://mcp.context7.com/mcp
-opencode2 mcp list
+opencode mcp add context7 --url https://mcp.context7.com/mcp
+opencode mcp list
 ```
 
 The command writes the server to the project [configuration](config.md). Add `--global` to make it available in every project:
 
 ```sh
-opencode2 mcp add context7 --global --url https://mcp.context7.com/mcp
+opencode mcp add context7 --global --url https://mcp.context7.com/mcp
 ```
 
 Remote servers use OAuth by default. If the list shows `needs authentication`, open OpenCode, run `/mcps`, select the server, and sign in. A connected server is ready for an agent to use:
@@ -85,7 +85,7 @@ A higher-precedence project config replaces the entire server object with the sa
 A local server is a command that OpenCode starts over the MCP stdio transport. Add one with a command after `--`:
 
 ```sh
-opencode2 mcp add everything -- npx -y @modelcontextprotocol/server-everything
+opencode mcp add everything -- npx -y @modelcontextprotocol/server-everything
 ```
 
 Use configuration for process options such as a working directory or environment variables:
@@ -134,7 +134,7 @@ Use `{env:NAME}` for environment substitution. Shell expressions such as `$NAME`
 A remote server uses the MCP Streamable HTTP transport and requires an absolute URL:
 
 ```sh
-opencode2 mcp add context7 --url https://mcp.context7.com/mcp
+opencode mcp add context7 --url https://mcp.context7.com/mcp
 ```
 
 Use configuration when the server needs headers or other options. Store secrets in environment variables rather than in the file:
@@ -201,7 +201,7 @@ For dynamic registration, configure only the server URL:
 If the server needs authentication, run `/mcps`, select it, and complete authorization in the browser. The CLI can start the same flow:
 
 ```sh
-opencode2 mcp auth sentry
+opencode mcp auth sentry
 ```
 
 When a provider gives you client credentials, use V2's snake_case OAuth fields:
@@ -238,7 +238,7 @@ When a provider gives you client credentials, use V2's snake_case OAuth fields:
 Remove stored OAuth credentials when you need to sign in again or switch accounts:
 
 ```sh
-opencode2 mcp logout sentry
+opencode mcp logout sentry
 ```
 
 ## Timeouts
@@ -356,15 +356,15 @@ The ID is request metadata, not a tool argument, so it is absent from the model-
 List servers and their current connection state from any project:
 
 ```sh
-opencode2 mcp list
+opencode mcp list
 ```
 
 Use `/mcps` in OpenCode to view, connect, disconnect, or authenticate servers. Use the CLI to add servers and manage OAuth credentials:
 
 ```sh
-opencode2 mcp add sentry --url https://mcp.sentry.dev/mcp
-opencode2 mcp auth sentry
-opencode2 mcp logout sentry
+opencode mcp add sentry --url https://mcp.sentry.dev/mcp
+opencode mcp auth sentry
+opencode mcp logout sentry
 ```
 
 To remove a server, delete its entry from the project or global configuration where it was added:

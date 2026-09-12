@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/build/plugins/effect
 title: "Effect"
 description: "Effect documentation for OpenCode."
-access_date: 2026-09-11T05:30:56.426Z
-current_date: 2026-09-11T05:30:56.426Z
+access_date: 2026-09-12T05:29:58.668Z
+current_date: 2026-09-12T05:29:58.668Z
 ---
 
 # Effect
@@ -13,7 +13,7 @@ Effects or Streams, callbacks return Effects, and plugin lifetime is represented
 plugin package.
 
 ```sh
-bun add @opencode/plugin@beta effect
+bun add @opencode/plugin effect
 ```
 
 Export an Effect plugin from `.opencode/plugins/` to load it automatically.
@@ -1105,7 +1105,7 @@ effect: (ctx) =>
     const session = ctx.session
     yield* session.hook("context", (event) =>
       Effect.sync(() => {
-        event.system.push({ text: "Keep the review focused on correctness." })
+        event.system.push({ type: "text", text: "Keep the review focused on correctness." })
         delete event.tools.write
       }),
     )

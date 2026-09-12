@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/plugins
 title: "Plugins"
 description: "Plugins documentation for OpenCode."
-access_date: 2026-09-11T05:30:56.426Z
-current_date: 2026-09-11T05:30:56.426Z
+access_date: 2026-09-12T05:29:58.668Z
+current_date: 2026-09-12T05:29:58.668Z
 ---
 
 # Plugins
@@ -87,13 +87,13 @@ use `.*` to match an ID prefix. A later ID re-enables a plugin.
 Install, list, check, update, or remove global package plugins with the CLI.
 
 ```sh
-opencode2 plugin add opencode-acme-plugin@1.2.0
-opencode2 plugin list
-opencode2 plugin list --builtin
-opencode2 plugin check
-opencode2 plugin update
-opencode2 plugin update opencode-acme-plugin
-opencode2 plugin remove opencode-acme-plugin@1.2.0
+opencode plugin add opencode-acme-plugin@1.2.0
+opencode plugin list
+opencode plugin list --builtin
+opencode plugin check
+opencode plugin update
+opencode plugin update opencode-acme-plugin
+opencode plugin remove opencode-acme-plugin@1.2.0
 ```
 
 `plugin check` checks server and TUI-only package plugins for updates. `plugin update` updates every outdated package;
@@ -104,10 +104,10 @@ Git repositories can use hosted shortcuts, HTTPS, or SSH, including private repo
 Git credentials.
 
 ```sh
-opencode2 plugin add @acme/opencode-plugin@latest
-opencode2 plugin add github:acme/opencode-plugin
-opencode2 plugin add git+ssh://git@github.com/acme/opencode-plugin.git#main
-opencode2 plugin add 'github:acme/plugins#main::path:packages/opencode-plugin'
+opencode plugin add @acme/opencode-plugin@latest
+opencode plugin add github:acme/opencode-plugin
+opencode plugin add git+ssh://git@github.com/acme/opencode-plugin.git#main
+opencode plugin add 'github:acme/plugins#main::path:packages/opencode-plugin'
 ```
 
 Branches, tags, complete commit hashes, and npm's `::path:` repository-subdirectory selectors are supported. Configure
@@ -122,7 +122,7 @@ still require restarting OpenCode.
 
 ```sh
 touch .opencode/plugins/concise/index.ts
-opencode2 service restart
+opencode service restart
 ```
 
 ## Terminal
