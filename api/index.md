@@ -2,8 +2,8 @@
 url: https://opencode.ai/v2/docs/api
 title: "API"
 description: "OpenCode HTTP API reference and OpenAPI specification."
-access_date: 2026-09-10T05:30:37.846Z
-current_date: 2026-09-10T05:30:37.846Z
+access_date: 2026-09-13T05:30:00.192Z
+current_date: 2026-09-13T05:30:00.192Z
 ---
 
 get `/api/health` Check server health
@@ -1059,6 +1059,21 @@ Items [Session.Message.Info](#schema-Session.Message.Info)
 `500` UnknownError
 
 `application/json` [UnknownErrorEncoded](#schema-UnknownErrorEncoded)
+
+get `/api/session/{sessionID}/diff` Diff session turns
+
+Structured per-file diffs of the files a turn changed. A turn runs from the first prompt after the session was last idle until its next idle marker, so prompts steered in while it was busy belong to the same turn; \`to\` extends the range through a later turn. Compares the range's first recorded snapshot with its last; a step still running in the active session compares against the working copy. Ranges that span a location change are rejected. In sessions without any idle marker, a prompt's turn spans until the next user message.
+
+Operation ID `v2.session.diff`
+
+### Parameters
+
+| Name | Location | Type | Description |
+| --- | --- | --- | --- |
+| `sessionID` required | path | `string`  pattern ^ses | No description |
+| `from` | query | `string \| null`  User message whose turn to diff. Defaults to the turn of the newest user message.  `string`  pattern ^msg\_  or  `null` | No description |
+| `to` | query | `string \| null`  Later user message whose turn ends the range. Defaults to the turn of \`from\` alone.  `string`  pattern ^msg\_  or  `null` | No description |
+| `context` | query | `string \| null`  Unchanged lines around each hunk. Omit for full-file patches.  `string`  or  `null` | No description |
 
 get `/api/session/{sessionID}/inbox` List session inbox
 
@@ -2654,6 +2669,10 @@ Operation ID `v2.fs.read`
 `401` UnauthorizedError
 
 `application/json` [UnauthorizedErrorEncoded](#schema-UnauthorizedErrorEncoded)
+
+`404` FileNotFoundError
+
+`application/json` [FileNotFoundErrorEncoded](#schema-FileNotFoundErrorEncoded)
 
 get `/api/fs/list` List directory
 
@@ -4769,7 +4788,25 @@ Values `"env"`
 
 `string` required
 
-`Connection.Info` Connection.CredentialInfo | Connection.EnvInfo `FileSystem.Entry` object
+`Connection.Info` Connection.CredentialInfo | Connection.EnvInfo `FileNotFoundErrorEncoded` object
+
+`object`
+
+`_tag`
+
+`"FileNotFoundError"` required
+
+Values `"FileNotFoundError"`
+
+`path`
+
+`string` required
+
+`message`
+
+`string` required
+
+`FileSystem.Entry` object
 
 `object`
 
@@ -8145,7 +8182,41 @@ Values `"auto" | "manual"`
 
 `string` required
 
-`Session.Message.Info` Session.Message.AgentSelected | Session.Message.ModelSelected | Session.Message.LocationSwitched | Session.Message.User | Session.Message.Synthetic | Session.Message.System | Session.Message.Skill | Session.Message.Shell | Session.Message.Assistant | Session.Message.Compaction `Session.Message.LocationSwitched` object
+`Session.Message.Idle` object
+
+`object`
+
+`id`
+
+`string` required
+
+pattern ^msg\_
+
+`metadata`
+
+`object`
+
+`time`
+
+`object` required
+
+`created`
+
+`number` required
+
+`type`
+
+`"idle"` required
+
+Values `"idle"`
+
+`outcome`
+
+`"succeeded" | "failed" | "interrupted"` required
+
+Values `"succeeded" | "failed" | "interrupted"`
+
+`Session.Message.Info` Session.Message.AgentSelected | Session.Message.ModelSelected | Session.Message.LocationSwitched | Session.Message.User | Session.Message.Synthetic | Session.Message.System | Session.Message.Skill | Session.Message.Shell | Session.Message.Assistant | Session.Message.Compaction | Session.Message.Idle `Session.Message.LocationSwitched` object
 
 `object`
 
